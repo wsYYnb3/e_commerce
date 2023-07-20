@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Form, Dropdown } from 'react-bootstrap';
 import { FaSearch, FaSortAmountDownAlt, FaShoppingCart, FaStar, FaListUl } from 'react-icons/fa';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useSpring, animated } from 'react-spring';
+import { keyframes } from '@emotion/react';
 
 const categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'];
 const products = [
@@ -42,8 +43,28 @@ const Star = styled(FaStar)`
   cursor: pointer;
 `;
 
+const RadioLabel = styled(animated.label)`
+  cursor: pointer;
+`;
+
+const radioHighlight = keyframes`
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: #007bff;
+  }
+`;
+
 const StorePage = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
+  const highlight = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: { duration: 500 },
+    reset: true
+  });
 
   return (
     <animated.div style={fade}>
@@ -57,13 +78,28 @@ const StorePage = () => {
               </SearchBox>
               <h5>Categories</h5>
               {categories.map((category, index) => (
-                <p key={index}>
-                  <FaListUl className="mr-2" /> {category}
-                </p>
+                <div key={index}>
+                  <Form.Check 
+                    custom
+                    type="radio"
+                    id={`category-${index}`}
+                    label={
+                      <RadioLabel 
+                        style={selectedCategory === category ? highlight : {}} 
+                        css={selectedCategory === category ? { animation: `${radioHighlight} 0.5s forwards` } : {}}
+                      >
+                        <FaListUl className="mr-2" /> {category}
+                      </RadioLabel>
+                    }
+                    checked={selectedCategory === category}
+                    onChange={() => setSelectedCategory(category)}
+                  />
+                </div>
               ))}
             </SideBar>
           </Col>
 
+         
           <Col xs={12} lg={10}>
             <Row className="justify-content-between align-items-center px-3">
               <h4>Our Products</h4>
