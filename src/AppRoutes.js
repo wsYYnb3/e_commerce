@@ -1,4 +1,5 @@
 import React from 'react';
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FavoritesPage from './pages/FavoritesPage';
 import StorePage from './pages/StorePage';
