@@ -19,7 +19,8 @@ import NewestPage from './pages/NewestPage';
 import BestOffersPage from './pages/BestOffersPage';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
-
+import {ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -50,7 +51,9 @@ export function ClerkProviderWithRoutes() {
     >
       <Header />
       <Container>
+      <ToastContainer />
       <Routes>
+
         <Route path="/" element={<HomePage />} />
         <Route path="store" element={<StorePage />} />
         <Route path="mostsold" element={<MostSoldPage />} />
