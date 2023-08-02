@@ -18,6 +18,9 @@ const StyledDatePicker = styled(DatePicker)`
   line-height: 1.5;
   margin-left: 10px;
   width: auto;
+  @media (min-width: 768px) and (max-width: 1010px) {
+    width: 100%;
+  }
 `;
 
 
@@ -32,13 +35,13 @@ const ProductDetail = ({ name, unit, deliveryCountry, quantity, deliveryDate, pr
         <Card.Title>{name}</Card.Title>
         <Card.Text> {unit}</Card.Text>
         <Card.Text>Delivery Country: {deliveryCountry}</Card.Text>
-        <Card.Text>Delivery Date: 
+        <div>Delivery Date: 
           <StyledDatePicker 
             selected={selectedDate} 
             onChange={(date) => setSelectedDate(date)}
             dateFormat="MMMM d, yyyy"
           />
-        </Card.Text>
+        </div>
         <Card.Text>Price: ${price}</Card.Text>
       </Card.Body>
     </StyledCard>
