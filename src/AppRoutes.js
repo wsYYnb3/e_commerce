@@ -1,7 +1,7 @@
 import React from 'react';
 import { ClerkProvider, SignedIn, SignedOut, RedirectToSignIn, SignIn, SignUp, useUser, UserProfile } from '@clerk/clerk-react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import UserPage from './pages/UserPage';
@@ -61,8 +61,8 @@ export function ClerkProviderWithRoutes() {
         <Route path="support" element={<SupportPage />} />
         <Route path="bestoffers" element={<BestOffersPage />} />
         <Route path="newest" element={<NewestPage />} />
-        <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-        <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+        <Route path="/sign-in/*" element={<CenteredSignIn />} />
+        <Route path="/sign-up/*" element={<CenteredSignUp />} />
         <Route
           path="/favorites"
           element={
@@ -104,7 +104,25 @@ export function ClerkProviderWithRoutes() {
     </ClerkProvider>
   );
 }
+const CenteredSignIn = () => {
+  return (
+    <Row className="justify-content-center align-items-center min-vh-100">
+      <Col xs={12} sm={6} md={4}>
+        <SignIn routing="path" path="/sign-in" />
+      </Col>
+    </Row>
+  );
+};
 
+const CenteredSignUp = () => {
+  return (
+    <Row className="justify-content-center align-items-center min-vh-100">
+      <Col xs={12} sm={6} md={4}>
+        <SignUp routing="path" path="/sign-up" />
+      </Col>
+    </Row>
+  );
+};
 export function AppRoutes() {
   return (
     <Routes>
