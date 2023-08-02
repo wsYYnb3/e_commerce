@@ -57,7 +57,7 @@ export function ClerkProviderWithRoutes() {
         <Route path="search" element={<SearchPage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
-        <Route path="product" element={<ProductPage />} />
+        <Route path="product/:productId" element={<ProductPage />} />
         <Route path="support" element={<SupportPage />} />
         <Route path="bestoffers" element={<BestOffersPage />} />
         <Route path="newest" element={<NewestPage />} />

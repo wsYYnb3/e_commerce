@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Form, Dropdown } from 'react-bootstrap';
 import { FaSearch, FaSortAmountDownAlt, FaShoppingCart, FaStar, FaListUl } from 'react-icons/fa';
-import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
+
 import { useSpring, animated } from 'react-spring';
-import { keyframes } from '@emotion/react';
+
 import { SideBar, SearchBox, SearchIcon, StyledCard, ProductRow, Star, RadioLabel, radioHighlight } from '../styles/StoreStyles';
 const categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'];
 const products = [
@@ -73,24 +74,27 @@ const StorePage = () => {
               </Dropdown>
             </Row>
             <ProductRow>
-              {products.map((product) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={product.id} className="mb-4">
-                  <StyledCard>
-                    <Card.Img variant="top" src={product.image} />
-                    <Card.Body>
-                      <Card.Title>
-                        <Star onClick={() => console.log("Favorited", product.name)} /> {product.name}
-                      </Card.Title>
-                      <Card.Text>
-                        ${product.price}
-                      </Card.Text>
-                      <Button variant="primary" size="sm">
-                        <FaShoppingCart /> Add to Cart
-                      </Button>
-                    </Card.Body>
-                  </StyledCard>
-                </Col>
-              ))}
+            {products.map((product) => (
+  <Col xs={12} sm={6} md={4} lg={3} key={product.id} className="mb-4">
+    <Link to={`/product/${product.id}`}>
+      <StyledCard>
+        <Card.Img variant="top" src={product.image} />
+        <Card.Body>
+          <Card.Title>
+            <Star onClick={() => console.log("Favorited", product.name)} /> {product.name}
+          </Card.Title>
+          <Card.Text>
+            ${product.price}
+          </Card.Text>
+          <Button variant="primary" size="sm">
+            <FaShoppingCart /> Add to Cart
+          </Button>
+        </Card.Body>
+      </StyledCard>
+    </Link>
+  </Col>
+))}
+
             </ProductRow>
           </Col>
         </Row>
