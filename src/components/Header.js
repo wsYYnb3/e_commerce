@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, FormControl, Button, Form, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLeaf, faSearch, faSignInAlt, faHistory, faUser, faSignOutAlt, faShoppingCart, faStore, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
-//import { useAuth } from '../contexts/AuthContext';
+import { faLeaf, faSearch, faSignInAlt, faHistory, faUser, faSignOutAlt, faShoppingCart, faStore, faInfoCircle, faHeart, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { useUser, useClerk, UserButton, ClerkProvider } from '@clerk/clerk-react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = () => {
   const [query, setQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate();
-  const { currentUser, logout } = useState(null);
+  const {user} = useClerk();
   const queryParam = searchParams.get("q")
   const [cartCount, setCartCount] = useState(0);
 
@@ -25,11 +27,6 @@ const Header = () => {
   useEffect(() => {
     setQuery(queryParam || '')
   }, [searchParams]);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-3 p-2">
@@ -61,35 +58,34 @@ const Header = () => {
         </div>
         <div>
         <Nav className="me-4">
-          {!currentUser ? (
-            <>
-              <Nav.Link className="mx-1" as={Link} to="/login">
-                <FontAwesomeIcon icon={faSignInAlt} /> Login
-              </Nav.Link>
-              <Nav.Link className="mx-1" as={Link} to="/signup">
-                <FontAwesomeIcon icon={faUser} /> Signup
-              </Nav.Link>
-            </>
-          ) : (
-            <>
-              <Navbar.Text className="mx-1">
-                Logged as: {currentUser.username}
-              </Navbar.Text>
-              <Nav.Link className="mx-1" as={Link} to="/history">
-                <FontAwesomeIcon icon={faHistory} /> History
-              </Nav.Link>
-              <Nav.Link className="mx-1" onClick={handleLogout}>
-                <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-              </Nav.Link>
-            </>
-          )}
-           <Nav.Link as={Link} to="/cart">
-            <FontAwesomeIcon icon={faShoppingCart} /> ({cartCount})
-          </Nav.Link>
-          <Nav.Link as={Link} to="/support">
-            <FontAwesomeIcon icon={faInfoCircle} />
-          </Nav.Link>
-        </Nav>
+  {!user ? (
+    <>
+      <Nav.Link className="mx-1" as={Link} to="/sign-in">
+        <FontAwesomeIcon icon={faSignInAlt} /> Sign in
+      </Nav.Link>
+      <Nav.Link className="mx-1" as={Link} to="/sign-up">
+        <FontAwesomeIcon icon={faUser} /> Sign up
+      </Nav.Link>
+    </>
+  ) : (
+    <>
+      <UserButton />
+      <Nav.Link className="mx-1" as={Link} to="/favorites">
+        <FontAwesomeIcon icon={faHeart} /> Favorites
+      </Nav.Link>
+      <Nav.Link className="mx-1" as={Link} to="/orders">
+        <FontAwesomeIcon icon={faClipboardList} /> Orders
+      </Nav.Link>
+    </>
+  )}
+  <Nav.Link as={Link} to="/cart">
+    <FontAwesomeIcon icon={faShoppingCart} /> ({cartCount})
+  </Nav.Link>
+  <Nav.Link as={Link} to="/support">
+    <FontAwesomeIcon icon={faInfoCircle} />
+  </Nav.Link>
+</Nav>
+
           </div>
       </Navbar.Collapse>
     </Navbar>
