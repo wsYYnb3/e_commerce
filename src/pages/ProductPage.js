@@ -20,6 +20,7 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(null);
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
+  const [cart, setCart] = useState([]);
   useEffect(() => {
     const fetchProduct = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -84,7 +85,10 @@ const ProductPage = () => {
         </Col>
         <Col md={4}> {/* Adjust size as per your preference */}
         <ProductDetail {...product} />
-          <ProductPurchase 
+          <ProductPurchase
+                 product={product} // pass the product to ProductPurchase
+                 setCart={setCart} 
+                 cart={cart} // pass the cart to ProductPurchase
               quantity={quantity}
               decreaseQuantity={decreaseQuantity}
               increaseQuantity={increaseQuantity}
