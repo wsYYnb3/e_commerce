@@ -4,7 +4,7 @@ import { FaSearch, FaSortAmountDownAlt, FaShoppingCart, FaStar, FaListUl } from 
 import styled from '@emotion/styled';
 import { useSpring, animated } from 'react-spring';
 import { keyframes } from '@emotion/react';
-
+import { SideBar, SearchBox, SearchIcon, StyledCard, ProductRow, Star, RadioLabel, radioHighlight } from '../styles/StoreStyles';
 const categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'];
 const products = [
   { id: 1, name: 'Product 1', image: 'https://via.placeholder.com/150', price: 100 },
@@ -12,49 +12,7 @@ const products = [
   { id: 3, name: 'Product 3', image: 'https://via.placeholder.com/150', price: 300 },
 ];
 
-const SideBar = styled.div`
-  border-right: 1px solid #ccc;
-  padding: 1rem;
-`;
 
-const SearchBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
-const SearchIcon = styled(FaSearch)`
-  margin-right: 10px;
-`;
-
-const StyledCard = styled(Card)`
-  transition: 0.3s;
-  &:hover {
-    transform: scale(1.02);
-  }
-`;
-
-const ProductRow = styled(Row)`
-  padding-top: 1rem;
-`;
-
-const Star = styled(FaStar)`
-  color: #ffc107;
-  cursor: pointer;
-`;
-
-const RadioLabel = styled(animated.label)`
-  cursor: pointer;
-`;
-
-const radioHighlight = keyframes`
-  from {
-    background-color: transparent;
-  }
-  to {
-    background-color: #007bff;
-  }
-`;
 
 const StorePage = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -80,7 +38,6 @@ const StorePage = () => {
               {categories.map((category, index) => (
                 <div key={index}>
                   <Form.Check 
-                    custom
                     type="radio"
                     id={`category-${index}`}
                     label={

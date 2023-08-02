@@ -23,7 +23,7 @@ const HomePage = () => {
         <h1>Welcome to YieldDeal!</h1>
         <p>Your one-stop shop for fresh, local produce directly from farmers. Experience the taste of health and freshness!</p>
         <Link to="/store">
-          <Button variant="primary">Banner Here<FontAwesomeIcon icon={faArrowRight} /></Button>
+          <Button variant="primary">Get started with your YieldDeal journey<FontAwesomeIcon icon={faArrowRight} /></Button>
         </Link>
       </section>
 
