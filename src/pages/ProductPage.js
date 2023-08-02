@@ -10,6 +10,9 @@ import ProductDetail from '../components/ProductDetail';
 //import FarmInformation from '../components/FarmInformation';
 //import TechnicalInformation from '../components/TechnicalInformation';
 import ProductPurchase from '../components/ProductPurchase';
+import ImageGallery from '../components/ImageGallery';
+import image1 from '../images/product1.webp';
+import image2 from '../images/product2.jpg';
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
@@ -32,6 +35,10 @@ const ProductPage = () => {
           boxContents: 'Box 1',
           variety: 'Variety 1',
         },
+        images: [
+            {src: image1, alt: 'Image 1'},
+            {src: image2, alt: 'Image 2'},
+        ],
         farmer: {
           name: 'Farmer 1',
           bio: 'Bio 1',
@@ -71,15 +78,19 @@ const ProductPage = () => {
     <animated.div style={fade}>
       <Container>
         <Row>
-          <Col md={6}>
-            <ProductDetail {...product} />         
-        <ProductPurchase 
-            quantity={quantity}
-            decreaseQuantity={decreaseQuantity}
-            increaseQuantity={increaseQuantity}
-            totalPrice={totalPrice}
-        />
-          </Col>
+        <Col md={8}> {/* Adjust size as per your preference */}
+          <ImageGallery images={product.images} />
+          
+        </Col>
+        <Col md={4}> {/* Adjust size as per your preference */}
+        <ProductDetail {...product} />
+          <ProductPurchase 
+              quantity={quantity}
+              decreaseQuantity={decreaseQuantity}
+              increaseQuantity={increaseQuantity}
+              totalPrice={totalPrice}
+          />
+        </Col>
         </Row>
       </Container>
     </animated.div>
