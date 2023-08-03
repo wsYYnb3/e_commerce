@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from 'react-datepicker';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
 const StyledCard = styled(Card)`
@@ -33,15 +33,15 @@ const StyledDatePicker = styled(DatePicker)`
 const ProductDetail = ({ name, unit, deliveryCountry, quantity, deliveryDate, price }) => {
   const [productQuantity, setProductQuantity] = useState(quantity);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [isFavorited, setIsFavorited] = useState(false); // <-- New state for favorite status
+  const [isFavorited, setIsFavorited] = useState(false);
   const [favorite, setFavorite] = useState(false);
-  const { user } = useClerk(); // <-- Use the user object from useClerk
+  const { user } = useClerk(); 
 
-  // Function to handle favorite click
+
   const handleFavoriteClick = () => {
     if (user) {
-      setIsFavorited(!isFavorited); // Toggle favorite status
-      toast(isFavorited ? 'Removed from favorites' : 'Added to favorites', { position: 'bottom-center' });
+      setIsFavorited(!isFavorited);
+      toast(isFavorited ? 'Removed from favorites' : 'Added to favorites', { position: 'top-center' });
     }
   };
   const toggleFavorite = () => {
