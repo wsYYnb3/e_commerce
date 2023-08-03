@@ -14,7 +14,7 @@ const FormLabel = styled(Form.Label)`
 
 const TextInput = ({ label, name, control, rules, defaultValue, formState: { errors } }) => {
 
-  const error = _.get(errors, name); // Using lodash to safely access nested error
+  const error = _.get(errors, name);
 
   return (
     <Controller
