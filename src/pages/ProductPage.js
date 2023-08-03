@@ -27,7 +27,7 @@ const ProductPage = () => {
       const fetchedProduct = {
         name: 'Product 1',
         unit: '1kg',
-        deliveryCountry: 'US',
+        origin: 'US',
         quantity: 10,
         deliveryDate: '2023-08-02',
         price: 100,
