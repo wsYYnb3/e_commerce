@@ -1,43 +1,39 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { Controller } from 'react-hook-form';
-import styled from 'styled-components';
+import { FaListUl } from 'react-icons/fa';
+import { RadioLabel, radioHighlight } from '../styles/StoreStyles';
 
-const FormControl = styled(Form.Control)`
-  font-size: 14px;
-`;
+const Sidebar = ({ categories, selectedCategories, setSelectedCategories }) => {
+  const handleChange = (category) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter(cat => cat !== category));
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
 
-const FormLabel = styled(Form.Label)`
-  font-size: small;
-`;
-
-const StyledFeedback = styled(Form.Control.Feedback)`
-  display: block; // ensures error message is always displayed
-`;
-
-const TextInput = ({ label, name, control, rules, defaultValue, formState: { errors } }) => {
   return (
-    <Controller
-      name={name}
-      control={control}
-      defaultValue={defaultValue}
-      rules={rules}
-      render={({ field }) => (
-        <Form.Group>
-          <FormLabel>{label}</FormLabel>
-          <FormControl
-            {...field}
-            isInvalid={!!errors[name]}
+    <div>
+      <h5>Categories</h5>
+      {categories.map((category, index) => (
+        <div key={index}>
+          <Form.Check 
+            type="checkbox"
+            id={`category-${index}`}
+            label={
+              <RadioLabel 
+                style={selectedCategories.includes(category) ? { animation: `${radioHighlight} 0.5s forwards` } : {}}
+              >
+                <FaListUl className="mr-2" /> {category}
+              </RadioLabel>
+            }
+            checked={selectedCategories.includes(category)}
+            onChange={() => handleChange(category)}
           />
-          {errors[name] && (
-            <StyledFeedback type="invalid">
-              {errors[name]?.message}
-            </StyledFeedback>
-          )}
-        </Form.Group>
-      )}
-    />
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default TextInput;
+export default Sidebar;
