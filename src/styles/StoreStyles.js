@@ -1,8 +1,8 @@
-import { Card, Row } from 'react-bootstrap';
-import { FaSearch, FaStar } from 'react-icons/fa';
-import styled from '@emotion/styled';
-import { keyframes } from '@emotion/react';
-import { animated } from 'react-spring';
+import { Card, Row } from "react-bootstrap";
+import { FaSearch, FaStar } from "react-icons/fa";
+import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
+import { animated } from "react-spring";
 
 export const SideBar = styled.div`
   border-right: 1px solid #ccc;

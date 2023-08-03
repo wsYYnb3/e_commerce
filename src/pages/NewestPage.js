@@ -1,5 +1,3 @@
-import React from 'react';
-function NewestPage(){
-
-}
+import React from "react";
+function NewestPage() {}
 export default NewestPage;

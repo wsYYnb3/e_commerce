@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const FormWrapper = styled.div`
   display: flex;
@@ -9,8 +9,8 @@ export const FormWrapper = styled.div`
 `;
 
 export const ClerkForm = styled.div`
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;

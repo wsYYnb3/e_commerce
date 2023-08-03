@@ -1,13 +1,13 @@
-import { Card } from 'react-bootstrap';
-import styled from 'styled-components';
-import { useState } from 'react';
+import { Card } from "react-bootstrap";
+import styled from "styled-components";
+import { useState } from "react";
 import { useClerk } from "@clerk/clerk-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledCard = styled(Card)`
   margin-top: 20px;
@@ -22,15 +22,17 @@ const PriceContainer = styled.div`
 `;
 const ProductDetail = ({ name, unit, origin, price }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  const { user } = useClerk(); 
+  const { user } = useClerk();
   const navigate = useNavigate();
 
   const handleFavoriteClick = () => {
     if (user) {
       setIsFavorited(!isFavorited);
-      toast(isFavorited ? 'Removed from favorites' : 'Added to favorites', { position: 'top-center' });
+      toast(isFavorited ? "Removed from favorites" : "Added to favorites", {
+        position: "top-center",
+      });
     } else {
-      navigate('/sign-up');
+      navigate("/sign-up");
     }
   };
 
@@ -38,11 +40,15 @@ const ProductDetail = ({ name, unit, origin, price }) => {
     <StyledCard>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
-        <Card.Text>{unit}
-        <div>Origin: {origin}</div></Card.Text>
+        <Card.Text>
+          {unit}
+          <div>Origin: {origin}</div>
+        </Card.Text>
         <Card.Text></Card.Text>
         <PriceContainer>
-          <span>Price: <b>${price}</b></span>
+          <span>
+            Price: <b>${price}</b>
+          </span>
           <FontAwesomeIcon
             icon={isFavorited ? solidStar : regularStar}
             onClick={handleFavoriteClick}

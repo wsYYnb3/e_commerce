@@ -1,5 +1,3 @@
-import React from 'react';
-function OrdersPage(){
-
-}
+import React from "react";
+function OrdersPage() {}
 export default OrdersPage;
