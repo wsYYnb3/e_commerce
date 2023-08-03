@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Controller } from 'react-hook-form';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 const FormControl = styled(Form.Control)`
   font-size: 14px;
@@ -11,11 +12,10 @@ const FormLabel = styled(Form.Label)`
   font-size: small;
 `;
 
-const StyledFeedback = styled(Form.Control.Feedback)`
-  display: block; // ensures error message is always displayed
-`;
-
 const TextInput = ({ label, name, control, rules, defaultValue, formState: { errors } }) => {
+
+  const error = _.get(errors, name); // Using lodash to safely access nested error
+
   return (
     <Controller
       name={name}
@@ -27,12 +27,12 @@ const TextInput = ({ label, name, control, rules, defaultValue, formState: { err
           <FormLabel>{label}</FormLabel>
           <FormControl
             {...field}
-            isInvalid={!!errors[name]}
+            isInvalid={!!error}
           />
-          {errors[name] && (
-            <StyledFeedback type="invalid">
-              {errors[name]?.message}
-            </StyledFeedback>
+          {error && (
+            <Form.Control.Feedback type="invalid">
+              {error.message}
+            </Form.Control.Feedback>
           )}
         </Form.Group>
       )}

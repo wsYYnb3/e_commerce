@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Dropdown, Form } from 'react-bootstrap';
-import { FaSearch, FaSortAmountDownAlt, FaBars } from 'react-icons/fa';
+import {FaSortAmountDownAlt, FaBars } from 'react-icons/fa';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components'
 import { SideBar, SearchBox, SearchIcon, ProductRow } from '../styles/StoreStyles';
