@@ -7,7 +7,7 @@ import tw from 'twin.macro';
 import { CartContext } from "../contexts/CartContext";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import {useNavigate} from 'react-router-dom';
 
 const Wrapper = styled.div`
   ${tw`flex justify-center items-center h-screen`}
@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 
 const CartPage = () => {
   const [cart, setCart] = useContext(CartContext); 
+  const navigate = useNavigate();
 
   const handleRemoveFromCart = (id) => {
     const newCart = cart.filter(item => item.id !== id);
@@ -71,7 +72,7 @@ const CartPage = () => {
                   ${cart.reduce((a, c) => a + c.price * c.quantity, 0)}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button type="button" className="btn-block" disabled={cart.length === 0}>
+                  <Button type="button" className="btn-block" disabled={cart.length === 0} onClick={() => navigate('/checkout')}>
                     Proceed To Checkout
                   </Button>
                 </ListGroup.Item>
