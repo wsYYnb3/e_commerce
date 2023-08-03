@@ -80,8 +80,7 @@ const StorePage = () => {
       <StyledCard>
         <Card.Img variant="top" src={product.image} />
         <Card.Body>
-          <Card.Title>
-            <Star onClick={() => console.log("Favorited", product.name)} /> {product.name}
+          <Card.Title> {product.name}
           </Card.Title>
           <Card.Text>
             ${product.price}

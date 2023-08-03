@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Button, Col, Row, Container, Form, FormControl } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,7 +20,6 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(null);
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
-  const [cart, setCart] = useState([]);
   useEffect(() => {
     const fetchProduct = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -79,16 +78,14 @@ const ProductPage = () => {
     <animated.div style={fade}>
       <Container>
         <Row>
-        <Col md={8}> {/* Adjust size as per your preference */}
+        <Col md={8}> 
           <ImageGallery images={product.images} />
           
         </Col>
-        <Col md={4}> {/* Adjust size as per your preference */}
+        <Col md={4}>
         <ProductDetail {...product} />
           <ProductPurchase
-                 product={product} // pass the product to ProductPurchase
-                 setCart={setCart} 
-                 cart={cart} // pass the cart to ProductPurchase
+                 product={product} 
               quantity={quantity}
               decreaseQuantity={decreaseQuantity}
               increaseQuantity={increaseQuantity}

@@ -51,7 +51,7 @@ export function ClerkProviderWithRoutes() {
     >
       <Header />
       <Container>
-      <ToastContainer />
+      <ToastContainer autoClose={1500}/>
       <Routes>
 
         <Route path="/" element={<HomePage />} />

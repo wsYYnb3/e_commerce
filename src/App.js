@@ -7,6 +7,7 @@ import {ClerkProvider} from '@clerk/clerk-react'
 import {AppRoutes, ClerkProviderWithRoutes} from './AppRoutes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
+import { GlobalStyle } from './styles/GlobalStyles';
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <div className="App">
+       <GlobalStyle />
     <Router>
         <ClerkProviderWithRoutes />
       <Footer />
