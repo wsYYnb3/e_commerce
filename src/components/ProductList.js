@@ -76,7 +76,7 @@ const StyledFooter = styled(Card.Footer)`
   display: flex;
   justify-content: space-between;
 `;
-const ProductList = ({ selectedCategories }) => {
+const ProductList = ({ selectedCategories, items }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const handleAddToCart = (product) => {
@@ -87,10 +87,8 @@ const ProductList = ({ selectedCategories }) => {
 
   const filteredProducts =
     selectedCategories.length > 0
-      ? products.filter((product) =>
-          selectedCategories.includes(product.category)
-        )
-      : products;
+      ? items.filter((product) => selectedCategories.includes(product.category))
+      : items;
 
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;

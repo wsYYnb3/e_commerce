@@ -11,6 +11,9 @@ import {
 } from "../styles/StoreStyles";
 import Sidebar from "../components/Sidebar";
 import ProductList from "../components/ProductList";
+import SortDropdown from "../components/SortDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { sortItems } from "../services/itemsSlice";
 
 const categories = [
   "Category 1",
@@ -32,8 +35,27 @@ const Actions = styled.div`
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
+  const items = useSelector((state) => state.items);
+  const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
+
+  const handleSortSelect = (sortKey) => {
+    let sortOrder = "asc";
+    let property = sortKey;
+
+    if (sortKey === "low") {
+      property = "price";
+      sortOrder = "asc";
+    } else if (sortKey === "high") {
+      property = "price";
+      sortOrder = "desc";
+    } else if (sortKey === "name") {
+      property = "name";
+      sortOrder = "asc";
+    }
+
+    dispatch(sortItems({ property, order: sortOrder }));
+  };
 
   return (
     <animated.div style={fade}>
@@ -63,28 +85,14 @@ const StorePage = () => {
                   onClick={() => setSidebarOpen(!isSidebarOpen)}
                   style={{ cursor: "pointer", marginRight: "10px" }}
                 />
-                <Dropdown onSelect={(e) => console.log(e)}>
-                  <Dropdown.Toggle
-                    variant='outline-secondary'
-                    id='dropdown-basic'
-                  >
-                    <FaSortAmountDownAlt /> Sort By
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item eventKey='low'>
-                      Price: Low to High
-                    </Dropdown.Item>
-                    <Dropdown.Item eventKey='high'>
-                      Price: High to Low
-                    </Dropdown.Item>
-                    <Dropdown.Item eventKey='name'>Name</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <SortDropdown onSelect={handleSortSelect} />
               </Actions>
             </HeaderContainer>
             <ProductRow>
-              <ProductList selectedCategories={selectedCategories} />
+              <ProductList
+                selectedCategories={selectedCategories}
+                items={items}
+              />
             </ProductRow>
           </Col>
         </Row>
