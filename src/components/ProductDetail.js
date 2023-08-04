@@ -42,7 +42,8 @@ const ProductDetail = ({ name, unit, origin, price }) => {
         <Card.Title>{name}</Card.Title>
         <Card.Text>
           {unit}
-          <div>Origin: {origin}</div>
+          <br />
+          Origin: {origin}
         </Card.Text>
         <Card.Text></Card.Text>
         <PriceContainer>

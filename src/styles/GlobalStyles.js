@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .navbar {
-    background-color: #2d2d2d;
+    background-color: #1d3931;
   }
 
   .navbar-brand, .navbar-nav .nav-link {
@@ -49,12 +49,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .btn-primary {
-    background-color: #607d8b;
+    background-color: #40a798;
     border: none;
   }
 
   .btn-primary:hover, .btn-primary:focus {
-    background-color: #455a64;
+    background-color: #2c7965;
   }
 
   .btn-light {
@@ -68,14 +68,14 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: #607d8b;
+    background-color: #40a798;
   }
 
   .faShoppingCart, .faSearch, .faStar {
-    color: #607d8b;
+    color: #40a798;
   }
   .faLeaf {
-    color: .bg-success
+    color: #bg-success;
   }
   .faMinus, .faPlus {
     color: #333;
@@ -87,8 +87,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .form-control:focus {
-    border-color: #607d8b;
-    box-shadow: 0 0 0 0.2rem rgba(96, 125, 139, 0.25);
+    border-color: #40a798;
+    box-shadow: 0 0 0 0.2rem rgba(64, 167, 152, 0.25);
   }
 
   .clerk-form {
