@@ -11,6 +11,7 @@ const SortDropdown = ({ onSelect }) => (
     <Dropdown.Menu>
       <Dropdown.Item eventKey='low'>Price: Low to High</Dropdown.Item>
       <Dropdown.Item eventKey='high'>Price: High to Low</Dropdown.Item>
+      <Dropdown.Item eventKey='newest'>New Arrivals</Dropdown.Item>
       <Dropdown.Item eventKey='name'>Name</Dropdown.Item>
     </Dropdown.Menu>
   </Dropdown>
