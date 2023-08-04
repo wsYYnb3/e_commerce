@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Col, Card, Button } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { CartContext } from "../contexts/CartContext";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, setCart } from "../services/cartSlice";
 
 const products = [
   {
@@ -76,28 +77,12 @@ const StyledFooter = styled(Card.Footer)`
   justify-content: space-between;
 `;
 const ProductList = ({ selectedCategories }) => {
-  const [cart, setCart] = useContext(CartContext);
-
-  const addToCart = (event, product) => {
-    event.stopPropagation();
-
-    const cartItem = cart.find((item) => item.id === product.id);
-
-    if (cartItem) {
-      cartItem.quantity += 1;
-      toast.success("Product quantity updated in cart!", {
-        position: "bottom-center",
-      });
-    } else {
-      setCart([
-        ...cart,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ]);
-      toast.success("Product added to cart!", { position: "bottom-center" });
-    }
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const handleAddToCart = (product) => {
+    const productWithQuantity = { ...product, quantity: 1 };
+    dispatch(addToCart(productWithQuantity));
+    toast.success("Product added to cart!", { position: "top-right" });
   };
 
   const filteredProducts =
@@ -134,7 +119,7 @@ const ProductList = ({ selectedCategories }) => {
         <StyledButton
           variant='primary'
           size='sm'
-          onClick={(e) => addToCart(e, product)}
+          onClick={(e) => handleAddToCart(product)}
         >
           <FaShoppingCart /> Add to Cart
         </StyledButton>
