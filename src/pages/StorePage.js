@@ -52,8 +52,10 @@ const StorePage = () => {
     } else if (sortKey === "name") {
       property = "name";
       sortOrder = "asc";
+    } else if (sortKey === "newest") {
+      property = "date_added";
+      sortOrder = "desc";
     }
-
     dispatch(sortItems({ property, order: sortOrder }));
   };
 
