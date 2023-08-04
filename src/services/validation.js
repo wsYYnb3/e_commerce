@@ -2,7 +2,11 @@ import * as yup from "yup";
 
 export const schema = yup.object().shape({
   billingDetails: yup.object().shape({
-    firstName: yup.string().required("First name is required"),
+    entityType: yup
+      .string()
+      .required("Please select entity type")
+      .oneOf(["privatePerson", "company"], "Please select valid entity type"),
+    name: yup.string().required("Name is required"),
     lastName: yup.string().required("Last name is required"),
     email: yup
       .string()
@@ -37,6 +41,7 @@ export const schema = yup.object().shape({
   }),
   isDeliveryAddressDifferent: yup.boolean(),
   deliveryDetails: yup.object().shape({
+    name: yup.string().required("Name is required"),
     address: yup.object().shape({
       street: yup.string().required("Street is required"),
       number: yup

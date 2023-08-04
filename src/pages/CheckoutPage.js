@@ -32,8 +32,8 @@ const CheckoutPage = () => {
   const [cart] = useContext(CartContext);
 
   const history = useNavigate();
-  const isDeliveryAddressDifferent = watch("isDeliveryAddressDifferent", false);
-
+  const isDeliveryAddressSame = watch("isDeliveryAddressSame", true);
+  const entityType = watch("entityType", "privatePerson");
   const onSubmit = (data) => {
     console.log("Order submitted", data);
   };
@@ -47,26 +47,14 @@ const CheckoutPage = () => {
             <FormRow>
               <Col xs={8} md={6}>
                 <TextInput
-                  label='First Name'
-                  name='billingDetails.firstName'
+                  label='Name'
+                  name='billingDetails.name'
                   control={control}
                   rules={{ required: true }}
                   defaultValue=''
                   formState={formState}
                 />
               </Col>
-              <Col xs={8} md={6}>
-                <TextInput
-                  label='Last Name'
-                  name='billingDetails.lastName'
-                  control={control}
-                  rules={{ required: true }}
-                  defaultValue=''
-                  formState={formState}
-                />
-              </Col>
-            </FormRow>
-            <FormRow>
               <Col xs={8} md={6}>
                 <TextInput
                   label='Email'
@@ -98,6 +86,27 @@ const CheckoutPage = () => {
                   defaultValue=''
                   formState={formState}
                 />
+              </Col>
+              <Col>
+                <Form.Group className='mt-3'>
+                  <Form.Check
+                    label='Private Person'
+                    name='billingDetails.entityType'
+                    type='radio'
+                    id='privatePerson'
+                    value='privatePerson'
+                    defaultChecked
+                    {...control.register("entityType")}
+                  />
+                  <Form.Check
+                    label='Company'
+                    name='billingDetails.entityType'
+                    type='radio'
+                    id='company'
+                    value='company'
+                    {...control.register("entityType")}
+                  />
+                </Form.Group>
               </Col>
             </FormRow>
             <h4>Billing Address</h4>
@@ -173,18 +182,43 @@ const CheckoutPage = () => {
                   formState={formState}
                 />
               </Col>
+              {entityType === "company" && (
+                <Col xs={8} md={6}>
+                  <TextInput
+                    label='Tax Number'
+                    name='billingDetails.taxNumber'
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue=''
+                    formState={formState}
+                  />
+                </Col>
+              )}
             </FormRow>
 
             <Form.Group className='mb-2'>
               <Form.Check
-                label='Delivery address is different'
-                {...control.register("isDeliveryAddressDifferent")}
+                label='Delivery address is the same'
+                {...control.register("isDeliveryAddressSame")}
+                defaultChecked
               />
             </Form.Group>
 
-            {isDeliveryAddressDifferent && (
+            {!isDeliveryAddressSame && (
               <>
                 <h4>Delivery Details</h4>
+                <FormRow>
+                  <Col xs={8} md={6}>
+                    <TextInput
+                      label='Name'
+                      name='deliveryDetails.name'
+                      control={control}
+                      rules={{ required: true }}
+                      defaultValue=''
+                      formState={formState}
+                    />
+                  </Col>
+                </FormRow>
                 <FormRow>
                   <Col xs={8} md={6}>
                     <TextInput

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   Container,
   Row,
@@ -7,38 +7,56 @@ import {
   ListGroup,
   Image,
   Card,
+  Form,
 } from "react-bootstrap";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaShoppingCart } from "react-icons/fa";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import tw from "twin.macro";
-import { CartContext } from "../contexts/CartContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, adjustQuantity } from "../services/cartSlice";
 
-const Wrapper = styled.div`
-  ${tw`flex justify-center items-center h-screen`}
+const StyledWrapper = styled.div`
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  padding: 50px 0;
+`;
+
+const StyledCard = styled(Card)`
+  background-color: #ffdb59;
+  color: #333;
+`;
+
+const StyledListGroupItem = styled(ListGroup.Item)`
+  background-color: #f7f7f7;
 `;
 
 const CartPage = () => {
-  const [cart, setCart] = useContext(CartContext);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleRemoveFromCart = (id) => {
-    const newCart = cart.filter((item) => item.id !== id);
-    setCart(newCart);
-    toast.success("Product removed from cart", {
+    dispatch(removeFromCart(id));
+    toast.error("Product removed from cart", {
       position: toast.POSITION.TOP_CENTER,
     });
   };
 
+  const handleAdjustQuantity = (id, qty) => {
+    dispatch(adjustQuantity({ id, quantity: qty }));
+  };
+
   return (
-    <Wrapper>
+    <StyledWrapper>
       <Container>
         <Row>
-          <Col xs={12} md={8}>
-            <h2>Shopping Cart</h2>
+          <Col md={9}>
+            <h2>
+              <FaShoppingCart /> Shopping Cart
+            </h2>
             {cart.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -50,9 +68,9 @@ const CartPage = () => {
             ) : (
               <ListGroup variant='flush'>
                 {cart.map((item) => (
-                  <ListGroup.Item key={item.id}>
-                    <Row>
-                      <Col xs={4} md={2}>
+                  <StyledListGroupItem key={item.id}>
+                    <Row className='align-items-center'>
+                      <Col md={2}>
                         <Image
                           src={item.cartImage}
                           alt={item.name}
@@ -60,40 +78,43 @@ const CartPage = () => {
                           rounded
                         />
                       </Col>
-                      <Col xs={4} md={7}>
-                        <Row className='align-items-center'>
-                          <Col>{item.name}</Col>
-                        </Row>
+                      <Col md={4}>
+                        <b>{item.name}</b>
+                        <br />
+                        {item.unit}
                       </Col>
-                      <Col xs={4} md={3}>
-                        <Row className='align-items-center justify-content-md-end'>
-                          <Col>
-                            ${item.price} x {item.quantity} = $
-                            {item.price * item.quantity}
-                          </Col>
-                          <Col>
-                            <Button
-                              variant='light'
-                              size='sm'
-                              onClick={() => handleRemoveFromCart(item.id)}
-                            >
-                              <FaTrash size={18} />
-                            </Button>
-                          </Col>
-                        </Row>
+                      <Col md={2}>
+                        ${item.price} * {item.quantity}
+                      </Col>
+                      <Col md={2}></Col>
+                      <Col md={2}>
+                        <Button
+                          variant='danger'
+                          size='sm'
+                          onClick={() => handleRemoveFromCart(item.id)}
+                        >
+                          <FaTrash />
+                        </Button>
                       </Col>
                     </Row>
-                  </ListGroup.Item>
+                  </StyledListGroupItem>
                 ))}
               </ListGroup>
             )}
           </Col>
-          <Col xs={12} md={4}>
-            <Card>
+          <Col md={3}>
+            <StyledCard>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
-                  <h2>Subtotal</h2>$
-                  {cart.reduce((a, c) => a + c.price * c.quantity, 0)}
+                  <h3>
+                    Subtotal (
+                    {cart.reduce((acc, item) => acc + item.quantity, 0)}) items
+                  </h3>
+                  $
+                  {cart.reduce(
+                    (acc, item) => acc + item.price * item.quantity,
+                    0
+                  )}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Button
@@ -106,12 +127,11 @@ const CartPage = () => {
                   </Button>
                 </ListGroup.Item>
               </ListGroup>
-            </Card>
+            </StyledCard>
           </Col>
         </Row>
       </Container>
-    </Wrapper>
+    </StyledWrapper>
   );
 };
-
 export default CartPage;

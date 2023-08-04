@@ -22,13 +22,8 @@ import {
   faHeart,
   faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  useUser,
-  useClerk,
-  UserButton,
-  ClerkProvider,
-} from "@clerk/clerk-react";
-
+import { useUser, useClerk, UserButton } from "@clerk/clerk-react";
+import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Header = () => {
@@ -37,7 +32,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user } = useClerk();
   const queryParam = searchParams.get("q");
-  const [cartCount, setCartCount] = useState(0);
+  const cartCount = useSelector((state) => state.cart.length);
 
   const handleSearch = (e) => {
     e.preventDefault();

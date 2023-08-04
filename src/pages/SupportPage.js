@@ -47,7 +47,6 @@ const SupportPage = () => {
               }}
               onSubmit={async (values) => {
                 alert(JSON.stringify(values, null, 2));
-                // You would send the form values to your server here.
               }}
             >
               <Form>

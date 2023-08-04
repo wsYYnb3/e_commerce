@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button, FormControl } from "react-bootstrap";
 import { FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CartContext } from "../contexts/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, adjustQuantity } from "../services/cartSlice";
+
 const StyledContainer = styled.div`
   margin-top: 20px;
   background-color: #fff;
@@ -23,38 +25,32 @@ const StyledButton = styled(Button)`
   display: block;
 `;
 
-const ProductPurchase = ({
-  product,
-  quantity,
-  decreaseQuantity,
-  increaseQuantity,
-  totalPrice,
-}) => {
-  const [cart, setCart] = useContext(CartContext);
-  const addToCart = () => {
-    const cartItem = cart.find((item) => item.name === product.name);
+const ProductPurchase = ({ product }) => {
+  const [quantity, setQuantity] = React.useState(1);
+  const dispatch = useDispatch();
 
-    if (cartItem) {
-      cartItem.quantity += quantity;
-      toast.success("Product quantity updated in cart!", {
-        position: "bottom-center",
-      });
-    } else {
-      setCart([
-        ...cart,
-        {
-          ...product,
-          quantity,
-        },
-      ]);
-      toast.success("Product added to cart!", { position: "bottom-center" });
+  const handleAddToCart = () => {
+    const newProduct = { ...product, quantity };
+    dispatch(addToCart(newProduct));
+    toast.success("Product added to cart!", { position: "bottom-center" });
+  };
+
+  const handleIncreaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
     }
   };
+
+  const totalPrice = product.price * quantity;
 
   return (
     <StyledContainer>
       <QuantityWrapper>
-        <FaMinus onClick={decreaseQuantity} />
+        <FaMinus onClick={handleDecreaseQuantity} />
         <FormControl
           type='number'
           value={quantity}
@@ -62,11 +58,12 @@ const ProductPurchase = ({
           className='mx-2 text-center'
           style={{ width: "60px" }}
         />
-        <FaPlus onClick={increaseQuantity} />
-        <StyledButton variant='primary' size='sm' onClick={addToCart}>
+        <FaPlus onClick={handleIncreaseQuantity} />
+        <StyledButton variant='primary' size='sm' onClick={handleAddToCart}>
           Total: ${totalPrice} <FaShoppingCart />
         </StyledButton>
       </QuantityWrapper>
+      <ToastContainer />
     </StyledContainer>
   );
 };
