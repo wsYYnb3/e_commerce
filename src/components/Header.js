@@ -25,6 +25,7 @@ import {
 import { useUser, useClerk, UserButton } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
   const [query, setQuery] = useState("");
@@ -49,6 +50,7 @@ const Header = () => {
 
   return (
     <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2'>
+      <LanguageSelector />
       <Navbar.Brand as={Link} to='/' className='ms-4'>
         <FontAwesomeIcon icon={faLeaf} /> YieldDeal
       </Navbar.Brand>

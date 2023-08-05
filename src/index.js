@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { CartProvider } from "./contexts/CartContext";
 import { Provider } from "react-redux";
 import store from "./services/store";
+import "./services/i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
