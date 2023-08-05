@@ -35,6 +35,7 @@ const Actions = styled.div`
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+
   const items = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });

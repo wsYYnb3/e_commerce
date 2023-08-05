@@ -36,6 +36,28 @@ const itemsSlice = createSlice({
       origin: "US",
       date_added: Date.parse("2023.07.11"),
     },
+    {
+      id: 4,
+      name: "Product 4",
+      image: "https://via.placeholder.com/150",
+      price: 100,
+      category: "Category 4",
+      manufacturer: "Sub",
+      unit: "2 kg",
+      origin: "US",
+      date_added: Date.parse("2020.07.11"),
+    },
+    {
+      id: 5,
+      name: "Product 5",
+      image: "https://via.placeholder.com/150",
+      price: 10,
+      category: "Category 6",
+      manufacturer: "Sub",
+      unit: "100 g",
+      origin: "US",
+      date_added: Date.parse("2023.02.11"),
+    },
   ],
   reducers: {
     sortItems: (state, action) => {
