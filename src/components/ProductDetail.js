@@ -52,12 +52,12 @@ const ProductDetail = ({ name, unit, origin, price, id }) => {
       if (isFavorite()) {
         dispatch(removeFavorite(id));
         toast.info("Removed from favorites", {
-          position: "top-center",
+          position: "bottom-center",
         });
       } else {
         dispatch(addFavorite({ id, name, unit, origin, price }));
         toast.success("Added to favorites", {
-          position: "top-center",
+          position: "bottom-center",
         });
       }
     } else {

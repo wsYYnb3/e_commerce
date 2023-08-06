@@ -103,17 +103,21 @@ const ProductList = ({ selectedCategories, items }) => {
     e.stopPropagation();
     const productWithQuantity = { ...product, quantity: 1 };
     dispatch(addToCart(productWithQuantity));
-    toast.success("Product added to cart!", { position: "top-center" });
+    toast.success("Product added to cart!", { position: "bottom-center" });
   };
 
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (isFavorite(product)) {
       dispatch(removeFavorite(product.id));
-      toast.info("Product removed from favorites!", { position: "top-center" });
+      toast.info("Product removed from favorites!", {
+        position: "bottom-center",
+      });
     } else {
       dispatch(addFavorite(product));
-      toast.success("Product added to favorites!", { position: "top-center" });
+      toast.success("Product added to favorites!", {
+        position: "bottom-center",
+      });
     }
   };
 

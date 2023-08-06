@@ -27,7 +27,7 @@ const StyledStar = styled(FaStar)`
   position: absolute;
   top: 10px;
   right: 10px;
-  color: ${(props) => (props.favorite ? "gold" : "gray")};
+  color: ${(props) => (props.favorite === "true" ? "gold" : "gray")};
   cursor: pointer;
   z-index: 2;
   font-size: 24px;
@@ -69,7 +69,9 @@ const FavoritesPage = () => {
   const handleRemoveFavorite = (e, product) => {
     e.stopPropagation();
     dispatch(removeFavorite(product.id));
-    toast.info("Product removed from favorites!", { position: "top-bottom" });
+    toast.info("Product removed from favorites!", {
+      position: "bottom-center",
+    });
   };
 
   if (favorites.length === 0) {
@@ -83,7 +85,7 @@ const FavoritesPage = () => {
           <CardContainer>
             <StyledStar
               onClick={(e) => handleRemoveFavorite(e, product)}
-              favorite={true}
+              favorite='true'
             />
             <StyledCard>
               <Card.Img variant='top' src={product.image} />
