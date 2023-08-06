@@ -42,7 +42,19 @@ const LanguageSelector = () => {
         <Dropdown.Item onClick={() => changeLanguage("es", "es")}>
           <FlagIconComponent code='es' size='lg' /> Spanish
         </Dropdown.Item>
-        {/* Other languages... */}
+        <Dropdown.Item onClick={() => changeLanguage("fr", "fr")}>
+          <FlagIconComponent code='fr' size='lg' /> French
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => changeLanguage("de", "de")}>
+          <FlagIconComponent code='de' size='lg' /> German
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => changeLanguage("he", "il")}>
+          <FlagIconComponent code='il' size='lg' /> Hebrew
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => changeLanguage("hu", "hu")}>
+          <FlagIconComponent code='hu' size='lg' /> Hungarian
+        </Dropdown.Item>
+        {/**/}
       </Dropdown.Menu>
     </Dropdown>
   );
