@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import image1 from "../images/product1.webp";
+import image2 from "../images/product2.jpg";
 
 const itemsSlice = createSlice({
   name: "items",
@@ -13,6 +15,10 @@ const itemsSlice = createSlice({
       unit: "250 g",
       origin: "HU",
       date_added: Date.parse("2023.08.11"),
+      images: [
+        { src: image1, alt: "Image 1" },
+        { src: image2, alt: "Image 2" },
+      ],
     },
     {
       id: 2,
@@ -24,6 +30,10 @@ const itemsSlice = createSlice({
       unit: "1 litre",
       origin: "IL",
       date_added: Date.parse("2022.07.11"),
+      images: [
+        { src: image1, alt: "Image 1" },
+        { src: image2, alt: "Image 2" },
+      ],
     },
     {
       id: 3,
@@ -35,6 +45,10 @@ const itemsSlice = createSlice({
       unit: "0.6 kg",
       origin: "US",
       date_added: Date.parse("2023.07.11"),
+      images: [
+        { src: image1, alt: "Image 1" },
+        { src: image2, alt: "Image 2" },
+      ],
     },
     {
       id: 4,
@@ -46,6 +60,10 @@ const itemsSlice = createSlice({
       unit: "2 kg",
       origin: "US",
       date_added: Date.parse("2020.07.11"),
+      images: [
+        { src: image1, alt: "Image 1" },
+        { src: image2, alt: "Image 2" },
+      ],
     },
     {
       id: 5,
@@ -57,6 +75,10 @@ const itemsSlice = createSlice({
       unit: "100 g",
       origin: "US",
       date_added: Date.parse("2023.02.11"),
+      images: [
+        { src: image1, alt: "Image 1" },
+        { src: image2, alt: "Image 2" },
+      ],
     },
   ],
   reducers: {
@@ -72,6 +94,11 @@ const itemsSlice = createSlice({
   },
 });
 
+export const getProduct = (state, id) => {
+  console.log(state);
+  console.log(id);
+  return state.items.find((item) => item.id === id);
+};
 export const { sortItems } = itemsSlice.actions;
 
 export default itemsSlice.reducer;
