@@ -1,5 +1,7 @@
 {
     "welcome": "Welcome to our website!",
-    "products": "Our Products"
+    "site_description": "Browse our site",
+    "products": "Our Products",
+    "categories": "Browse categories",
+    "new": "New arrivals"
 }
-  
