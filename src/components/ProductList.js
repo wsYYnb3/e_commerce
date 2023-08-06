@@ -1,51 +1,68 @@
 import React from "react";
 import { Col, Card, Button } from "react-bootstrap";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
+import { addFavorite, removeFavorite } from "../services/favoritesSlice";
+import { useNavigate } from "react-router-dom";
 
-const products = [
-  {
-    id: 1,
-    name: "Product 1",
-    image: "https://via.placeholder.com/150",
-    price: 100,
-    category: "Category 1",
-    manufacturer: "Lorem",
-    unit: "250 g",
-    origin: "HU",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    image: "https://via.placeholder.com/150",
-    price: 200,
-    category: "Category 2",
-    manufacturer: "Ipsum",
-    unit: "1 litre",
-    origin: "IL",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    image: "https://via.placeholder.com/150",
-    price: 300,
-    category: "Category 3",
-    manufacturer: "Sub",
-    unit: "0.6 kg",
-    origin: "US",
-  },
-];
+const CardContainer = styled.div`
+  position: relative;
+  margin-bottom: 4px;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+const StyledStar = styled(FaStar)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: ${(props) => (props.favorite ? "gold" : "gray")};
+  cursor: pointer;
+  z-index: 2;
+  font-size: 24px;
+
+  &:hover {
+    color: gold;
+  }
+`;
+
+const StyledFooter = styled(Card.Footer)`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  text-align: left;
+
+  .product-price {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
 
 const StyledCard = styled(Card)`
   &:hover {
     transform: scale(1.02);
   }
 `;
+const StyledLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
 
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+`;
 const StyledButton = styled(Button)`
   width: 80%;
   margin: 1rem auto 0;
@@ -71,20 +88,38 @@ const StyledButton = styled(Button)`
     margin-right: 0.5rem;
   }
 `;
-const StyledFooter = styled(Card.Footer)`
-  color: black; // or any color you want
-  display: flex;
-  justify-content: space-between;
-`;
+
 const ProductList = ({ selectedCategories, items }) => {
+  const favorites = useSelector((state) => state.favorites);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const handleAddToCart = (product) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (product) => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = (e, product) => {
+    e.stopPropagation();
     const productWithQuantity = { ...product, quantity: 1 };
     dispatch(addToCart(productWithQuantity));
     toast.success("Product added to cart!", { position: "top-right" });
   };
 
+  const toggleFavorite = (e, product) => {
+    e.stopPropagation();
+    if (isFavorite(product)) {
+      dispatch(removeFavorite(product.id));
+      toast.info("Product removed from favorites!", { position: "top-right" });
+    } else {
+      dispatch(addFavorite(product));
+      toast.success("Product added to favorites!", { position: "top-right" });
+    }
+  };
+
+  const isFavorite = (product) => {
+    return favorites.some((item) => item.id === product.id);
+  };
   const filteredProducts =
     selectedCategories.length > 0
       ? items.filter((product) => selectedCategories.includes(product.category))
@@ -96,32 +131,38 @@ const ProductList = ({ selectedCategories, items }) => {
 
   return filteredProducts.map((product) => (
     <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
-      <StyledCard>
-        <Link to={`/product/${product.id}`}>
+      <CardContainer onClick={() => handleCardClick(product)}>
+        <StyledStar
+          onClick={(e) => toggleFavorite(e, product)}
+          favorite={isFavorite(product) ? 1 : 0}
+        />
+        <StyledCard>
           <Card.Img variant='top' src={product.image} />
           <Card.Body>
-            <Card.Title>{product.name}</Card.Title>
-            <Card.Text></Card.Text>
+            <Card.Title>
+              <StyledLink to={`/product/${product.id}`}>
+                {product.name}
+              </StyledLink>
+            </Card.Title>
             <Card.Text>
-              {product.manufacturer}
-              <br />
-              {product.origin}
+              <StyledLink to={`/product/${product.id}`}>
+                {product.manufacturer}
+                <br />
+                {product.origin}
+              </StyledLink>
             </Card.Text>
           </Card.Body>
-        </Link>
-        <StyledFooter>
-          <b>{product.price}$</b>
-
-          {product.unit}
-        </StyledFooter>
-        <StyledButton
-          variant='primary'
-          size='sm'
-          onClick={(e) => handleAddToCart(product)}
-        >
-          <FaShoppingCart /> Add to Cart
-        </StyledButton>
-      </StyledCard>
+          <StyledFooter>
+            <div className='product-price'>
+              <b>{product.price}$</b>
+              <span>{product.unit}</span>
+            </div>
+            <StyledButton onClick={(e) => handleAddToCart(e, product)}>
+              <FaShoppingCart /> Add to Cart
+            </StyledButton>
+          </StyledFooter>
+        </StyledCard>
+      </CardContainer>
     </Col>
   ));
 };

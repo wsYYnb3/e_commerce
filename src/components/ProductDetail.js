@@ -1,6 +1,7 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addFavorite, removeFavorite } from "../services/favoritesSlice";
 import { useClerk } from "@clerk/clerk-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
@@ -8,6 +9,21 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaShoppingCart, FaStar } from "react-icons/fa";
+
+const StyledStar = styled(FaStar)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: ${(props) => (props.favorite ? "gold" : "gray")};
+  cursor: pointer;
+  z-index: 2;
+  font-size: 24px;
+
+  &:hover {
+    color: gold;
+  }
+`;
 
 const StyledCard = styled(Card)`
   margin-top: 20px;
@@ -20,17 +36,30 @@ const PriceContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const ProductDetail = ({ name, unit, origin, price }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
+
+const ProductDetail = ({ name, unit, origin, price, id }) => {
   const { user } = useClerk();
+  const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isFavorite = () => {
+    return favorites.some((item) => item.id === id);
+  };
 
   const handleFavoriteClick = () => {
     if (user) {
-      setIsFavorited(!isFavorited);
-      toast(isFavorited ? "Removed from favorites" : "Added to favorites", {
-        position: "top-center",
-      });
+      if (isFavorite()) {
+        dispatch(removeFavorite(id));
+        toast.info("Removed from favorites", {
+          position: "top-center",
+        });
+      } else {
+        dispatch(addFavorite({ id, name, unit, origin, price }));
+        toast.success("Added to favorites", {
+          position: "top-center",
+        });
+      }
     } else {
       navigate("/sign-up");
     }
@@ -50,9 +79,9 @@ const ProductDetail = ({ name, unit, origin, price }) => {
           <span>
             Price: <b>${price}</b>
           </span>
-          <FontAwesomeIcon
-            icon={isFavorited ? solidStar : regularStar}
-            onClick={handleFavoriteClick}
+          <StyledStar
+            onClick={(e) => handleFavoriteClick()}
+            favorite={isFavorite() ? 1 : 0}
           />
         </PriceContainer>
       </Card.Body>
