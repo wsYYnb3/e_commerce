@@ -17,10 +17,33 @@ import ProductDetail from "../components/ProductDetail";
 //import FarmerProfile from '../components/FarmerProfile';
 //import FarmInformation from '../components/FarmInformation';
 //import TechnicalInformation from '../components/TechnicalInformation';
+import TechnicalInfo from "../components/TechnicalInfo";
+import Description from "../components/Description";
 import ProductPurchase from "../components/ProductPurchase";
 import ImageGallery from "../components/ImageGallery";
 import image1 from "../images/product1.webp";
 import image2 from "../images/product2.jpg";
+const StyledCol = styled(Col)`
+  margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+`;
+
+const StyledImageCol = styled(Col)`
+  margin-bottom: 30px;
+`;
+
+const ProductPageContainer = styled(Container)`
+  padding: 20px;
+`;
+
+const DescriptionTechnicalInfoContainer = styled.div`
+  @media (min-width: 768px) {
+    margin-left: 30px;
+  }
+`;
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
@@ -73,7 +96,8 @@ const ProductPage = () => {
       setTotalPrice(quantity * product.price);
     }
   }, [quantity, product]);
-
+  const description =
+    "Nec ultrices dui sapien eget mi proin. Eu lobortis elementum nibh tellus molestie nunc non blandit massa. Bibendum arcu vitae elementum curabitur vitae nunc. Mattis enim ut tellus elementum sagittis vitae et leo duis. Ac felis donec et odio pellentesque. Amet commodo nulla facilisi nullam vehicula. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Amet consectetur adipiscing elit pellentesque habitant morbi tristique.";
   const increaseQuantity = () =>
     setQuantity((prevQuantity) => prevQuantity + 1);
 
@@ -83,15 +107,29 @@ const ProductPage = () => {
   if (!product) {
     return <div>Loading...</div>;
   }
+  const technicalData = [
+    {
+      value:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut morbi tincidunt augue interdum velit euismod in pellentesque. Donec enim diam vulputate ut pharetra sit amet aliquam id.",
+    },
+    {
+      value:
+        "Ullamcorper morbi tincidunt ornare massa. Nibh sed pulvinar proin gravida. Maecenas pharetra convallis posuere morbi leo urna molestie at. Elit scelerisque mauris pellentesque pulvinar pellentesque. ",
+    },
+    {
+      value:
+        "Ornare arcu dui vivamus arcu felis bibendum. Enim nunc faucibus a pellentesque sit amet porttitor eget. ",
+    },
+  ];
 
   return (
     <animated.div style={fade}>
-      <Container>
+      <ProductPageContainer>
         <Row>
-          <Col md={8}>
+          <StyledImageCol md={6}>
             <ImageGallery images={product.images} />
-          </Col>
-          <Col md={4}>
+          </StyledImageCol>
+          <StyledCol md={6}>
             <ProductDetail {...product} />
             <ProductPurchase
               product={product}
@@ -100,9 +138,15 @@ const ProductPage = () => {
               increaseQuantity={increaseQuantity}
               totalPrice={totalPrice}
             />
-          </Col>
+          </StyledCol>
         </Row>
-      </Container>
+        <DescriptionTechnicalInfoContainer>
+          <Col md={12}>
+            <Description description={description} />
+            <TechnicalInfo data={technicalData} />;
+          </Col>
+        </DescriptionTechnicalInfoContainer>
+      </ProductPageContainer>
     </animated.div>
   );
 };

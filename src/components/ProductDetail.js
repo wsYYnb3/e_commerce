@@ -69,16 +69,12 @@ const ProductDetail = ({ name, unit, origin, price, id }) => {
     <StyledCard>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
-        <Card.Text>
-          {unit}
-          <br />
-          Origin: {origin}
-        </Card.Text>
-        <Card.Text></Card.Text>
+        <Card.Text>Origin: {origin}</Card.Text>
         <PriceContainer>
-          <span>
-            Price: <b>${price}</b>
-          </span>
+          Price:{" "}
+          <b>
+            ${price}/{unit}
+          </b>
           <StyledStar
             onClick={(e) => handleFavoriteClick()}
             favorite={isFavorite() ? 1 : 0}
