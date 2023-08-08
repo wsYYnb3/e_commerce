@@ -23,6 +23,7 @@ import ProductPurchase from "../components/ProductPurchase";
 import ImageGallery from "../components/ImageGallery";
 import image1 from "../images/product1.webp";
 import image2 from "../images/product2.jpg";
+import Keywords from "../components/Keywords";
 const StyledCol = styled(Col)`
   margin-bottom: 30px;
 
@@ -83,6 +84,13 @@ const ProductPage = () => {
           altitude: "Altitude 1",
           team: "Team 1",
         },
+        keywords: [
+          "Organic",
+          "US Origin",
+          "Fresh",
+          "High Quality",
+          "Sustainable",
+        ],
       };
 
       setProduct(fetchedProduct);
@@ -128,6 +136,7 @@ const ProductPage = () => {
         <Row>
           <StyledImageCol md={6}>
             <ImageGallery images={product.images} />
+            <Keywords keywords={product.keywords} />
           </StyledImageCol>
           <StyledCol md={6}>
             <ProductDetail {...product} />
