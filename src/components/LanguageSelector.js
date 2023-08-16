@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
 
-// Wrap ReactCountryFlag with a forwardRef to cater to ref prop
 const FlagWithRef = React.forwardRef((props, ref) => (
   <div ref={ref}>
     <ReactCountryFlag {...props} />
