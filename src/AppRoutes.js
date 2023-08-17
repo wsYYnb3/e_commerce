@@ -128,75 +128,7 @@ const WithLanguageRoutes = () => {
     </>
   );
 };
-/*
-export function ClerkProviderWithRoutes() {
-  const navigate = useNavigate();
-  return (
-    <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
-      <Header />
-      <Container>
-        <ToastContainer autoClose={1500} />
-        <Routes>
-          <Route path='/' element={<Navigate to='/en' />} />
 
-          <Route path='/:language/*'>
-            <Route index element={<HomePage />} />
-            <Route path='store' element={<StorePage />} />
-            <Route path='mostsold' element={<MostSoldPage />} />
-            <Route path='search' element={<SearchPage />} />
-            <Route path='cart' element={<CartPage />} />
-            <Route path='checkout' element={<CheckoutPage />} />
-            <Route path='product/:productId' element={<ProductPage />} />
-            <Route path='support' element={<SupportPage />} />
-            <Route path='newest' element={<NewestPage />} />
-            <Route path='sign-in/*' element={<CenteredSignIn />} />
-            <Route path='sign-up/*' element={<CenteredSignUp />} />
-            <Route
-              path='favorites'
-              element={
-                <>
-                  <SignedIn>
-                    <FavoritesPage />
-                  </SignedIn>
-                  <SignedOut>
-                    <RedirectToSignIn />
-                  </SignedOut>
-                </>
-              }
-            />
-            <Route
-              path='orders'
-              element={
-                <>
-                  <SignedIn>
-                    <OrdersPage />
-                  </SignedIn>
-                  <SignedOut>
-                    <RedirectToSignIn />
-                  </SignedOut>
-                </>
-              }
-            />
-            <Route
-              path='user-profile/*'
-              element={
-                <>
-                  <SignedIn>
-                    <UserProfile routing='path' path='user-profile' />
-                  </SignedIn>
-                  <SignedOut>
-                    <RedirectToSignIn />
-                  </SignedOut>
-                </>
-              }
-            />
-            <Route path='*' element={"404 Page not found"} />
-          </Route>
-        </Routes>
-      </Container>
-    </ClerkProvider>
-  );
-}*/
 const CenteredSignIn = () => {
   const { language } = useParams();
   return (
