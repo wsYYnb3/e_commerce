@@ -43,6 +43,7 @@ import { useParams } from "react-router-dom";
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
+const ALLOWED_LANGUAGES = ["en", "es", "il", "fr", "de", "hu"];
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
@@ -59,6 +60,13 @@ export function ClerkProviderWithRoutes() {
   );
 }
 const WithLanguageRoutes = () => {
+  const { language } = useParams();
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (!ALLOWED_LANGUAGES.includes(language)) {
+      navigate(`/en`);
+    }
+  }, [language, navigate]);
   return (
     <>
       <Header />
