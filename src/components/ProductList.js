@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
 import { addFavorite, removeFavorite } from "../services/favoritesSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CardContainer = styled.div`
   position: relative;
@@ -94,9 +94,10 @@ const ProductList = ({ selectedCategories, items }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { language } = useParams();
 
   const handleCardClick = (product) => {
-    navigate(`/product/${product.id}`);
+    navigate(`/${language}/product/${product.id}`);
   };
 
   const handleAddToCart = (e, product) => {
@@ -144,12 +145,12 @@ const ProductList = ({ selectedCategories, items }) => {
           <Card.Img variant='top' src={product.image} />
           <Card.Body>
             <Card.Title>
-              <StyledLink to={`/product/${product.id}`}>
+              <StyledLink to={`${language}/product/${product.id}`}>
                 {product.name}
               </StyledLink>
             </Card.Title>
             <Card.Text>
-              <StyledLink to={`/product/${product.id}`}>
+              <StyledLink to={`${language}/product/${product.id}`}>
                 {product.manufacturer}
                 <br />
                 {product.origin}
