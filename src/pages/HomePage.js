@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Card, Row, Col, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faSeedling } from "@fortawesome/free-solid-svg-icons";
@@ -51,11 +51,24 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+const StyledBanner = styled(Link)`
+  display: block;
+  max-width: 100%;
+  margin: 5px auto;
+  box-shadow: 0px 0px 10px #ccc;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+`;
 
 const HomePage = () => {
   const { t } = useTranslation();
   const products = useSelector((state) => state.items);
-
+  const { language = "en" } = useParams();
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -74,7 +87,7 @@ const HomePage = () => {
       items: 1,
     },
   };
-
+  console.log(useParams());
   return (
     <animated.div style={{ opacity: 1 }}>
       <Container>
@@ -82,12 +95,12 @@ const HomePage = () => {
         <section className='welcome-section text-center'>
           <h1>{t("welcome")}</h1>
           <p>{t()}</p>
-          <Link to='/store'>
-            <Button variant='primary'>
-              Get started with your YieldDeal journey
-              <FontAwesomeIcon icon={faArrowRight} />
-            </Button>
-          </Link>
+          <StyledBanner to={`/${language}/store`}>
+            <img
+              src='https://placehold.it/1000x200'
+              alt='Start your YieldDeal journey'
+            />
+          </StyledBanner>
         </section>
         <section className='category-section py-5'>
           <h2 className='text-center'>Browse Categories</h2>
@@ -95,7 +108,7 @@ const HomePage = () => {
             {" "}
             <Col sm={6} md={4} lg={3}>
               <StyledCard>
-                <StyledLink to='/category/vegetables'>
+                <StyledLink to={`/${language}/vegetables`}>
                   <div>
                     <FontAwesomeIcon
                       icon={faSeedling}

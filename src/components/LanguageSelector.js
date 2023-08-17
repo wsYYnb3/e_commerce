@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
 
@@ -17,11 +18,13 @@ const StyledReactCountryFlag = styled(FlagWithRef)`
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const [selectedFlag, setSelectedFlag] = useState("US");
 
   const changeLanguage = (language, flag) => {
     i18n.changeLanguage(language);
     setSelectedFlag(flag);
+    navigate(`/${language}`);
   };
 
   return (

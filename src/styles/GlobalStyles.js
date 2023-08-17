@@ -1,32 +1,37 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #f5f5f5;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
+body {
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
-  .navbar {
-    background-color: #1d3931;
-  }
+/* Reset Bootstrap Navbar's inherent padding */
+.navbar {
+  background-color: #1d3931;
+  padding-left: 0; 
+  padding-right: 0; 
+  width: 100%;
+  margin: 0;
+}
 
-  .navbar-brand, .navbar-nav .nav-link {
-    color: #fff;
-  }
+.navbar-brand, .navbar-nav .nav-link {
+  color: #fff;
+}
 
-  .navbar-light .navbar-nav .nav-link {
-    color: #fff;
-  }
+.navbar-light .navbar-nav .nav-link {
+  color: #fff;
+}
 
-  .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
-    color: #b3b3b3;
-  }
-  a, a:hover, a:focus {
-    text-decoration: none;
-  }
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
+  color: #b3b3b3;
+}
+a, a:hover, a:focus {
+  text-decoration: none;
+}
 
   .card {
     background-color: #fff;

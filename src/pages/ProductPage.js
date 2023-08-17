@@ -57,6 +57,7 @@ const ProductPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const fetchedProduct = {
+        name_key: "Product 1",
         name: "Product 1",
         unit: "1kg",
         origin: "US",
@@ -71,7 +72,7 @@ const ProductPage = () => {
           { src: image1, alt: "Image 1" },
           { src: image2, alt: "Image 2" },
         ],
-        farmer: {
+        vendor: {
           name: "Farmer 1",
           bio: "Bio 1",
         },
@@ -91,6 +92,8 @@ const ProductPage = () => {
           "High Quality",
           "Sustainable",
         ],
+        description_key: "product1_description",
+        slug_key: "product1",
       };
 
       setProduct(fetchedProduct);
@@ -104,6 +107,7 @@ const ProductPage = () => {
       setTotalPrice(quantity * product.price);
     }
   }, [quantity, product]);
+
   const description =
     "Nec ultrices dui sapien eget mi proin. Eu lobortis elementum nibh tellus molestie nunc non blandit massa. Bibendum arcu vitae elementum curabitur vitae nunc. Mattis enim ut tellus elementum sagittis vitae et leo duis. Ac felis donec et odio pellentesque. Amet commodo nulla facilisi nullam vehicula. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Amet consectetur adipiscing elit pellentesque habitant morbi tristique.";
   const increaseQuantity = () =>
