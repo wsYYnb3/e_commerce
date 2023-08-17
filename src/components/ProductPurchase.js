@@ -63,7 +63,6 @@ const ProductPurchase = ({ product }) => {
           Total: ${totalPrice} <FaShoppingCart />
         </StyledButton>
       </QuantityWrapper>
-      <ToastContainer />
     </StyledContainer>
   );
 };
