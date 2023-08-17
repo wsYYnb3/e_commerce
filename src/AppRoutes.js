@@ -43,7 +43,7 @@ import { useParams } from "react-router-dom";
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
-const ALLOWED_LANGUAGES = ["en", "es", "il", "fr", "de", "hu"];
+const ALLOWED_LANGUAGES = ["en", "es", "he", "fr", "de", "hu"];
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
