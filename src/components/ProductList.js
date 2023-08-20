@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
 import { addFavorite, removeFavorite } from "../services/favoritesSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import { useClerk } from "@clerk/clerk-react";
 
 const CardContainer = styled.div`
   position: relative;
@@ -95,6 +96,7 @@ const ProductList = ({ selectedCategories, items }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
+  const { user } = useClerk;
 
   const handleCardClick = (product) => {
     navigate(`/${language}/product/${product.id}`);
@@ -109,16 +111,20 @@ const ProductList = ({ selectedCategories, items }) => {
 
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
-    if (isFavorite(product)) {
-      dispatch(removeFavorite(product.id));
-      toast.info("Product removed from favorites!", {
-        position: "bottom-center",
-      });
+    if (user) {
+      if (isFavorite(product)) {
+        dispatch(removeFavorite(product.id));
+        toast.info("Product removed from favorites!", {
+          position: "bottom-center",
+        });
+      } else {
+        dispatch(addFavorite(product));
+        toast.success("Product added to favorites!", {
+          position: "bottom-center",
+        });
+      }
     } else {
-      dispatch(addFavorite(product));
-      toast.success("Product added to favorites!", {
-        position: "bottom-center",
-      });
+      navigate(`/${language}/sign-up`);
     }
   };
 

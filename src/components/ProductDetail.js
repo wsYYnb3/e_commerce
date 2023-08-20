@@ -6,7 +6,7 @@ import { useClerk } from "@clerk/clerk-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
@@ -42,6 +42,7 @@ const ProductDetail = ({ name, unit, origin, price, id }) => {
   const favorites = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { language } = useParams();
 
   const isFavorite = () => {
     return favorites.some((item) => item.id === id);
@@ -61,7 +62,7 @@ const ProductDetail = ({ name, unit, origin, price, id }) => {
         });
       }
     } else {
-      navigate("/sign-up");
+      navigate(`/${language}/sign-up`);
     }
   };
 
