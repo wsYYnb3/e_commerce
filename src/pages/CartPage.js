@@ -14,7 +14,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, adjustQuantity } from "../services/cartSlice";
 
@@ -37,7 +37,7 @@ const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { language } = useParams();
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id));
     toast.error("Product removed from cart", {
@@ -48,7 +48,6 @@ const CartPage = () => {
   const handleAdjustQuantity = (id, qty) => {
     dispatch(adjustQuantity({ id, quantity: qty }));
   };
-
   return (
     <StyledWrapper>
       <Container>
@@ -121,7 +120,7 @@ const CartPage = () => {
                     type='button'
                     className='btn-block'
                     disabled={cart.length === 0}
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => navigate(`/${language}/checkout`)}
                   >
                     Proceed To Checkout
                   </Button>

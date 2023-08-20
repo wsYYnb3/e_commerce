@@ -87,7 +87,6 @@ const HomePage = () => {
       items: 1,
     },
   };
-  console.log(useParams());
   return (
     <animated.div style={{ opacity: 1 }}>
       <Container>

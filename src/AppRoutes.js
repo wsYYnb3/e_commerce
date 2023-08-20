@@ -64,7 +64,7 @@ const WithLanguageRoutes = () => {
   const navigate = useNavigate();
   React.useEffect(() => {
     if (!ALLOWED_LANGUAGES.includes(language)) {
-      navigate(`/en/`);
+      navigate(`/en`);
     }
   }, [language, navigate]);
   return (

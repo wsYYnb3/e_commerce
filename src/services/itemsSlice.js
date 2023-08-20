@@ -95,8 +95,6 @@ const itemsSlice = createSlice({
 });
 
 export const getProduct = (state, id) => {
-  console.log(state);
-  console.log(id);
   return state.items.find((item) => item.id === id);
 };
 export const { sortItems } = itemsSlice.actions;
