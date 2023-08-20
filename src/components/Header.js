@@ -57,7 +57,7 @@ const Header = () => {
   return (
     <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2'>
       <LanguageSelector />
-      <Navbar.Brand as={Link} to={`/${language}/`} className='ms-4'>
+      <Navbar.Brand as={Link} to={`/${language}`} className='ms-4'>
         <FontAwesomeIcon icon={faLeaf} /> YieldDeal
       </Navbar.Brand>
       <Nav className='me-auto'>

@@ -52,7 +52,7 @@ export function ClerkProviderWithRoutes() {
   return (
     <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
       <Routes>
-        <Route path='/' element={<Navigate to='/en' />} />
+        <Route path='/' element={<Navigate to='/en/' />} />
         <Route path='/:language/*' element={<WithLanguageRoutes />} />
         <Route path='*' element={"404 Page not found"} />
       </Routes>
@@ -64,7 +64,7 @@ const WithLanguageRoutes = () => {
   const navigate = useNavigate();
   React.useEffect(() => {
     if (!ALLOWED_LANGUAGES.includes(language)) {
-      navigate(`/en`);
+      navigate(`/en/`);
     }
   }, [language, navigate]);
   return (
