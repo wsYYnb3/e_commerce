@@ -9,4 +9,5 @@ export default configureStore({
     items: itemsReducer,
     favorites: favoritesReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

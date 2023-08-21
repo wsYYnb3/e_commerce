@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { Button, Card, Row, Col, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,8 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
+import { fetchNewestProducts } from "../services/itemsSlice";
+import axios from "axios";
 const ProductItem = styled.div`
   min-height: 350px; // Adjust this to your liking
   width: 300px;
@@ -64,11 +65,30 @@ const StyledBanner = styled(Link)`
     border-radius: 10px;
   }
 `;
-
+const backendServer = "http://localhost:5000";
 const HomePage = () => {
   const { t } = useTranslation();
+  const [bannerImage, setBannerImage] = useState("");
   const products = useSelector((state) => state.items);
+  const dispatch = useDispatch();
   const { language = "en" } = useParams();
+  useEffect(() => {
+    axios
+      .get(backendServer)
+      .then((response) => {
+        if (response.data && response.data.imageUrl) {
+          setBannerImage(`${backendServer}${response.data.imageUrl}`);
+          console.log(response.data.imageUrl);
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the banner data:", error);
+      });
+
+    dispatch(fetchNewestProducts(`${language}`));
+  }, [dispatch, language]);
+  console.log(products);
+  console.log(dispatch);
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -87,6 +107,7 @@ const HomePage = () => {
       items: 1,
     },
   };
+
   return (
     <animated.div style={{ opacity: 1 }}>
       <Container>
@@ -95,10 +116,7 @@ const HomePage = () => {
           <h1>{t("welcome")}</h1>
           <p>{t()}</p>
           <StyledBanner to={`/${language}/store`}>
-            <img
-              src='https://placehold.it/1000x200'
-              alt='Start your YieldDeal journey'
-            />
+            <img src={bannerImage} alt='Start your YieldDeal journey' />
           </StyledBanner>
         </section>
         <section className='category-section py-5'>
@@ -126,15 +144,17 @@ const HomePage = () => {
         <section className='new-products-section text-center'>
           <h2 className='text-center'>New Arrivals</h2>
           <Carousel responsive={responsive} swipeable>
-            {products.map((product, index) => (
-              <ProductItem key={index}>
-                <img src={product.image} alt={product.name} />
-                <p>
-                  {product.name}
-                  <br /> ${product.price}
-                </p>
-              </ProductItem>
-            ))}
+            {products &&
+              products.items &&
+              products.items.map((product, index) => (
+                <ProductItem key={index}>
+                  <img src={product.image} alt={product.name} />
+                  <p>
+                    {product.name}
+                    <br /> ${product.price}
+                  </p>
+                </ProductItem>
+              ))}
           </Carousel>
         </section>
       </Container>

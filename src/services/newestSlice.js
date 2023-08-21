@@ -6,21 +6,8 @@ import axios from "axios";
 export const fetchProducts = createAsyncThunk(
   "items/fetchProducts",
   async (languageCode) => {
-    const response = await axios.get(
-      `http://localhost:5000/${languageCode}/products`
-    );
-    console.log(response);
-
-    return response.data.products;
-  }
-);
-
-export const fetchNewestProducts = createAsyncThunk(
-  "items/fetchNewestProducts",
-  async (languageCode) => {
     const response = await axios.get(`http://localhost:5000/${languageCode}`);
-    console.log(response);
-    return response.data.newestProducts;
+    return response.data.products;
   }
 );
 
@@ -124,31 +111,6 @@ const itemsSlice = createSlice({
         return 0;
       });
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.items = action.payload;
-      })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
-      .addCase(fetchNewestProducts.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchNewestProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.items = action.payload;
-      })
-      .addCase(fetchNewestProducts.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
   },
 });
 

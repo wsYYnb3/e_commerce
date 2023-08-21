@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Card, Button } from "react-bootstrap";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { addToCart, setCart } from "../services/cartSlice";
 import { addFavorite, removeFavorite } from "../services/favoritesSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useClerk } from "@clerk/clerk-react";
-
+import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
 const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;
@@ -98,6 +98,9 @@ const ProductList = ({ selectedCategories, items }) => {
   const { language } = useParams();
   const { user } = useClerk;
 
+  useEffect(() => {
+    dispatch(fetchProducts(language));
+  }, [language, dispatch]);
   const handleCardClick = (product) => {
     navigate(`/${language}/product/${product.id}`);
   };
