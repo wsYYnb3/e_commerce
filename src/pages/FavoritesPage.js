@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Card } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -65,6 +65,7 @@ const StyledLink = styled(Link)`
 const FavoritesPage = () => {
   const favorites = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
+  const { language } = useParams();
 
   const handleRemoveFavorite = (e, product) => {
     e.stopPropagation();
@@ -79,7 +80,7 @@ const FavoritesPage = () => {
   }
 
   return (
-    <Row>
+    <Row className='p-5'>
       {favorites.map((product) => (
         <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
           <CardContainer>
@@ -87,23 +88,19 @@ const FavoritesPage = () => {
               onClick={(e) => handleRemoveFavorite(e, product)}
               favorite='true'
             />
-            <StyledCard>
-              <Card.Img variant='top' src={product.image} />
-              <Card.Body>
-                <Card.Title>
-                  <StyledLink to={`/product/${product.id}`}>
-                    {product.name}
-                  </StyledLink>
-                </Card.Title>
-                <Card.Text>
-                  <StyledLink to={`/product/${product.id}`}>
+            <StyledLink to={`/${language}/product/${product.id}`}>
+              <StyledCard>
+                <Card.Img variant='top' src={product.image} />
+                <Card.Body>
+                  <Card.Title>{product.name}</Card.Title>
+                  <Card.Text>
                     {product.manufacturer}
                     <br />
                     {product.origin}
-                  </StyledLink>
-                </Card.Text>
-              </Card.Body>
-            </StyledCard>
+                  </Card.Text>
+                </Card.Body>
+              </StyledCard>
+            </StyledLink>
           </CardContainer>
         </Col>
       ))}

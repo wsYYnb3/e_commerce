@@ -44,9 +44,7 @@ const StorePage = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(language))
-      .then((response) => {
-        console.log("Fetched products:", response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error("Failed to fetch products:", error);
       });

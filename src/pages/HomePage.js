@@ -78,7 +78,6 @@ const HomePage = () => {
       .then((response) => {
         if (response.data && response.data.imageUrl) {
           setBannerImage(`${backendServer}${response.data.imageUrl}`);
-          console.log(response.data.imageUrl);
         }
       })
       .catch((error) => {
@@ -87,8 +86,7 @@ const HomePage = () => {
 
     dispatch(fetchNewestProducts(`${language}`));
   }, [dispatch, language]);
-  console.log(products);
-  console.log(dispatch);
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
