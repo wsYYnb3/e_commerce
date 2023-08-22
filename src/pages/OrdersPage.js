@@ -1,5 +1,13 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import {
+  FaBox,
+  FaCalendarAlt,
+  FaShoppingCart,
+  FaDollarSign,
+  FaTruck,
+  FaCreditCard,
+} from "react-icons/fa";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
@@ -12,6 +20,18 @@ const HeaderContainer = styled.div`
 const OrderCard = styled(Card)`
   margin: 15px 0;
   padding: 15px;
+`;
+
+const IconText = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
 `;
 
 const OrdersPage = () => {
@@ -27,14 +47,21 @@ const OrdersPage = () => {
         { name: "Item 1", quantity: 2 },
         { name: "Item 2", quantity: 1 },
       ],
+      status: "Delivered",
     },
     {
       orderNumber: "123457",
       orderDate: "08/05/2023",
       total: "$75",
       items: [{ name: "Item 3", quantity: 1 }],
+      status: "Paid",
     },
   ];
+  const getStatusIcon = (status) => {
+    if (status === "Delivered") return <FaTruck />;
+    if (status === "Paid") return <FaCreditCard />;
+    return null;
+  };
 
   return (
     <animated.div style={fade}>
@@ -46,11 +73,20 @@ const OrdersPage = () => {
           <OrderCard key={index}>
             <Row>
               <Col md={4}>
-                <h5>Order Number: {order.orderNumber}</h5>
-                <p>Order Date: {order.orderDate}</p>
+                <IconText>
+                  <FaBox />
+                  <h5>Order: {order.orderNumber}</h5>
+                </IconText>
+                <IconText>
+                  <FaCalendarAlt />
+                  <p>Date: {order.orderDate}</p>
+                </IconText>
               </Col>
               <Col md={4}>
-                <h6>Items:</h6>
+                <IconText>
+                  <FaShoppingCart />
+                  <h6>Items:</h6>
+                </IconText>
                 <ul>
                   {order.items.map((item, idx) => (
                     <li key={idx}>
@@ -60,7 +96,14 @@ const OrdersPage = () => {
                 </ul>
               </Col>
               <Col md={4}>
-                <h5>Total: {order.total}</h5>
+                <IconText>
+                  <FaDollarSign />
+                  <h5>Total: {order.total}</h5>
+                </IconText>
+                <IconText>
+                  {getStatusIcon(order.status)}
+                  <h5>Status: {order.status}</h5>
+                </IconText>
               </Col>
             </Row>
           </OrderCard>
