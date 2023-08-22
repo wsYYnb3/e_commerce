@@ -9,8 +9,6 @@ export const fetchProducts = createAsyncThunk(
     const response = await axios.get(
       `http://localhost:5000/${languageCode}/products`
     );
-    console.log(response);
-
     return response.data.products;
   }
 );
@@ -19,7 +17,6 @@ export const fetchNewestProducts = createAsyncThunk(
   "items/fetchNewestProducts",
   async (languageCode) => {
     const response = await axios.get(`http://localhost:5000/${languageCode}`);
-    console.log(response);
     return response.data.newestProducts;
   }
 );

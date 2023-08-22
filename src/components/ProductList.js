@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
 import { addFavorite, removeFavorite } from "../services/favoritesSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { useClerk } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
 const CardContainer = styled.div`
   position: relative;
@@ -96,7 +96,7 @@ const ProductList = ({ selectedCategories, items }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
-  const { user } = useClerk;
+  const { user } = useUser();
 
   /*useEffect(() => {
     dispatch(fetchProducts(language))
@@ -117,7 +117,6 @@ const ProductList = ({ selectedCategories, items }) => {
     dispatch(addToCart(productWithQuantity));
     toast.success("Product added to cart!", { position: "bottom-center" });
   };
-
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (user) {
@@ -147,8 +146,6 @@ const ProductList = ({ selectedCategories, items }) => {
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }
-  console.log("Filtered Products:", filteredProducts);
-  console.log(typeof items, items);
   return filteredProducts.map((product) => (
     <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
       <CardContainer onClick={() => handleCardClick(product)}>
