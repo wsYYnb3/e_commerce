@@ -98,9 +98,15 @@ const ProductList = ({ selectedCategories, items }) => {
   const { language } = useParams();
   const { user } = useClerk;
 
-  useEffect(() => {
-    dispatch(fetchProducts(language));
-  }, [language, dispatch]);
+  /*useEffect(() => {
+    dispatch(fetchProducts(language))
+      .then((response) => {
+        console.log("Fetched products components:", response);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch products components:", error);
+      });
+  }, [language, dispatch]);*/
   const handleCardClick = (product) => {
     navigate(`/${language}/product/${product.id}`);
   };
@@ -130,7 +136,6 @@ const ProductList = ({ selectedCategories, items }) => {
       navigate(`/${language}/sign-up`);
     }
   };
-
   const isFavorite = (product) => {
     return favorites.some((item) => item.id === product.id);
   };
@@ -142,7 +147,8 @@ const ProductList = ({ selectedCategories, items }) => {
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }
-
+  console.log("Filtered Products:", filteredProducts);
+  console.log(typeof items, items);
   return filteredProducts.map((product) => (
     <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
       <CardContainer onClick={() => handleCardClick(product)}>

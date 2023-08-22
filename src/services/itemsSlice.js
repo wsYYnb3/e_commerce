@@ -118,7 +118,7 @@ const itemsSlice = createSlice({
     sortItems: (state, action) => {
       const property = action.payload.property;
       const order = action.payload.order;
-      state.sort((a, b) => {
+      state.items.sort((a, b) => {
         if (a[property] < b[property]) return order === "asc" ? -1 : 1;
         if (a[property] > b[property]) return order === "asc" ? 1 : -1;
         return 0;

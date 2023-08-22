@@ -147,13 +147,39 @@ const HomePage = () => {
             {products &&
               products.items &&
               products.items.map((product, index) => (
-                <ProductItem key={index}>
-                  <img src={product.image} alt={product.name} />
-                  <p>
-                    {product.name}
-                    <br /> ${product.price}
-                  </p>
-                </ProductItem>
+                <StyledLink
+                  key={index}
+                  to={`/${language}/product/${product.id}`}
+                >
+                  <ProductItem>
+                    <img src={product.image} alt={product.name} />
+                    <p>
+                      {product.name}
+                      <br /> ${product.price}
+                    </p>
+                  </ProductItem>
+                </StyledLink>
+              ))}
+          </Carousel>
+        </section>
+        <section className='new-products-section text-center mt-4'>
+          <h2 className='text-center'>Featured Products</h2>
+          <Carousel responsive={responsive} swipeable>
+            {products &&
+              products.items &&
+              products.items.map((product, index) => (
+                <StyledLink
+                  key={index}
+                  to={`/${language}/product/${product.id}`}
+                >
+                  <ProductItem>
+                    <img src={product.image} alt={product.name} />
+                    <p>
+                      {product.name}
+                      <br /> ${product.price}
+                    </p>
+                  </ProductItem>
+                </StyledLink>
               ))}
           </Carousel>
         </section>

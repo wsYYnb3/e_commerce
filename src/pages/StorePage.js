@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Dropdown, Form } from "react-bootstrap";
 import { FaSortAmountDownAlt, FaBars } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
@@ -14,6 +14,8 @@ import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { sortItems } from "../services/itemsSlice";
+import { fetchProducts } from "../services/itemsSlice";
+import { Link, useParams } from "react-router-dom";
 
 const categories = [
   "Category 1",
@@ -35,10 +37,20 @@ const Actions = styled.div`
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
-  const items = useSelector((state) => state.items);
+  const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
+  const { language } = useParams();
+
+  useEffect(() => {
+    dispatch(fetchProducts(language))
+      .then((response) => {
+        console.log("Fetched products:", response);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch products:", error);
+      });
+  }, [language, dispatch]);
 
   const handleSortSelect = (sortKey) => {
     let sortOrder = "asc";
@@ -94,7 +106,7 @@ const StorePage = () => {
             <ProductRow>
               <ProductList
                 selectedCategories={selectedCategories}
-                items={items}
+                items={products.items}
               />
             </ProductRow>
           </Col>
