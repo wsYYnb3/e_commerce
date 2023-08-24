@@ -138,7 +138,7 @@ const ProductPage = () => {
     <animated.div style={fade}>
       <ProductPageContainer>
         <Row>
-          <StyledImageCol md={6}>
+          <StyledImageCol md={5} className='mx-5'>
             <ImageGallery images={product.images} />
             <Keywords keywords={product.keywords} />
           </StyledImageCol>
