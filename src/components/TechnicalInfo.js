@@ -1,6 +1,8 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -10,14 +12,19 @@ const InfoContainer = styled.div`
 `;
 
 const TechnicalInfo = ({ data }) => {
+  const { t } = useTranslation();
+  const { language } = useParams();
+  if (!data) {
+    return null;
+  }
   return (
     <div>
-      <h4>Technical Information</h4>
-      <Row>
-        {data.map((item, index) => (
-          <Col md={6} key={index}>
+      <Row className='mt-2'>
+        <h4>Technical Information</h4>
+        {data.map((item) => (
+          <Col md={6} key={item.id}>
             <ul>
-              <li>{item.value}</li>
+              <li>{t(item.info_key)}</li>
             </ul>
           </Col>
         ))}

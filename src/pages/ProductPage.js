@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import {
   Card,
   Button,
@@ -17,6 +17,12 @@ import ProductDetail from "../components/ProductDetail";
 //import FarmerProfile from '../components/FarmerProfile';
 //import FarmInformation from '../components/FarmInformation';
 //import TechnicalInformation from '../components/TechnicalInformation';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProductById,
+  fetchProducts,
+  getProduct,
+} from "../services/itemsSlice";
 import TechnicalInfo from "../components/TechnicalInfo";
 import Description from "../components/Description";
 import ProductPurchase from "../components/ProductPurchase";
@@ -24,6 +30,12 @@ import ImageGallery from "../components/ImageGallery";
 import image1 from "../images/product1.webp";
 import image2 from "../images/product2.jpg";
 import Keywords from "../components/Keywords";
+import { useTranslation } from "react-i18next";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
 const StyledCol = styled(Col)`
   margin-bottom: 30px;
 
@@ -34,6 +46,10 @@ const StyledCol = styled(Col)`
 
 const StyledImageCol = styled(Col)`
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const ProductPageContainer = styled(Container)`
@@ -47,116 +63,70 @@ const DescriptionTechnicalInfoContainer = styled.div`
 `;
 
 const ProductPage = () => {
-  const [product, setProduct] = useState(null);
-  const { id } = useParams();
+  const { productId: id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(null);
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
+  const { t } = useTranslation();
+  const product = useSelector((state) => state.items.selectedProduct);
+
+  const dispatch = useDispatch();
+  const { language } = useParams();
+
   useEffect(() => {
-    const fetchProduct = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const fetchedProduct = {
-        name_key: "Product 1",
-        name: "Product 1",
-        unit: "1kg",
-        origin: "US",
-        quantity: 10,
-        deliveryDate: "2023-08-02",
-        price: 100,
-        specifications: {
-          boxContents: "Box 1",
-          variety: "Variety 1",
-        },
-        images: [
-          { src: image1, alt: "Image 1" },
-          { src: image2, alt: "Image 2" },
-        ],
-        vendor: {
-          name: "Farmer 1",
-          bio: "Bio 1",
-        },
-        farm: {
-          name: "Farm 1",
-          description: "Description 1",
-        },
-        technicalInfo: {
-          address: "Address 1",
-          altitude: "Altitude 1",
-          team: "Team 1",
-        },
-        keywords: [
-          "Organic",
-          "US Origin",
-          "Fresh",
-          "High Quality",
-          "Sustainable",
-        ],
-        description_key: "product1_description",
-        slug_key: "product1",
-      };
-
-      setProduct(fetchedProduct);
-    };
-
-    fetchProduct();
-  }, []);
+    if (id) {
+      dispatch(fetchProductById(id));
+    }
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (product) {
-      setTotalPrice(quantity * product.price);
+      setTotalPrice(quantity * displayPrice);
     }
   }, [quantity, product]);
 
-  const description =
-    "Nec ultrices dui sapien eget mi proin. Eu lobortis elementum nibh tellus molestie nunc non blandit massa. Bibendum arcu vitae elementum curabitur vitae nunc. Mattis enim ut tellus elementum sagittis vitae et leo duis. Ac felis donec et odio pellentesque. Amet commodo nulla facilisi nullam vehicula. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Amet consectetur adipiscing elit pellentesque habitant morbi tristique.";
-  const increaseQuantity = () =>
+  const increaseQuantity = useCallback(() => {
     setQuantity((prevQuantity) => prevQuantity + 1);
+  }, []);
 
-  const decreaseQuantity = () =>
+  const decreaseQuantity = useCallback(() => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  }, []);
 
   if (!product) {
+    console.log("No product");
     return <div>Loading...</div>;
   }
-  const technicalData = [
-    {
-      value:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut morbi tincidunt augue interdum velit euismod in pellentesque. Donec enim diam vulputate ut pharetra sit amet aliquam id.",
-    },
-    {
-      value:
-        "Ullamcorper morbi tincidunt ornare massa. Nibh sed pulvinar proin gravida. Maecenas pharetra convallis posuere morbi leo urna molestie at. Elit scelerisque mauris pellentesque pulvinar pellentesque. ",
-    },
-    {
-      value:
-        "Ornare arcu dui vivamus arcu felis bibendum. Enim nunc faucibus a pellentesque sit amet porttitor eget. ",
-    },
-  ];
-
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const displayPrice = getDisplayPrice(product, currencyId);
+  const formattedPrice = formatPrice(displayPrice, symbol);
   return (
     <animated.div style={fade}>
       <ProductPageContainer>
         <Row>
           <StyledImageCol md={5} className='mx-5'>
-            <ImageGallery images={product.images} />
-            <Keywords keywords={product.keywords} />
+            <div className='image-keywords-container'>
+              <ImageGallery images={product.productimages} />
+              <Keywords keywords={product.keyword_id_keywords} />
+            </div>
           </StyledImageCol>
           <StyledCol md={6}>
-            <ProductDetail {...product} />
-            <ProductPurchase
-              product={product}
-              quantity={quantity}
-              decreaseQuantity={decreaseQuantity}
-              increaseQuantity={increaseQuantity}
-              totalPrice={totalPrice}
-            />
+            <ProductDetail item={product} />
+            {
+              <ProductPurchase
+                product={product}
+                quantity={quantity}
+                decreaseQuantity={decreaseQuantity}
+                increaseQuantity={increaseQuantity}
+                totalPrice={totalPrice}
+              />
+            }
           </StyledCol>
         </Row>
         <DescriptionTechnicalInfoContainer>
           <Col md={12}>
-            <Description description={description} />
-            <TechnicalInfo data={technicalData} />;
+            <Description description={t(product.description_key)} />
+            <TechnicalInfo data={product.technicalinformations} />;
           </Col>
         </DescriptionTechnicalInfoContainer>
       </ProductPageContainer>

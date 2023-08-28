@@ -24,7 +24,13 @@ const LanguageSelector = () => {
   const changeLanguage = (language, flag) => {
     i18n.changeLanguage(language);
     setSelectedFlag(flag);
-    navigate(`/${language}`);
+    const currentPath = window.location.pathname;
+
+    const newPathParts = currentPath.split("/");
+    newPathParts[1] = language;
+    const newPath = newPathParts.join("/");
+
+    navigate(newPath);
   };
 
   return (

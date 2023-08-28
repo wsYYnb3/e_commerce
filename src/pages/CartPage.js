@@ -17,7 +17,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, adjustQuantity } from "../services/cartSlice";
-
+import { useTranslation } from "react-i18next";
+import {
+  getDisplayPrice,
+  getCurrencyDetails,
+  calculateSubtotal,
+  formatPrice,
+} from "../utils/utils";
 const StyledWrapper = styled.div`
   background-color: #f4f4f4;
   min-height: 100vh;
@@ -44,10 +50,14 @@ const CartPage = () => {
       position: toast.POSITION.TOP_CENTER,
     });
   };
-
+  const { t } = useTranslation();
   const handleAdjustQuantity = (id, qty) => {
     dispatch(adjustQuantity({ id, quantity: qty }));
   };
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const subtotal = calculateSubtotal(cart, currencyId, symbol);
+  const formattedSubtotal = formatPrice(subtotal, symbol);
+
   return (
     <StyledWrapper>
       <Container>
@@ -66,38 +76,42 @@ const CartPage = () => {
               </motion.div>
             ) : (
               <ListGroup variant='flush'>
-                {cart.map((item) => (
-                  <StyledListGroupItem key={item.id}>
-                    <Row className='align-items-center'>
-                      <Col md={2}>
-                        <Image
-                          src={item.cartImage}
-                          alt={item.name}
-                          fluid
-                          rounded
-                        />
-                      </Col>
-                      <Col md={4}>
-                        <b>{item.name}</b>
-                        <br />
-                        {item.unit}
-                      </Col>
-                      <Col md={2}>
-                        ${item.price} * {item.quantity}
-                      </Col>
-                      <Col md={2}></Col>
-                      <Col md={2}>
-                        <Button
-                          variant='danger'
-                          size='sm'
-                          onClick={() => handleRemoveFromCart(item.id)}
-                        >
-                          <FaTrash />
-                        </Button>
-                      </Col>
-                    </Row>
-                  </StyledListGroupItem>
-                ))}
+                {cart.map((product) => {
+                  const displayPrice = getDisplayPrice(product, currencyId);
+                  const formattedPrice = formatPrice(displayPrice, symbol);
+                  return (
+                    <StyledListGroupItem key={product.id}>
+                      <Row className='align-items-center'>
+                        <Col md={2}>
+                          <Image
+                            src={product.cartImage} //to be added
+                            alt={t(product.name_key)}
+                            fluid
+                            rounded
+                          />
+                        </Col>
+                        <Col md={4}>
+                          <b>{t(product.name_key)}</b>
+                          <br />
+                          {t(product.unit_of_measure.name)}
+                        </Col>
+                        <Col md={2}>
+                          {displayPrice} * {product.quantity}
+                        </Col>
+                        <Col md={2}></Col>
+                        <Col md={2}>
+                          <Button
+                            variant='danger'
+                            size='sm'
+                            onClick={() => handleRemoveFromCart(product.id)}
+                          >
+                            <FaTrash />
+                          </Button>
+                        </Col>
+                      </Row>
+                    </StyledListGroupItem>
+                  );
+                })}
               </ListGroup>
             )}
           </Col>
@@ -109,11 +123,7 @@ const CartPage = () => {
                     Subtotal (
                     {cart.reduce((acc, item) => acc + item.quantity, 0)}) items
                   </h3>
-                  $
-                  {cart.reduce(
-                    (acc, item) => acc + item.price * item.quantity,
-                    0
-                  )}
+                  {formattedSubtotal}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Button
