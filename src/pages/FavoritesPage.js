@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { removeFavorite } from "../services/favoritesSlice";
-
+import { useTranslation } from "react-i18next";
 const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;
@@ -66,7 +66,7 @@ const FavoritesPage = () => {
   const favorites = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
   const { language } = useParams();
-
+  const { t } = useTranslation();
   const handleRemoveFavorite = (e, product) => {
     e.stopPropagation();
     dispatch(removeFavorite(product.id));
@@ -90,13 +90,16 @@ const FavoritesPage = () => {
             />
             <StyledLink to={`/${language}/product/${product.id}`}>
               <StyledCard>
-                <Card.Img variant='top' src={product.image} />
+                <Card.Img
+                  variant='top'
+                  src={product.productimages[0]?.image?.file_path ?? ""}
+                />
                 <Card.Body>
-                  <Card.Title>{product.name}</Card.Title>
+                  <Card.Title>{t(product.name_key)}</Card.Title>
                   <Card.Text>
-                    {product.manufacturer}
+                    {product.vendor.name}
                     <br />
-                    {product.origin}
+                    {t(product.origin_key)}
                   </Card.Text>
                 </Card.Body>
               </StyledCard>

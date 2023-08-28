@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { Col, Card, Button } from "react-bootstrap";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
 import { addFavorite, removeFavorite } from "../services/favoritesSlice";
-import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
+import { useTranslation } from "react-i18next";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
 const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;
@@ -69,7 +74,7 @@ const StyledButton = styled(Button)`
   margin: 1rem auto 0;
   margin-bottom: 4px;
   display: block;
-  background-color: #607d8b;
+  background-color: #40a798;
   border: none;
   color: white;
   transition: background-color 0.3s ease;
@@ -90,25 +95,16 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const ProductList = ({ selectedCategories, items }) => {
+const ProductList = ({ selectedCategories, items: products }) => {
   const favorites = useSelector((state) => state.favorites);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
   const { user } = useUser();
-
-  /*useEffect(() => {
-    dispatch(fetchProducts(language))
-      .then((response) => {
-        console.log("Fetched products components:", response);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch products components:", error);
-      });
-  }, [language, dispatch]);*/
-  const handleCardClick = (product) => {
-    navigate(`/${language}/product/${product.id}`);
+  const { t } = useTranslation();
+  const navigateToProduct = (productId, slugKey) => {
+    navigate(`/${language}/product/${productId}/${t(slugKey)}`);
   };
 
   const handleAddToCart = (e, product) => {
@@ -140,48 +136,70 @@ const ProductList = ({ selectedCategories, items }) => {
   };
   const filteredProducts =
     selectedCategories.length > 0
-      ? items.filter((product) => selectedCategories.includes(product.category))
-      : items;
+      ? products.filter((product) =>
+          selectedCategories.some(
+            (category) => category.id === product.category.id
+          )
+        )
+      : products;
 
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }
-  return filteredProducts.map((product) => (
-    <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
-      <CardContainer onClick={() => handleCardClick(product)}>
-        <StyledStar
-          onClick={(e) => toggleFavorite(e, product)}
-          favorite={isFavorite(product) ? 1 : 0}
-        />
-        <StyledCard>
-          <Card.Img variant='top' src={product.image} />
-          <Card.Body>
-            <Card.Title>
-              <StyledLink to={`${language}/product/${product.id}`}>
-                {product.name}
-              </StyledLink>
-            </Card.Title>
-            <Card.Text>
-              <StyledLink to={`${language}/product/${product.id}`}>
-                {product.manufacturer}
-                <br />
-                {product.origin}
-              </StyledLink>
-            </Card.Text>
-          </Card.Body>
-          <StyledFooter>
-            <div className='product-price'>
-              <b>{product.price}$</b>
-              <span>{product.unit}</span>
-            </div>
-            <StyledButton onClick={(e) => handleAddToCart(e, product)}>
-              <FaShoppingCart /> Add to Cart
-            </StyledButton>
-          </StyledFooter>
-        </StyledCard>
-      </CardContainer>
-    </Col>
-  ));
+  return filteredProducts.map((product) => {
+    const { currencyId, symbol } = getCurrencyDetails(language);
+    const displayPrice = getDisplayPrice(product, currencyId);
+    const formattedPrice = formatPrice(displayPrice, symbol);
+    return (
+      <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>
+        <CardContainer>
+          <StyledStar
+            onClick={(e) => toggleFavorite(e, product)}
+            favorite={isFavorite(product) ? 1 : 0}
+          />
+          <StyledCard
+            onClick={() => navigateToProduct(product.id, product.slug_key)}
+          >
+            <Card.Img
+              variant='top'
+              src={product.productimages[0]?.image?.file_path ?? ""}
+            />
+            <Card.Body>
+              <Card.Title>
+                <StyledLink
+                  to={`/${language}/product/${product.id}/${t(
+                    product.slug_key
+                  )}`}
+                >
+                  {t(product.name_key)}
+                </StyledLink>
+              </Card.Title>
+              <Card.Text>
+                <StyledLink
+                  to={`/${language}/product/${product.id}/${t(
+                    product.slug_key
+                  )}`}
+                >
+                  {product.vendor.name}
+                  <br />
+                  {t(product.origin_key)}
+                </StyledLink>
+              </Card.Text>
+            </Card.Body>
+            <StyledFooter>
+              <div className='product-price'>
+                <b>{formattedPrice}</b>
+                <span>{t(product.unit_of_measure.name)}</span>
+              </div>
+              <StyledButton onClick={(e) => handleAddToCart(e, product)}>
+                <FaShoppingCart /> Add to Cart
+              </StyledButton>
+            </StyledFooter>
+          </StyledCard>
+        </CardContainer>
+      </Col>
+    );
+  });
 };
 
 export default ProductList;

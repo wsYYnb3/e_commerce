@@ -6,6 +6,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, adjustQuantity } from "../services/cartSlice";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const StyledContainer = styled.div`
   margin-top: 20px;
@@ -26,6 +33,8 @@ const StyledButton = styled(Button)`
 `;
 
 const ProductPurchase = ({ product }) => {
+  const { language } = useParams();
+  const { t } = useTranslation();
   const [quantity, setQuantity] = React.useState(1);
   const dispatch = useDispatch();
 
@@ -45,8 +54,10 @@ const ProductPurchase = ({ product }) => {
     }
   };
 
-  const totalPrice = product.price * quantity;
-
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const displayPrice = getDisplayPrice(product, currencyId);
+  const formattedPrice = formatPrice(displayPrice, symbol);
+  const totalPrice = displayPrice * quantity;
   return (
     <StyledContainer>
       <QuantityWrapper>
@@ -60,7 +71,7 @@ const ProductPurchase = ({ product }) => {
         />
         <FaPlus onClick={handleIncreaseQuantity} />
         <StyledButton variant='primary' size='sm' onClick={handleAddToCart}>
-          Total: ${totalPrice} <FaShoppingCart />
+          {totalPrice} {symbol} <FaShoppingCart />
         </StyledButton>
       </QuantityWrapper>
     </StyledContainer>

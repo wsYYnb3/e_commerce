@@ -2,12 +2,15 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import { FaListUl } from "react-icons/fa";
 import { RadioLabel, radioHighlight } from "../styles/StoreStyles";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = ({ categories, selectedCategories, setSelectedCategories }) => {
+  const { t } = useTranslation();
+
   const handleChange = (category) => {
-    if (selectedCategories.includes(category)) {
+    if (selectedCategories.some((cat) => cat.id === category.id)) {
       setSelectedCategories(
-        selectedCategories.filter((cat) => cat !== category)
+        selectedCategories.filter((cat) => cat.id !== category.id)
       );
     } else {
       setSelectedCategories([...selectedCategories, category]);
@@ -17,27 +20,34 @@ const Sidebar = ({ categories, selectedCategories, setSelectedCategories }) => {
   return (
     <div>
       <h5>Categories</h5>
-      {categories.map((category, index) => (
-        <div key={index}>
-          <Form.Check
-            type='checkbox'
-            id={`category-${index}`}
-            label={
-              <RadioLabel
-                style={
-                  selectedCategories.includes(category)
-                    ? { animation: `${radioHighlight} 0.5s forwards` }
-                    : {}
+      {categories.map((category, index) => {
+        if (category.parent_id) {
+          return (
+            <div key={category.id}>
+              <Form.Check
+                type='checkbox'
+                id={category.id}
+                label={
+                  <RadioLabel
+                    style={
+                      selectedCategories.some((cat) => cat.id === category.id)
+                        ? { animation: `${radioHighlight} 0.5s forwards` }
+                        : {}
+                    }
+                  >
+                    <FaListUl className='mr-2' /> {t(category.name_key)}
+                  </RadioLabel>
                 }
-              >
-                <FaListUl className='mr-2' /> {category}
-              </RadioLabel>
-            }
-            checked={selectedCategories.includes(category)}
-            onChange={() => handleChange(category)}
-          />
-        </div>
-      ))}
+                checked={selectedCategories.some(
+                  (cat) => cat.id === category.id
+                )}
+                onChange={() => handleChange(category)}
+              />
+            </div>
+          );
+        }
+        return null;
+      })}
     </div>
   );
 };

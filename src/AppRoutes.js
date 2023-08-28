@@ -79,7 +79,10 @@ const WithLanguageRoutes = () => {
           <Route path='search' element={<SearchPage />} />
           <Route path='cart' element={<CartPage />} />
           <Route path='checkout' element={<CheckoutPage />} />
-          <Route path='product/:productId' element={<ProductPage />} />
+          <Route
+            path='product/:productId/:productSlug'
+            element={<ProductPage />}
+          />
           <Route path='support' element={<SupportPage />} />
           <Route path='newest' element={<NewestPage />} />
           <Route path='sign-in/*' element={<CenteredSignIn />} />

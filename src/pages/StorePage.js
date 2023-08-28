@@ -14,9 +14,21 @@ import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { sortItems } from "../services/itemsSlice";
-import { fetchProducts } from "../services/itemsSlice";
+import {
+  fetchProducts,
+  fetchNewestProducts,
+  getFiveNewestProducts,
+} from "../services/itemsSlice";
 import { Link, useParams } from "react-router-dom";
-
+import {
+  getDisplayPrice,
+  getCurrencyDetails,
+  calculateSubtotal,
+  formatPrice,
+  getComparisonFunction,
+} from "../utils/utils";
+import { useTranslation } from "react-i18next";
+import { fetchCategories, selectCategories } from "../services/categoriesSlice";
 const categories = [
   "Category 1",
   "Category 2",
@@ -41,33 +53,28 @@ const StorePage = () => {
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const { language } = useParams();
-
+  const { t } = useTranslation();
+  const categories = useSelector(selectCategories);
   useEffect(() => {
-    dispatch(fetchProducts(language))
+    dispatch(fetchProducts())
       .then((response) => {})
       .catch((error) => {
         console.error("Failed to fetch products:", error);
       });
-  }, [language, dispatch]);
+    dispatch(fetchCategories())
+      .then((response) => {})
+      .catch((error) => {
+        console.error("Failed to fetch categories:", error);
+      });
+  }, [dispatch]);
 
   const handleSortSelect = (sortKey) => {
-    let sortOrder = "asc";
-    let property = sortKey;
+    const { currencyId } = getCurrencyDetails(language);
+    const comparisonFunction = getComparisonFunction(sortKey, currencyId, t);
 
-    if (sortKey === "low") {
-      property = "price";
-      sortOrder = "asc";
-    } else if (sortKey === "high") {
-      property = "price";
-      sortOrder = "desc";
-    } else if (sortKey === "name") {
-      property = "name";
-      sortOrder = "asc";
-    } else if (sortKey === "newest") {
-      property = "date_added";
-      sortOrder = "desc";
-    }
-    dispatch(sortItems({ property, order: sortOrder }));
+    const sortedItems = [...products.items].sort(comparisonFunction);
+
+    dispatch(sortItems(sortedItems));
   };
 
   return (

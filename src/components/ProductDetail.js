@@ -10,7 +10,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
-
+import { useTranslation } from "react-i18next";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
 const StyledStar = styled(FaStar)`
   position: absolute;
   top: 10px;
@@ -37,27 +42,24 @@ const PriceContainer = styled.div`
   align-items: center;
 `;
 
-const ProductDetail = ({ name, unit, origin, price, id }) => {
+const ProductDetail = ({ item: product }) => {
   const { user } = useClerk();
   const favorites = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
+  const { t } = useTranslation();
 
-  const isFavorite = () => {
-    return favorites.some((item) => item.id === id);
-  };
-
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = (product) => {
     if (user) {
-      if (isFavorite()) {
-        dispatch(removeFavorite(id));
-        toast.info("Removed from favorites", {
+      if (isFavorite(product)) {
+        dispatch(removeFavorite(product.id));
+        toast.info("Product removed from favorites!", {
           position: "bottom-center",
         });
       } else {
-        dispatch(addFavorite({ id, name, unit, origin, price }));
-        toast.success("Added to favorites", {
+        dispatch(addFavorite(product));
+        toast.success("Product added to favorites!", {
           position: "bottom-center",
         });
       }
@@ -65,16 +67,22 @@ const ProductDetail = ({ name, unit, origin, price, id }) => {
       navigate(`/${language}/sign-up`);
     }
   };
-
+  const isFavorite = (product) => {
+    return favorites.some((item) => item.id === product.id);
+  };
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const displayPrice = getDisplayPrice(product, currencyId);
+  const formattedPrice = formatPrice(displayPrice, symbol);
   return (
     <StyledCard>
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text>Origin: {origin}</Card.Text>
+        <Card.Title>{t(product.name_key)}</Card.Title>
+        <Card.Text>Origin: {t(product.origin_key)}</Card.Text>
         <PriceContainer>
-          Price:{" "}
           <b>
-            ${price}/{unit}
+            {displayPrice} {symbol}
+            <br />
+            {t(product.unit_of_measure.name)}
           </b>
           <StyledStar
             onClick={(e) => handleFavoriteClick()}

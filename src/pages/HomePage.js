@@ -9,8 +9,17 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { fetchNewestProducts } from "../services/itemsSlice";
+import {
+  fetchProducts,
+  fetchNewestProducts,
+  getFiveNewestProducts,
+} from "../services/itemsSlice";
 import axios from "axios";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
 const ProductItem = styled.div`
   min-height: 350px; // Adjust this to your liking
   width: 300px;
@@ -43,7 +52,25 @@ const StyledCard = styled(Card)`
     transition: transform 0.2s;
   }
 `;
+const StyledProductName = styled.div`
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); // Semi-transparent white background
+  padding: 8px; // Padding around text
+  border-radius: 16px; // Rounded corners
+  margin: 4px; // Margin around the element
+`;
 
+const StyledProductPrice = styled.div`
+  background-color: rgba(0, 0, 0, 0.8); // Semi-transparent black background
+  color: #fff; // White text
+  padding: 8px; // Padding around text
+  border-radius: 16px; // Rounded corners
+  margin: 4px; // Margin around the element
+`;
 const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
@@ -71,7 +98,7 @@ const HomePage = () => {
   const [bannerImage, setBannerImage] = useState("");
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
-  const { language = "en" } = useParams();
+  const { language } = useParams();
   useEffect(() => {
     axios
       .get(backendServer)
@@ -84,9 +111,30 @@ const HomePage = () => {
         console.error("There was an error fetching the banner data:", error);
       });
 
-    dispatch(fetchNewestProducts(`${language}`));
-  }, [dispatch, language]);
-
+    dispatch(fetchProducts());
+  }, [dispatch]);
+  const renderProducts = (items) =>
+    items.map((product, index) => {
+      const { currencyId, symbol } = getCurrencyDetails(language);
+      const displayPrice = getDisplayPrice(product, currencyId);
+      const formattedPrice = formatPrice(displayPrice, symbol);
+      return (
+        <StyledLink
+          key={index}
+          to={`${language}/product/${product.id}/${t(product.slug_key)}`}
+        >
+          <ProductItem>
+            <img
+              src={product.productimages[0]?.image?.file_path ?? ""}
+              alt={t(product.name_key)}
+            />
+            <StyledProductName>{t(product.name_key)}</StyledProductName>
+            <StyledProductPrice>{formattedPrice}</StyledProductPrice>
+          </ProductItem>
+        </StyledLink>
+      );
+    });
+  const fiveNewestProducts = useSelector(getFiveNewestProducts);
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -142,43 +190,13 @@ const HomePage = () => {
         <section className='new-products-section text-center'>
           <h2 className='text-center'>New Arrivals</h2>
           <Carousel responsive={responsive} swipeable>
-            {products &&
-              products.items &&
-              products.items.map((product, index) => (
-                <StyledLink
-                  key={index}
-                  to={`/${language}/product/${product.id}`}
-                >
-                  <ProductItem>
-                    <img src={product.image} alt={product.name} />
-                    <p>
-                      {product.name}
-                      <br /> ${product.price}
-                    </p>
-                  </ProductItem>
-                </StyledLink>
-              ))}
+            {renderProducts(fiveNewestProducts)}
           </Carousel>
         </section>
         <section className='new-products-section text-center mt-4'>
           <h2 className='text-center'>Featured Products</h2>
           <Carousel responsive={responsive} swipeable>
-            {products &&
-              products.items &&
-              products.items.map((product, index) => (
-                <StyledLink
-                  key={index}
-                  to={`/${language}/product/${product.id}`}
-                >
-                  <ProductItem>
-                    <img src={product.image} alt={product.name} />
-                    <p>
-                      {product.name}
-                      <br /> ${product.price}
-                    </p>
-                  </ProductItem>
-                </StyledLink>
-              ))}
+            {renderProducts(products.items)}
           </Carousel>
         </section>
       </Container>

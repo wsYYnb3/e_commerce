@@ -4,7 +4,8 @@ import { Carousel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
-
+import image1 from "../images/product1.webp";
+import image2 from "../images/product2.jpg";
 const StyledCarousel = styled(Carousel)`
   @media (min-width: 1125px) {
     height: 255px;
@@ -61,12 +62,15 @@ const ImageGallery = ({ images }) => {
   const prev = () => {
     carouselRef.current.prev();
   };
-
   return (
     <StyledCarousel controls={false} indicators={false} ref={carouselRef}>
       {images.map((image, index) => (
-        <Carousel.Item key={index}>
-          <img className='d-block w-100' src={image.src} alt={image.alt} />
+        <Carousel.Item key={image.image_id}>
+          <img
+            className='d-block w-100'
+            src={image.image.file_path}
+            alt={image.image.file_name}
+          />
           <CarouselButtonPrev
             className='carousel-control-prev'
             role='button'
