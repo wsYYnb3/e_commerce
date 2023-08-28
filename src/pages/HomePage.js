@@ -121,7 +121,7 @@ const HomePage = () => {
       return (
         <StyledLink
           key={index}
-          to={`${language}/product/${product.id}/${t(product.slug_key)}`}
+          to={`/${language}/product/${product.id}/${t(product.slug_key)}`}
         >
           <ProductItem>
             <img
