@@ -20,78 +20,15 @@ import {
   getDisplayPrice,
   formatPrice,
 } from "../utils/utils";
-const ProductItem = styled.div`
-  min-height: 350px; // Adjust this to your liking
-  width: 300px;
-  text-align: center;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  margin: 10px 5px; // Provide equal vertical and horizontal margins
-  padding: 10px;
-  box-shadow: 0px 0px 10px #ccc;
+import {
+  ProductItem,
+  StyledCard,
+  StyledProductName,
+  StyledProductPrice,
+  StyledLink,
+  StyledBanner,
+} from "../styles/HomePageStyles";
 
-  img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-`;
-
-const StyledCard = styled(Card)`
-  text-align: center;
-  color: inherit;
-  text-decoration: none;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  &:hover {
-    transform: scale(1.02);
-    transition: transform 0.2s;
-  }
-`;
-const StyledProductName = styled.div`
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.8
-  ); // Semi-transparent white background
-  padding: 8px; // Padding around text
-  border-radius: 16px; // Rounded corners
-  margin: 4px; // Margin around the element
-`;
-
-const StyledProductPrice = styled.div`
-  background-color: rgba(0, 0, 0, 0.8); // Semi-transparent black background
-  color: #fff; // White text
-  padding: 8px; // Padding around text
-  border-radius: 16px; // Rounded corners
-  margin: 4px; // Margin around the element
-`;
-const StyledLink = styled(Link)`
-  color: inherit;
-  text-decoration: none;
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-  }
-`;
-const StyledBanner = styled(Link)`
-  display: block;
-  max-width: 100%;
-  margin: 5px auto;
-  box-shadow: 0px 0px 10px #ccc;
-
-  img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-`;
 const backendServer = "http://localhost:5000";
 const HomePage = () => {
   const { t } = useTranslation();

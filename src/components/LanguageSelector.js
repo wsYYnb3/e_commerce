@@ -4,17 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
-
-const FlagWithRef = React.forwardRef((props, ref) => (
-  <div ref={ref}>
-    <ReactCountryFlag {...props} />
-  </div>
-));
-
-const StyledReactCountryFlag = styled(FlagWithRef)`
-  cursor: pointer;
-  font-size: 1.4em;
-`;
+import { StyledReactCountryFlag } from "../styles/LanguageSelectorStyles";
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();

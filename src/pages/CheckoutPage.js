@@ -8,22 +8,7 @@ import { CartContext } from "../contexts/CartContext";
 import styled from "styled-components";
 import TextInput from "../components/TextInput";
 import { schema } from "../services/validation";
-
-const FormRow = styled(Row)`
-  @media (min-width: 576px) {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -5px;
-    margin-left: -5px;
-  }
-`;
-const FormControl = styled(Form.Control)`
-  font-size: 14px;
-`;
-
-const FormLabel = styled(Form.Label)`
-  font-size: small;
-`;
+import { FormRow, FormControl, FormLabel } from "../styles/CheckoutPageStyles";
 
 const CheckoutPage = () => {
   const { control, handleSubmit, watch, formState } = useForm({

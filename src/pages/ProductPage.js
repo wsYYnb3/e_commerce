@@ -36,31 +36,12 @@ import {
   getDisplayPrice,
   formatPrice,
 } from "../utils/utils";
-const StyledCol = styled(Col)`
-  margin-bottom: 30px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 20px;
-  }
-`;
-
-const StyledImageCol = styled(Col)`
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ProductPageContainer = styled(Container)`
-  padding: 20px;
-`;
-
-const DescriptionTechnicalInfoContainer = styled.div`
-  @media (min-width: 768px) {
-    margin-left: 30px;
-  }
-`;
+import {
+  StyledCol,
+  StyledImageCol,
+  ProductPageContainer,
+  DescriptionTechnicalInfoContainer,
+} from "../styles/ProductPageStyles";
 
 const ProductPage = () => {
   const { productId: id } = useParams();

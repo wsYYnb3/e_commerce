@@ -24,20 +24,11 @@ import {
   calculateSubtotal,
   formatPrice,
 } from "../utils/utils";
-const StyledWrapper = styled.div`
-  background-color: #f4f4f4;
-  min-height: 100vh;
-  padding: 50px 0;
-`;
-
-const StyledCard = styled(Card)`
-  background-color: #ffdb59;
-  color: #333;
-`;
-
-const StyledListGroupItem = styled(ListGroup.Item)`
-  background-color: #f7f7f7;
-`;
+import {
+  StyledWrapper,
+  StyledCard,
+  StyledListGroupItem,
+} from "../styles/CartPageStyles";
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart);

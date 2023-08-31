@@ -10,29 +10,11 @@ import {
 } from "react-icons/fa";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
-
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const OrderCard = styled(Card)`
-  margin: 15px 0;
-  padding: 15px;
-`;
-
-const IconText = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  h5,
-  h6,
-  p {
-    margin: 0;
-  }
-`;
+import {
+  HeaderContainer,
+  OrderCard,
+  IconText,
+} from "../styles/OrdersPageStyles";
 
 const OrdersPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });

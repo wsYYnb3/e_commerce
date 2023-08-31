@@ -1,10 +1,8 @@
 import React from "react";
 import Header from "./Header";
 import styled from "styled-components";
+import { ContentWrapper } from "../styles/LayoutStyles";
 
-const ContentWrapper = styled.div`
-  padding: 20px 0;
-`;
 const Layout = ({ children }) => {
   return (
     <>

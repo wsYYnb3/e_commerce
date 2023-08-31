@@ -29,23 +29,7 @@ import {
 } from "../utils/utils";
 import { useTranslation } from "react-i18next";
 import { fetchCategories, selectCategories } from "../services/categoriesSlice";
-const categories = [
-  "Category 1",
-  "Category 2",
-  "Category 3",
-  "Category 4",
-  "Category 5",
-];
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-`;
+import { HeaderContainer, Actions } from "../styles/StorePageStyles";
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);

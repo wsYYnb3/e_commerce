@@ -50,7 +50,7 @@ const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 export function ClerkProviderWithRoutes() {
   const navigate = useNavigate();
   return (
-    <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
+    <ClerkProvider publishableKey={clerkPubKey}>
       <Routes>
         <Route path='/' element={<Navigate to='/en/' />} />
         <Route path='/:language/*' element={<WithLanguageRoutes />} />

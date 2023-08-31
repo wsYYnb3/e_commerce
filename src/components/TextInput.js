@@ -3,14 +3,7 @@ import { Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 import styled from "styled-components";
 import _ from "lodash";
-
-const FormControl = styled(Form.Control)`
-  font-size: 14px;
-`;
-
-const FormLabel = styled(Form.Label)`
-  font-size: small;
-`;
+import { FormControl, FormLabel } from "../styles/TextInputStyles";
 
 const TextInput = ({
   label,
