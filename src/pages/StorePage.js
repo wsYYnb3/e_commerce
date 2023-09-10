@@ -3,6 +3,10 @@ import { Container, Row, Col, Dropdown, Form } from "react-bootstrap";
 import { FaSortAmountDownAlt, FaBars } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import {
   SideBar,
   SearchBox,
@@ -12,14 +16,12 @@ import {
 import Sidebar from "../components/Sidebar";
 import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
-import { useDispatch, useSelector } from "react-redux";
 import { sortItems } from "../services/itemsSlice";
 import {
   fetchProducts,
   fetchNewestProducts,
   getFiveNewestProducts,
 } from "../services/itemsSlice";
-import { Link, useParams } from "react-router-dom";
 import {
   getDisplayPrice,
   getCurrencyDetails,
@@ -27,9 +29,9 @@ import {
   formatPrice,
   getComparisonFunction,
 } from "../utils/utils";
-import { useTranslation } from "react-i18next";
 import { fetchCategories, selectCategories } from "../services/categoriesSlice";
 import { HeaderContainer, Actions } from "../styles/StorePageStyles";
+
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -39,6 +41,7 @@ const StorePage = () => {
   const { language } = useParams();
   const { t } = useTranslation();
   const categories = useSelector(selectCategories);
+
   useEffect(() => {
     dispatch(fetchProducts())
       .then((response) => {})

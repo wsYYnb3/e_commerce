@@ -28,10 +28,12 @@ import {
   StyledLink,
   StyledBanner,
 } from "../styles/HomePageStyles";
-
+import { useSession, useUser } from "@clerk/clerk-react";
 const backendServer = "http://localhost:5000";
 const HomePage = () => {
   const { t } = useTranslation();
+  const { user } = useUser();
+  const { session } = useSession();
   const [bannerImage, setBannerImage] = useState("");
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
@@ -57,12 +59,12 @@ const HomePage = () => {
       const formattedPrice = formatPrice(displayPrice, symbol);
       return (
         <StyledLink
-          key={index}
+          key={product.id}
           to={`/${language}/product/${product.id}/${t(product.slug_key)}`}
         >
           <ProductItem>
             <img
-              src={product.productimages[0]?.image?.file_path ?? ""}
+              src={product.productcardimages[0]?.image?.file_path ?? ""}
               alt={t(product.name_key)}
             />
             <StyledProductName>{t(product.name_key)}</StyledProductName>
@@ -90,7 +92,6 @@ const HomePage = () => {
       items: 1,
     },
   };
-
   return (
     <animated.div style={{ opacity: 1 }}>
       <Container>
