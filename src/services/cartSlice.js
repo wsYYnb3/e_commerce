@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useUser } from "@clerk/clerk-react";
-
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async (customerId) => {
@@ -9,6 +7,7 @@ export const fetchCart = createAsyncThunk(
       const response = await axios.get(
         `http://localhost:5000/cart/get/${customerId}`
       );
+
       return response.data;
     } catch (error) {
       throw error;
@@ -16,26 +15,30 @@ export const fetchCart = createAsyncThunk(
   }
 );
 
-export const addToCart = createAsyncThunk("/cart/addToCart", async (data) => {
-  try {
-    console.log(data);
-    const productId = data.id;
+export const addToCart = createAsyncThunk(
+  "/cart/addToCart",
+  async (data, thunkAPI) => {
+    try {
+      const productId = data.id;
 
-    const postData = {
-      ...data,
-      productId,
-    };
-    delete postData.id;
+      const postData = {
+        ...data,
+        productId,
+      };
+      delete postData.id;
 
-    const response = await axios.post(
-      `http://localhost:5000/cart/add/${data.customerId}`,
-      data
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
+      const response = await axios.post(
+        `http://localhost:5000/cart/add/${data.customerId}`,
+        postData
+      );
+      await thunkAPI.dispatch(fetchCart(data.customerId));
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
@@ -44,6 +47,7 @@ export const removeFromCart = createAsyncThunk(
       const response = await axios.delete(`http://localhost:5000/cart/update`, {
         data: { customer_id: data.customer_id, product_id: data.product_id },
       });
+
       return response.data;
     } catch (error) {
       throw error;
@@ -73,7 +77,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchCart.fulfilled, (state, action) => {
       state.cartItems = action.payload;
-      state.cartCount = action.payload.length;
+      state.cartCount = state.cartItems.length;
     });
 
     builder
@@ -82,7 +86,6 @@ const cartSlice = createSlice({
         const itemIndex = state.cartItems.findIndex(
           (item) => item.product_id === product_id
         );
-
         if (itemIndex >= 0) {
           state.cartItems[itemIndex].quantity += quantity;
         } else {
@@ -91,9 +94,9 @@ const cartSlice = createSlice({
         state.cartCount = state.cartItems.length;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        const { productId } = action.payload;
+        const { product_id } = action.meta.arg;
         const index = state.cartItems.findIndex(
-          (item) => item.product_id === productId
+          (item) => item.product.id === product_id
         );
 
         if (index >= 0) {

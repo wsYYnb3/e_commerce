@@ -13,3 +13,8 @@ export default configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
+export const lastAction = (store) => (next) => (action) => {
+  let result = next(action);
+  store.getState().lastAction = action;
+  return result;
+};

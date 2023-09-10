@@ -1,7 +1,12 @@
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { addFavorite, removeFavorite } from "../services/favoritesSlice";
+import {
+  addToFavorites,
+  removeFromFavorites,
+  fetchFavorites,
+} from "../services/favoritesSlice";
 import { useClerk } from "@clerk/clerk-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
@@ -22,22 +27,26 @@ import {
   PriceContainer,
 } from "../styles/ProductDetailStyles";
 import { useUser } from "@clerk/clerk-react";
+
 const ProductDetail = ({ item: product }) => {
   const { user } = useClerk();
-  const favorites = useSelector((state) => state.favorites);
+  const favorites = useSelector((state) => state.favorites.favoritesItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
   const { t } = useTranslation();
-  const handleFavoriteClick = (product) => {
+  const customer_id = user?.id;
+  const toggleFavorite = (e, product) => {
+    e.stopPropagation();
     if (user) {
+      const data = { product_id: product.id, customer_id: customer_id };
       if (isFavorite(product)) {
-        dispatch(removeFavorite(product.id));
+        dispatch(removeFromFavorites(data));
         toast.info("Product removed from favorites!", {
           position: "bottom-center",
         });
       } else {
-        dispatch(addFavorite(product));
+        dispatch(addToFavorites(data));
         toast.success("Product added to favorites!", {
           position: "bottom-center",
         });
@@ -47,8 +56,11 @@ const ProductDetail = ({ item: product }) => {
     }
   };
   const isFavorite = (product) => {
-    return product?.id && favorites.some((item) => item.id === product.id);
+    return favorites.some((item) => item.product_id === product.id);
   };
+  useEffect(() => {
+    dispatch(fetchFavorites(customer_id));
+  }, [dispatch, user]);
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId);
   const formattedPrice = formatPrice(displayPrice, symbol);
@@ -64,7 +76,7 @@ const ProductDetail = ({ item: product }) => {
             {t(product.unit_of_measure.name)}
           </b>
           <StyledStar
-            onClick={(e) => handleFavoriteClick(product)}
+            onClick={(e) => toggleFavorite(e, product)}
             favorite={isFavorite(product) ? 1 : 0}
           />
         </PriceContainer>
