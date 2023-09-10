@@ -31,16 +31,17 @@ import { useUser, useClerk, UserButton } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LanguageSelector from "./LanguageSelector";
-
+import { useDispatch } from "react-redux";
+import { fetchCart } from "../services/cartSlice";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useClerk();
   const queryParam = searchParams.get("q");
-  const cartCount = useSelector((state) => state.cart.length);
+  const cartCount = useSelector((state) => state.cart.cartItems.length);
   const { language } = useParams();
-
+  const dispatch = useDispatch();
   const handleSearch = (e) => {
     e.preventDefault();
     const searchQuery = query.trim();
@@ -53,7 +54,11 @@ const Header = () => {
   useEffect(() => {
     setQuery(queryParam || "");
   }, [searchParams]);
-
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchCart(user.id));
+    }
+  }, [user, dispatch]);
   return (
     <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2'>
       <LanguageSelector />

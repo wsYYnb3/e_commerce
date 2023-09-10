@@ -41,11 +41,14 @@ const FavoritesPage = () => {
               onClick={(e) => handleRemoveFavorite(e, product)}
               favorite='true'
             />
-            <StyledLink to={`/${language}/product/${product.id}`}>
+            <StyledLink
+              to={`/${language}/product/${product.id}/${t(product.slug_key)}`}
+            >
               <StyledCard>
                 <Card.Img
                   variant='top'
-                  src={product.productimages[0]?.image?.file_path ?? ""}
+                  src={product.productcardimages[0]?.image?.file_path ?? ""}
+                  alt={t(product.name_key)}
                 />
                 <Card.Body>
                   <Card.Title>{t(product.name_key)}</Card.Title>

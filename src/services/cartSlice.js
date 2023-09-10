@@ -1,35 +1,118 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
+
+export const fetchCart = createAsyncThunk(
+  "cart/fetchCart",
+  async (customerId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/cart/get/${customerId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const addToCart = createAsyncThunk("/cart/addToCart", async (data) => {
+  try {
+    console.log(data);
+    const productId = data.id;
+
+    const postData = {
+      ...data,
+      productId,
+    };
+    delete postData.id;
+
+    const response = await axios.post(
+      `http://localhost:5000/cart/add/${data.customerId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const removeFromCart = createAsyncThunk(
+  "cart/removeFromCart",
+  async (data) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/cart/update`, {
+        data: { customer_id: data.customer_id, product_id: data.product_id },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const adjustQuantity = createAsyncThunk(
+  "cart/adjustQuantity",
+  async (data) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/cart/update`, {
+        customer_id: data.customerId,
+        quantity: data.quantity,
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: [],
-  reducers: {
-    addToCart: (state, action) => {
-      const itemIndex = state.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      if (itemIndex >= 0) {
-        state[itemIndex].quantity += action.payload.quantity;
-      } else {
-        state.push({ ...action.payload, quantity: action.payload.quantity });
-      }
-    },
-    removeFromCart: (state, action) => {
-      const index = state.findIndex((item) => item.id === action.payload);
-      if (index >= 0) {
-        state.splice(index, 1);
-      }
-    },
-    adjustQuantity: (state, action) => {
-      const itemIndex = state.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      if (itemIndex >= 0) {
-        state[itemIndex].quantity = action.payload.quantity;
-      }
-    },
+  initialState: { cartItems: [], cartCount: 0 },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchCart.fulfilled, (state, action) => {
+      state.cartItems = action.payload;
+      state.cartCount = action.payload.length;
+    });
+
+    builder
+      .addCase(addToCart.fulfilled, (state, action) => {
+        const { product_id, quantity } = action.payload;
+        const itemIndex = state.cartItems.findIndex(
+          (item) => item.product_id === product_id
+        );
+
+        if (itemIndex >= 0) {
+          state.cartItems[itemIndex].quantity += quantity;
+        } else {
+          state.cartItems.push(action.payload);
+        }
+        state.cartCount = state.cartItems.length;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        const { productId } = action.payload;
+        const index = state.cartItems.findIndex(
+          (item) => item.product_id === productId
+        );
+
+        if (index >= 0) {
+          state.cartItems.splice(index, 1);
+        }
+        state.cartCount = state.cartItems.length;
+      })
+      .addCase(adjustQuantity.fulfilled, (state, action) => {
+        const { product_id, quantity } = action.payload;
+        const itemIndex = state.cartItems.findIndex(
+          (item) => item.product_id === product_id
+        );
+
+        if (itemIndex >= 0) {
+          state.cartItems[itemIndex].quantity = quantity;
+        }
+        state.cartCount = state.cartItems.length;
+      });
   },
 });
 
-export const { addToCart, removeFromCart, adjustQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

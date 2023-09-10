@@ -91,7 +91,8 @@ const ProductList = ({ selectedCategories, items: products }) => {
           >
             <Card.Img
               variant='top'
-              src={product.productimages[0]?.image?.file_path ?? ""}
+              src={product.productcardimages[0]?.image?.file_path ?? ""}
+              alt={t(product.name_key)}
             />
             <Card.Body>
               <Card.Title>

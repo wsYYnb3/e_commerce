@@ -18,15 +18,16 @@ import {
   QuantityWrapper,
   StyledButton,
 } from "../styles/ProductPurchaseStyles";
-
+import { useUser } from "@clerk/clerk-react";
 const ProductPurchase = ({ product }) => {
   const { language } = useParams();
   const { t } = useTranslation();
   const [quantity, setQuantity] = React.useState(1);
   const dispatch = useDispatch();
-
+  const { user } = useUser();
+  const customerId = user?.id;
   const handleAddToCart = () => {
-    const newProduct = { ...product, quantity };
+    const newProduct = { ...product, quantity, customerId };
     dispatch(addToCart(newProduct));
     toast.success("Product added to cart!", { position: "bottom-center" });
   };

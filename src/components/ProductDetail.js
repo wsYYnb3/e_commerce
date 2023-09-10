@@ -21,7 +21,7 @@ import {
   StyledCard,
   PriceContainer,
 } from "../styles/ProductDetailStyles";
-
+import { useUser } from "@clerk/clerk-react";
 const ProductDetail = ({ item: product }) => {
   const { user } = useClerk();
   const favorites = useSelector((state) => state.favorites);
@@ -29,7 +29,6 @@ const ProductDetail = ({ item: product }) => {
   const navigate = useNavigate();
   const { language } = useParams();
   const { t } = useTranslation();
-
   const handleFavoriteClick = (product) => {
     if (user) {
       if (isFavorite(product)) {
@@ -48,7 +47,7 @@ const ProductDetail = ({ item: product }) => {
     }
   };
   const isFavorite = (product) => {
-    return favorites.some((item) => item.id === product.id);
+    return product?.id && favorites.some((item) => item.id === product.id);
   };
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId);
@@ -65,8 +64,8 @@ const ProductDetail = ({ item: product }) => {
             {t(product.unit_of_measure.name)}
           </b>
           <StyledStar
-            onClick={(e) => handleFavoriteClick()}
-            favorite={isFavorite() ? 1 : 0}
+            onClick={(e) => handleFavoriteClick(product)}
+            favorite={isFavorite(product) ? 1 : 0}
           />
         </PriceContainer>
       </Card.Body>

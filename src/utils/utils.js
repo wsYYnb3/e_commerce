@@ -9,11 +9,14 @@ export const getCurrencyDetails = (language) => {
   }
 };
 export const getDisplayPrice = (product, currencyId) => {
-  const productPriceInCurrency = product.productpriceincurrencies
-    ? product.productpriceincurrencies.find(
-        (price) => price.currency_id === currencyId
-      )
-    : null;
+  if (!product || !product.productpriceincurrencies) {
+    console.warn("Undefined product or productpriceincurrencies", { product });
+    return 0;
+  }
+
+  const productPriceInCurrency = product.productpriceincurrencies.find(
+    (price) => price.currency_id === currencyId
+  );
 
   return productPriceInCurrency ? parseFloat(productPriceInCurrency.price) : 0;
 };
@@ -24,7 +27,9 @@ export const formatPrice = (price, symbol) => {
 
 export const calculateSubtotal = (cart, currencyId, symbol) => {
   return cart.reduce((acc, item) => {
-    const displayPrice = parseFloat(getDisplayPrice(item, currencyId, symbol));
+    const displayPrice = parseFloat(
+      getDisplayPrice(item.product, currencyId, symbol)
+    );
     return acc + displayPrice * item.quantity;
   }, 0);
 };
