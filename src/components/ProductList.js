@@ -6,7 +6,11 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../services/cartSlice";
-import { addFavorite, removeFavorite } from "../services/favoritesSlice";
+import {
+  addToFavorites,
+  removeFromFavorites,
+  fetchFavorites,
+} from "../services/favoritesSlice";
 import { useUser } from "@clerk/clerk-react";
 import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
 import { useTranslation } from "react-i18next";
@@ -25,8 +29,8 @@ import {
 } from "../styles/ProductListStyles";
 
 const ProductList = ({ selectedCategories, items: products }) => {
-  const favorites = useSelector((state) => state.favorites);
-  const cart = useSelector((state) => state.cart);
+  const favorites = useSelector((state) => state.favorites.favoritesItems);
+  const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();
@@ -36,22 +40,26 @@ const ProductList = ({ selectedCategories, items: products }) => {
     navigate(`/${language}/product/${productId}/${t(slugKey)}`);
   };
 
+  const customer_id = user?.id;
+
   const handleAddToCart = (e, product) => {
     e.stopPropagation();
-    const productWithQuantity = { ...product, quantity: 1 };
-    dispatch(addToCart(productWithQuantity));
+    const newProduct = { ...product, quantity: 1, customerId: customer_id };
+    dispatch(addToCart(newProduct));
     toast.success("Product added to cart!", { position: "bottom-center" });
   };
+
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (user) {
+      const data = { product_id: product.id, customer_id: customer_id };
       if (isFavorite(product)) {
-        dispatch(removeFavorite(product.id));
+        dispatch(removeFromFavorites(data));
         toast.info("Product removed from favorites!", {
           position: "bottom-center",
         });
       } else {
-        dispatch(addFavorite(product));
+        dispatch(addToFavorites(data));
         toast.success("Product added to favorites!", {
           position: "bottom-center",
         });
@@ -61,7 +69,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
     }
   };
   const isFavorite = (product) => {
-    return favorites.some((item) => item.id === product.id);
+    return favorites.some((item) => item.product_id === product.id);
   };
   const filteredProducts =
     selectedCategories.length > 0
@@ -71,7 +79,9 @@ const ProductList = ({ selectedCategories, items: products }) => {
           )
         )
       : products;
-
+  useEffect(() => {
+    dispatch(fetchFavorites(customer_id));
+  }, [dispatch, user]);
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }

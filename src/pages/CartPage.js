@@ -43,7 +43,8 @@ const CartPage = () => {
     dispatch(fetchCart(customerId));
   }, [dispatch, customerId]);
 
-  const handleRemoveFromCart = (product_id, customer_id) => {
+  const handleRemoveFromCart = (e, product_id, customer_id) => {
+    e.stopPropagation();
     dispatch(removeFromCart({ product_id, customer_id }));
     toast.error("Product removed from cart", {
       position: toast.POSITION.TOP_CENTER,
@@ -57,16 +58,16 @@ const CartPage = () => {
   const { currencyId, symbol } = getCurrencyDetails(language);
   const subtotal = calculateSubtotal(cart, currencyId, symbol);
   const formattedSubtotal = formatPrice(subtotal, symbol);
+  if (!cart) {
+    return <div>Loading...</div>;
+  }
   if (cart === "loading") {
-    console.log(cart);
     return <div>Loading...</div>;
   }
 
   if (cart === "failed") {
-    console.log(cart);
     return <div>Error: </div>;
   }
-
   return (
     <StyledWrapper>
       <Container>
@@ -87,18 +88,21 @@ const CartPage = () => {
               </motion.div>
             ) : (
               <ListGroup variant='flush'>
-                {cart.map((cartItem) => {
+                {cart.map((cartItem, index) => {
                   const { product } = cartItem;
+                  const currentProductId = cartItem.product.id;
                   const displayPrice = getDisplayPrice(product, currencyId);
                   const formattedPrice = formatPrice(displayPrice, symbol);
                   const imagePath =
-                    product?.productcartimages?.[0]?.image?.file_path;
+                    product?.productcartimages?.[0]?.image?.file_path ||
+                    "https://via.placeholder/150";
                   const imageName =
-                    product?.productcartimages?.[0]?.image?.file_name;
+                    product?.productcartimages?.[0]?.image?.file_name ||
+                    "https://via.placeholder/150";
                   const imageUrl = `${imagePath}${imageName}`;
 
                   return (
-                    <StyledListGroupItem key={product.id}>
+                    <StyledListGroupItem key={currentProductId}>
                       <Row className='align-items-center'>
                         <Col md={2}>
                           <Image
@@ -121,9 +125,13 @@ const CartPage = () => {
                           <Button
                             variant='danger'
                             size='sm'
-                            onClick={() =>
-                              handleRemoveFromCart(product.id, customerId)
-                            }
+                            onClick={(e) => {
+                              handleRemoveFromCart(
+                                e,
+                                currentProductId,
+                                customerId
+                              );
+                            }}
                           >
                             <FaTrash />
                           </Button>

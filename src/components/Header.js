@@ -39,6 +39,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user } = useClerk();
   const queryParam = searchParams.get("q");
+  const cart = useSelector((state) => state.cart.cartItems);
   const cartCount = useSelector((state) => state.cart.cartItems.length);
   const { language } = useParams();
   const dispatch = useDispatch();
@@ -50,13 +51,12 @@ const Header = () => {
       navigate(`/${language}/search?q=${searchQuery}`);
     }
   };
-
   useEffect(() => {
     setQuery(queryParam || "");
   }, [searchParams]);
   useEffect(() => {
     if (user) {
-      dispatch(fetchCart(user.id));
+      dispatch(fetchCart(user?.id));
     }
   }, [user, dispatch]);
   return (
