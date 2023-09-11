@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 export const ContactCard = styled(Card)`
   margin-top: 1rem;

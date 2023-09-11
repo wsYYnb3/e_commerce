@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Card } from "react-bootstrap";
-import { FaStar } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {

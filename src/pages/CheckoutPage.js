@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Form, Button, FormText } from "react-bootstrap";
-import { useForm, Controller } from "react-hook-form";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { CartContext } from "../contexts/CartContext";
-import styled from "styled-components";
 import TextInput from "../components/TextInput";
 import { schema } from "../services/validation";
-import { FormRow, FormControl, FormLabel } from "../styles/CheckoutPageStyles";
+import { FormRow } from "../styles/CheckoutPageStyles";
 
 const CheckoutPage = () => {
   const { control, handleSubmit, watch, formState } = useForm({

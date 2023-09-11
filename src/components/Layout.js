@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "./Header";
-import styled from "styled-components";
 import { ContentWrapper } from "../styles/LayoutStyles";
 
 const Layout = ({ children }) => {

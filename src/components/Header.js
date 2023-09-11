@@ -18,16 +18,14 @@ import {
   faLeaf,
   faSearch,
   faSignInAlt,
-  faHistory,
   faUser,
-  faSignOutAlt,
   faShoppingCart,
   faStore,
   faInfoCircle,
   faHeart,
   faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
-import { useUser, useClerk, UserButton } from "@clerk/clerk-react";
+import { useClerk, UserButton } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LanguageSelector from "./LanguageSelector";
@@ -81,6 +79,12 @@ const Header = () => {
                 className='mr-sm-2'
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(e);
+                    e.preventDefault();
+                  }
+                }}
               />
               <Button variant='light' type='submit'>
                 <FontAwesomeIcon icon={faSearch} />

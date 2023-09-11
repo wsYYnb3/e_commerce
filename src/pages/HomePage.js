@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { Button, Card, Row, Col, Container } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Card, Row, Col, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faSeedling } from "@fortawesome/free-solid-svg-icons";
-import { useSpring, animated } from "react-spring";
-import styled from "styled-components";
+import { faSeedling } from "@fortawesome/free-solid-svg-icons";
+import { animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import {
-  fetchProducts,
-  fetchNewestProducts,
-  getFiveNewestProducts,
-} from "../services/itemsSlice";
+import { fetchProducts, getFiveNewestProducts } from "../services/itemsSlice";
 import axios from "axios";
 import {
   getCurrencyDetails,

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
-import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addToFavorites,
@@ -8,13 +7,9 @@ import {
   fetchFavorites,
 } from "../services/favoritesSlice";
 import { useClerk } from "@clerk/clerk-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaShoppingCart, FaStar } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import {
   getCurrencyDetails,
@@ -26,7 +21,6 @@ import {
   StyledCard,
   PriceContainer,
 } from "../styles/ProductDetailStyles";
-import { useUser } from "@clerk/clerk-react";
 
 const ProductDetail = ({ item: product }) => {
   const { user } = useClerk();
