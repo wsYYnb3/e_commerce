@@ -19,7 +19,11 @@ import { sortItems } from "../services/itemsSlice";
 import { fetchProducts } from "../services/itemsSlice";
 import { getCurrencyDetails, getComparisonFunction } from "../utils/utils";
 import { fetchCategories, selectCategories } from "../services/categoriesSlice";
-import { HeaderContainer, Actions } from "../styles/StorePageStyles";
+import {
+  HeaderContainer,
+  Actions,
+  StyledResetButton,
+} from "../styles/StorePageStyles";
 import LoadingIndicator from "../components/LoadingIndicator";
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -119,12 +123,18 @@ const StorePage = () => {
           <Col xs={12} lg={10} className='justify-content-center'>
             <HeaderContainer className='px-3'>
               <h4>Our Products</h4>
+
               <Actions>
                 <FaBars
                   onClick={() => setSidebarOpen(!isSidebarOpen)}
                   style={{ cursor: "pointer", marginRight: "10px" }}
                 />
                 <SortDropdown onSelect={handleSortSelect} />
+                {hasSearched && (
+                  <StyledResetButton onClick={() => setHasSearched(false)}>
+                    Reset Search
+                  </StyledResetButton>
+                )}
               </Actions>
             </HeaderContainer>
             <ProductRow>

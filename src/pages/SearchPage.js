@@ -88,7 +88,6 @@ const SearchPage = () => {
       .catch((error) => {
         console.error("Failed to fetch products:", error);
         setLoading(false);
-        console.log("here");
         setError("No search results found.");
       });
     dispatch(fetchCategories())
@@ -99,12 +98,11 @@ const SearchPage = () => {
   }, [dispatch, language, queryParam]);
 
   const handleSortSelect = (sortKey) => {
-    console.log("Before sorting", searchResults);
     const { currencyId } = getCurrencyDetails(language);
     const comparisonFunction = getComparisonFunction(sortKey, currencyId, t);
 
     const sortedItems = [...searchResults].sort(comparisonFunction);
-    console.log("After sorting", sortedItems);
+
     dispatch(sortSearch(sortedItems));
   };
 

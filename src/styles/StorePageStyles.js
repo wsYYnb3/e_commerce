@@ -1,11 +1,6 @@
 import styled from "styled-components";
-const categories = [
-  "Category 1",
-  "Category 2",
-  "Category 3",
-  "Category 4",
-  "Category 5",
-];
+import { Button } from "react-bootstrap";
+
 export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -15,4 +10,11 @@ export const HeaderContainer = styled.div`
 export const Actions = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const StyledResetButton = styled(Button)`
+  border: none;
+  padding: 10px;
+  margin-left: 10px;
+  cursor: pointer;
 `;

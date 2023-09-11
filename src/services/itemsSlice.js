@@ -108,7 +108,6 @@ const itemsSlice = createSlice({
       .addCase(fetchSearchResults.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.searchResults = action.payload;
-        console.log(state.searchResults);
       })
       .addCase(fetchSearchResults.pending, (state) => {
         state.status = "loading";
