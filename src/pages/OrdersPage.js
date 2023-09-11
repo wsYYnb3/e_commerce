@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import {
   FaBox,
   FaCalendarAlt,
@@ -8,7 +8,6 @@ import {
   FaTruck,
   FaCreditCard,
 } from "react-icons/fa";
-import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import {
   HeaderContainer,

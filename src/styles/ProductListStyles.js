@@ -1,20 +1,7 @@
-import React, { useEffect } from "react";
-import { Col, Card, Button } from "react-bootstrap";
-import { FaShoppingCart, FaStar } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
+import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, setCart } from "../services/cartSlice";
-import { addFavorite, removeFavorite } from "../services/favoritesSlice";
-import { useUser } from "@clerk/clerk-react";
-import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
-import { useTranslation } from "react-i18next";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
 export const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;

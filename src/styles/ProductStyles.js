@@ -1,17 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Button,
-  Col,
-  Row,
-  Container,
-  Form,
-  FormControl,
-} from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import { useSpring, animated } from "react-spring";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import { FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 
 export const StyledCard = styled(Card)`
     width: 100%;

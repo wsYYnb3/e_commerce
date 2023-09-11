@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import image1 from "../images/product1.webp";
-import image2 from "../images/product2.jpg";
 import axios from "axios";
 
 export const fetchProducts = createAsyncThunk(

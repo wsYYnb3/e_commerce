@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { Dropdown } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
 

@@ -1,11 +1,10 @@
 import React from "react";
-import { Button, FormControl } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 import { FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
-import styled from "styled-components";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, adjustQuantity } from "../services/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../services/cartSlice";
 import {
   getCurrencyDetails,
   getDisplayPrice,

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Dropdown, Form } from "react-bootstrap";
-import { FaSortAmountDownAlt, FaBars } from "react-icons/fa";
+import { Container, Row, Col, Form } from "react-bootstrap";
+import { FaBars } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import { fetchSearchResults } from "../services/itemsSlice";
 import {
   SideBar,
   SearchBox,
@@ -17,21 +16,11 @@ import Sidebar from "../components/Sidebar";
 import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
 import { sortItems } from "../services/itemsSlice";
-import {
-  fetchProducts,
-  fetchNewestProducts,
-  getFiveNewestProducts,
-} from "../services/itemsSlice";
-import {
-  getDisplayPrice,
-  getCurrencyDetails,
-  calculateSubtotal,
-  formatPrice,
-  getComparisonFunction,
-} from "../utils/utils";
+import { fetchProducts } from "../services/itemsSlice";
+import { getCurrencyDetails, getComparisonFunction } from "../utils/utils";
 import { fetchCategories, selectCategories } from "../services/categoriesSlice";
 import { HeaderContainer, Actions } from "../styles/StorePageStyles";
-
+import LoadingIndicator from "../components/LoadingIndicator";
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -41,7 +30,10 @@ const StorePage = () => {
   const { language } = useParams();
   const { t } = useTranslation();
   const categories = useSelector(selectCategories);
-
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
   useEffect(() => {
     dispatch(fetchProducts())
       .then((response) => {})
@@ -53,7 +45,7 @@ const StorePage = () => {
       .catch((error) => {
         console.error("Failed to fetch categories:", error);
       });
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   const handleSortSelect = (sortKey) => {
     const { currencyId } = getCurrencyDetails(language);
@@ -64,6 +56,33 @@ const StorePage = () => {
     dispatch(sortItems(sortedItems));
   };
 
+  const handleSearch = () => {
+    if (query.trim()) {
+      setLoading(true);
+      setError(null);
+      setHasSearched(true);
+
+      dispatch(fetchSearchResults({ query, language }))
+        .then((response) => {
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch search results:", error);
+          setLoading(false);
+          setError("No search results found.");
+        });
+    } else {
+      setHasSearched(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <animated.div style={fade}>
       <Container fluid>
@@ -72,8 +91,21 @@ const StorePage = () => {
             {isSidebarOpen && (
               <SideBar>
                 <SearchBox>
-                  <SearchIcon />
-                  <Form.Control type='search' placeholder='Search' />
+                  <SearchIcon onClick={handleSearch} />
+                  <Form.Control
+                    type='search'
+                    value={query}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                    }}
+                    placeholder='Search'
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearch();
+                        e.preventDefault();
+                      }
+                    }}
+                  />
                 </SearchBox>
                 <Sidebar
                   categories={categories}
@@ -84,7 +116,7 @@ const StorePage = () => {
             )}
           </Col>
 
-          <Col xs={12} lg={10}>
+          <Col xs={12} lg={10} className='justify-content-center'>
             <HeaderContainer className='px-3'>
               <h4>Our Products</h4>
               <Actions>
@@ -98,7 +130,7 @@ const StorePage = () => {
             <ProductRow>
               <ProductList
                 selectedCategories={selectedCategories}
-                items={products.items}
+                items={hasSearched ? products.searchResults : products.items}
               />
             </ProductRow>
           </Col>

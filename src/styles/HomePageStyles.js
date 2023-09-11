@@ -1,25 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { Button, Card, Row, Col, Container } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faSeedling } from "@fortawesome/free-solid-svg-icons";
-import { useSpring, animated } from "react-spring";
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import { useTranslation } from "react-i18next";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import {
-  fetchProducts,
-  fetchNewestProducts,
-  getFiveNewestProducts,
-} from "../services/itemsSlice";
-import axios from "axios";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
 export const ProductItem = styled.div`
   min-height: 350px; // Adjust this to your liking
   width: 300px;

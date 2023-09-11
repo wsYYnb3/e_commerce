@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
-import { Col, Card, Button } from "react-bootstrap";
-import { FaShoppingCart, FaStar } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { Col, Card } from "react-bootstrap";
+import { FaShoppingCart } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, setCart } from "../services/cartSlice";
+import { addToCart } from "../services/cartSlice";
 import {
   addToFavorites,
   removeFromFavorites,
   fetchFavorites,
 } from "../services/favoritesSlice";
 import { useUser } from "@clerk/clerk-react";
-import { fetchProducts, fetchNewestProducts } from "../services/itemsSlice";
 import { useTranslation } from "react-i18next";
 import {
   getCurrencyDetails,

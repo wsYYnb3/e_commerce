@@ -1,21 +1,7 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { addFavorite, removeFavorite } from "../services/favoritesSlice";
-import { useClerk } from "@clerk/clerk-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaShoppingCart, FaStar } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
+import { FaStar } from "react-icons/fa";
 export const StyledStar = styled(FaStar)`
   position: absolute;
   top: 10px;

@@ -1,16 +1,6 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
-import {
-  Card,
-  Button,
-  Col,
-  Row,
-  Container,
-  Form,
-  FormControl,
-} from "react-bootstrap";
+import React, { useState, useEffect, useCallback } from "react";
+import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import ProductDetail from "../components/ProductDetail";
 //import ProductSpecification from '../components/ProductSpecification';
@@ -18,17 +8,11 @@ import ProductDetail from "../components/ProductDetail";
 //import FarmInformation from '../components/FarmInformation';
 //import TechnicalInformation from '../components/TechnicalInformation';
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchProductById,
-  fetchProducts,
-  getProduct,
-} from "../services/itemsSlice";
+import { fetchProductById } from "../services/itemsSlice";
 import TechnicalInfo from "../components/TechnicalInfo";
 import Description from "../components/Description";
 import ProductPurchase from "../components/ProductPurchase";
 import ImageGallery from "../components/ImageGallery";
-import image1 from "../images/product1.webp";
-import image2 from "../images/product2.jpg";
 import Keywords from "../components/Keywords";
 import { useTranslation } from "react-i18next";
 import {

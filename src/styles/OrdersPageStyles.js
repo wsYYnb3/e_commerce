@@ -1,15 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import {
-  FaBox,
-  FaCalendarAlt,
-  FaShoppingCart,
-  FaDollarSign,
-  FaTruck,
-  FaCreditCard,
-} from "react-icons/fa";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import { useSpring, animated } from "react-spring";
 
 export const HeaderContainer = styled.div`
   display: flex;

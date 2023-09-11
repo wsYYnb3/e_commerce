@@ -1,14 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import { Carousel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
-import image1 from "../images/product1.webp";
-import image2 from "../images/product2.jpg";
 import {
   StyledCarousel,
-  CarouselButton,
   CarouselButtonPrev,
   CarouselButtonNext,
 } from "../styles/ImageGalleryStyles";

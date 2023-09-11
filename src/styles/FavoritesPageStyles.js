@@ -1,13 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Row, Col, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { removeFavorite } from "../services/favoritesSlice";
-import { useTranslation } from "react-i18next";
 export const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;
