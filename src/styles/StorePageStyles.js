@@ -14,7 +14,7 @@ export const Actions = styled.div`
 
 export const StyledResetButton = styled(Button)`
   border: none;
-  padding: 10px;
-  margin-left: 10px;
+  padding: 0.4rem;
+  margin-left: 1rem;
   cursor: pointer;
 `;

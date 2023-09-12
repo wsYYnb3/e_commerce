@@ -17,8 +17,6 @@ import {
 
 const OrdersPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
-
-  // Mock data for the orders
   const orders = [
     {
       orderNumber: "123456",
