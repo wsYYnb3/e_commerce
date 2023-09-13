@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,19 +7,79 @@ import { CartContext } from "../contexts/CartContext";
 import TextInput from "../components/TextInput";
 import { schema } from "../services/validation";
 import { FormRow } from "../styles/CheckoutPageStyles";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, adjustQuantity } from "../services/cartSlice";
+import { sendOrder } from "../services/ordersSlice";
+import { useTranslation } from "react-i18next";
+import {
+  getDisplayPrice,
+  getCurrencyDetails,
+  calculateSubtotal,
+  formatPrice,
+} from "../utils/utils";
+import { clearCart } from "../services/cartSlice";
+import { useClerk } from "@clerk/clerk-react";
+import { fetchCart } from "../services/cartSlice";
 const CheckoutPage = () => {
+  const cart = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+
+  const { language } = useParams();
+  const { user } = useClerk();
+
+  const customerId = user?.id;
+  useEffect(() => {
+    dispatch(fetchCart(customerId));
+  }, [dispatch, customerId]);
+
+  const { t } = useTranslation();
   const { control, handleSubmit, watch, formState } = useForm({
     resolver: yupResolver(schema),
   });
-  const [cart] = useContext(CartContext);
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const subtotal = calculateSubtotal(cart, currencyId, symbol);
+  /*const { control, handleSubmit, watch, formState } = useForm({
+    resolver: yupResolver(schema),
+  });*/
+  const { errors } = formState;
 
-  const history = useNavigate();
+  useEffect(() => {
+    console.log("Form errors:", errors);
+  }, [errors]);
+  const navigate = useNavigate();
   const isDeliveryAddressSame = watch("isDeliveryAddressSame", true);
   const entityType = watch("entityType", "privatePerson");
-  const onSubmit = (data) => {
-    console.log("Order submitted", data);
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      cart,
+      customerId,
+      currencyId,
+      total: subtotal,
+    };
+
+    console.log("Payload to be sent:", payload);
+
+    const resp = await dispatch(sendOrder(payload));
+    console.log(resp);
+    const orderId = resp.payload.id;
+    dispatch(clearCart(customerId));
+    navigate(`order-summary/${orderId}`);
   };
+  //const navigate = useNavigate();
+  //const orderStatus = useSelector((state) => state.orders.orderStatus);
+  //const orderDetails = useSelector((state) => state.orders.orderDetails);
+
+  /* useEffect(() => {
+    if (orderStatus === "succeeded") {
+      toast.success("Order was sent successfully", {
+        position: toast.POSITION.TOP_CENTER,
+        onClose: () => navigate(`/order/${orderDetails.id}`),
+      });
+    }
+  }, [orderStatus, orderDetails, navigate]);*/
 
   return (
     <Container>
@@ -277,9 +337,6 @@ const CheckoutPage = () => {
                 </FormRow>
               </>
             )}
-
-            {/* Payment Method fields... */}
-            {/* Submit Button */}
             <Button type='submit'>Submit Order</Button>
           </Form>
         </Col>

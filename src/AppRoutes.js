@@ -39,6 +39,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -79,6 +80,10 @@ const WithLanguageRoutes = () => {
           <Route path='search' element={<SearchPage />} />
           <Route path='cart' element={<CartPage />} />
           <Route path='checkout' element={<CheckoutPage />} />
+          <Route
+            path='checkout/order-summary/:orderId'
+            element={<OrderSuccessPage />}
+          />
           <Route
             path='product/:productId/:productSlug'
             element={<ProductPage />}

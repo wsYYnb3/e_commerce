@@ -31,6 +31,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LanguageSelector from "./LanguageSelector";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "../services/cartSlice";
+import { verifyAdmin } from "../utils/utils";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,14 +53,20 @@ const Header = () => {
   useEffect(() => {
     setQuery(queryParam || "");
   }, [searchParams]);
+  const [isAdmin, setIsAdmin] = useState(null);
+
   useEffect(() => {
     if (user) {
+      verifyAdmin(user.id).then((isAdmin) => {
+        setIsAdmin(isAdmin);
+      });
       dispatch(fetchCart(user?.id));
     }
   }, [user, dispatch]);
   return (
     <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2'>
       <LanguageSelector />
+
       <Navbar.Brand as={Link} to={`/${language}`} className='ms-4'>
         <FontAwesomeIcon icon={faLeaf} /> YieldDeal
       </Navbar.Brand>
