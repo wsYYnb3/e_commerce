@@ -54,7 +54,21 @@ export const removeFromCart = createAsyncThunk(
     }
   }
 );
-
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      const response = await axios.delete(`http://localhost:5000/cart/clear`, {
+        data: { customerId: data },
+      });
+      await thunkAPI.dispatch(fetchCart(data));
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 export const adjustQuantity = createAsyncThunk(
   "cart/adjustQuantity",
   async (data) => {
@@ -102,6 +116,9 @@ const cartSlice = createSlice({
         if (index >= 0) {
           state.cartItems.splice(index, 1);
         }
+        state.cartCount = state.cartItems.length;
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
         state.cartCount = state.cartItems.length;
       })
       .addCase(adjustQuantity.fulfilled, (state, action) => {

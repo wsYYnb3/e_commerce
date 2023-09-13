@@ -34,7 +34,7 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     dispatch(fetchFavorites(customer_id));
-  }, [dispatch]);
+  }, [dispatch, language]);
   if (!favorites || favorites.length === 0) {
     return <p>No products found in favorites.</p>;
   }

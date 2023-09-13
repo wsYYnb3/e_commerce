@@ -7,7 +7,6 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      // URL to fetch translations from
       loadPath: "http://localhost:5000/api/translations/{{lng}}",
     },
     lng: "en",
