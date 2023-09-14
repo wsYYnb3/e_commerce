@@ -8,6 +8,7 @@ import {
   SignUp,
   UserProfile,
   useClerk,
+  useUser,
 } from "@clerk/clerk-react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
@@ -42,17 +43,17 @@ const ALLOWED_LANGUAGES = ["en", "es", "he", "fr", "de", "hu"];
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
 export const AdminProtectedRoute = ({ children }) => {
-  const { user } = useClerk();
+  const { user } = useUser();
   const [isAdmin, setIsAdmin] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      setIsAdmin(verifyAdmin(user.id));
-      if (!verifyAdmin(user.id)) {
+      setIsAdmin(verifyAdmin(user));
+      if (!isAdmin) {
         console.log("not admin");
       }
     } else {
-      // navigate("/en/sign-in");
+      navigate("/en/sign-in");
     }
   }, [user]);
 
@@ -64,7 +65,7 @@ export const AdminProtectedRoute = ({ children }) => {
     return children;
   }
 
-  return <Navigate to='/en' />;
+  return <Navigate to='/en/admin' />;
 };
 
 export function ClerkProviderWithRoutes() {

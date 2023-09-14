@@ -5,6 +5,7 @@ import favoritesReducer from "./favoritesSlice";
 import categoriesReducer from "./categoriesSlice";
 import ordersReducer from "./ordersSlice";
 import adminReducer from "./adminSlice";
+import addressReducer from "./addressSlice";
 export default configureStore({
   reducer: {
     cart: cartReducer,
@@ -13,6 +14,7 @@ export default configureStore({
     favorites: favoritesReducer,
     categories: categoriesReducer,
     orders: ordersReducer,
+    address: addressReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

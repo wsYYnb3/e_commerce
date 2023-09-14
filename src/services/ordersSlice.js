@@ -7,11 +7,9 @@ export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
   async (customerId) => {
     try {
-      console.log("orders fetching");
       const response = await axios.get(
         `http://localhost:5000/orders/get/${customerId}`
       );
-      console.log(response);
       return response.data;
     } catch (error) {
       throw error;
@@ -24,11 +22,9 @@ export const fetchAllOrders = createAsyncThunk(
   async (customerId) => {
     if (verifyAdmin(customerId)) {
       try {
-        console.log("orders fetching");
         const response = await axios.get(
           `http://localhost:5000/orders/get/${customerId}`
         );
-        console.log(response);
         return response.data;
       } catch (error) {
         throw error;
@@ -47,10 +43,9 @@ export const sendOrder = createAsyncThunk(
         `http://localhost:5000/orders/add/${data.customerId}`,
         data
       );
-      await thunkAPI.dispatch(fetchOrders(data.customerId));
-      console.log(response);
       return response.data;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -70,9 +65,6 @@ const ordersSlice = createSlice({
 
     builder.addCase(sendOrder.fulfilled, (state, action) => {
       state.ordersItems = action.payload;
-      if (!Array.isArray(state.ordersItems)) {
-        state.ordersItems = [state.ordersItems];
-      }
     });
   },
 });

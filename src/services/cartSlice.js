@@ -58,7 +58,6 @@ export const clearCart = createAsyncThunk(
   "cart/clearCart",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
       const response = await axios.delete(`http://localhost:5000/cart/clear`, {
         data: { customerId: data },
       });

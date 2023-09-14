@@ -54,6 +54,7 @@ export async function verifyAdmin(id) {
   if (id) {
     try {
       const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
+
       if (resp.data.id) {
         return true;
       } else {
@@ -61,7 +62,7 @@ export async function verifyAdmin(id) {
       }
     } catch (error) {
       console.log(error);
-      throw error;
+      return false;
     }
   } else {
     return false;

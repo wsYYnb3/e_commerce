@@ -46,7 +46,6 @@ const adminSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllOrders.fulfilled, (state, action) => {
       state.ordersItems = action.payload;
-      console.log(state.ordersItems);
       if (!Array.isArray(state.ordersItems)) {
         state.ordersItems = [state.ordersItems];
       }
