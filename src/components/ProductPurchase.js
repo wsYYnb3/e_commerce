@@ -28,8 +28,10 @@ const ProductPurchase = ({ product }) => {
   const { user } = useUser();
   const customerId = user?.id;
   const handleAddToCart = () => {
-    const newProduct = { ...product, quantity, customerId };
-    dispatch(addToCart(newProduct));
+    if (customerId) {
+      const newProduct = { ...product, quantity, customerId };
+      dispatch(addToCart(newProduct));
+    }
     toast.success("Product added to cart!", { position: "bottom-center" });
   };
 

@@ -90,6 +90,7 @@ const Header = () => {
           >
             <FontAwesomeIcon icon={faInfoCircle} /> Settings
           </Nav.Link>
+          <UserButton />
         </Nav>
       </Navbar>
     );

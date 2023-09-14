@@ -31,7 +31,9 @@ const CartPage = () => {
   const { user } = useClerk();
   const customerId = user?.id;
   useEffect(() => {
-    dispatch(fetchCart(customerId));
+    if (customerId) {
+      dispatch(fetchCart(customerId));
+    }
   }, [dispatch, customerId]);
 
   const handleRemoveFromCart = (e, product_id, customer_id) => {

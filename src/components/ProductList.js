@@ -39,11 +39,11 @@ const ProductList = ({ selectedCategories, items: products }) => {
     navigate(`/${language}/product/${productId}/${t(slugKey)}`);
   };
 
-  const customer_id = user?.id;
+  const customerId = user?.id;
 
   const handleAddToCart = (e, product) => {
     e.stopPropagation();
-    const newProduct = { ...product, quantity: 1, customerId: customer_id };
+    const newProduct = { ...product, quantity: 1, customerId: customerId };
     dispatch(addToCart(newProduct));
     toast.success("Product added to cart!", { position: "bottom-center" });
   };
@@ -51,7 +51,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (user) {
-      const data = { product_id: product.id, customer_id: customer_id };
+      const data = { product_id: product.id, customerId: customerId };
       if (isFavorite(product)) {
         dispatch(removeFromFavorites(data));
         toast.info("Product removed from favorites!", {
@@ -79,8 +79,10 @@ const ProductList = ({ selectedCategories, items: products }) => {
         )
       : products;
   useEffect(() => {
-    dispatch(fetchFavorites(customer_id));
-  }, [dispatch, user, customer_id]);
+    if (customerId) {
+      dispatch(fetchFavorites(customerId));
+    }
+  }, [dispatch, user, customerId]);
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }

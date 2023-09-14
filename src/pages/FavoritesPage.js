@@ -24,10 +24,10 @@ const FavoritesPage = () => {
   const { language } = useParams();
   const { t } = useTranslation();
   const { user } = useUser();
-  const customer_id = user?.id;
-  const handleRemoveFavorite = (e, product_id, customer_id) => {
+  const customerId = user?.id;
+  const handleRemoveFavorite = (e, productId, customerId) => {
     e.stopPropagation();
-    const data = { product_id: product_id, customer_id: customer_id };
+    const data = { productId: productId, customerId: customerId };
     dispatch(removeFromFavorites(data));
     toast.info("Product removed from favorites!", {
       position: "bottom-center",
@@ -35,8 +35,10 @@ const FavoritesPage = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchFavorites(customer_id));
-  }, [dispatch, language, customer_id]);
+    if (customerId) {
+      dispatch(fetchFavorites(customerId));
+    }
+  }, [dispatch, language, customerId]);
   if (!favorites || favorites.length === 0) {
     return <p>No products found in favorites.</p>;
   }
@@ -55,7 +57,7 @@ const FavoritesPage = () => {
           <CardContainer>
             <StyledStar
               onClick={(e) =>
-                handleRemoveFavorite(e, data.product.id, customer_id)
+                handleRemoveFavorite(e, data.product.id, customerId)
               }
               favorite='true'
             />

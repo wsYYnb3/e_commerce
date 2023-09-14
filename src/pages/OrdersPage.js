@@ -24,6 +24,7 @@ import {
   IconText,
 } from "../styles/OrdersPageStyles";
 import { fetchOrders } from "../services/ordersSlice";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const OrdersPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
@@ -35,13 +36,14 @@ const OrdersPage = () => {
   const customerId = user?.id;
 
   useEffect(() => {
-    dispatch(fetchOrders(customerId));
+    if (customerId) {
+      dispatch(fetchOrders(customerId));
+    }
   }, [dispatch, language, customerId]);
   if (!orders || orders.length === 0) {
     return <p>No previous orders.</p>;
   }
 
-  console.log(orders);
   const getStatusIcon = (status) => {
     if (status === "Delivered") return <FaTruck />;
     if (status === "Paid") return <FaCreditCard />;
@@ -53,7 +55,9 @@ const OrdersPage = () => {
   if (!orders || orders.length === 0) {
     return <p>No previous orders.</p>;
   }
-  console.log(orders);
+  if (!Array.isArray(orders)) {
+    return <LoadingIndicator />;
+  }
   return (
     <animated.div style={fade}>
       <Container fluid>

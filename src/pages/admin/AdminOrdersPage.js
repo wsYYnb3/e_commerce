@@ -89,7 +89,6 @@ const AdminOrdersPage = () => {
   if (!orders || orders.length === 0) {
     return <p>No orders yet.</p>;
   }
-  console.log(orders);
   return (
     <animated.div style={fade}>
       <Container fluid>

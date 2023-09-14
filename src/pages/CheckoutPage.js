@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -22,20 +22,34 @@ import {
 import { clearCart } from "../services/cartSlice";
 import { useClerk } from "@clerk/clerk-react";
 import { fetchCart } from "../services/cartSlice";
+import {
+  fetchBillingAddress,
+  fetchShippingAddress,
+} from "../services/addressSlice";
+import DynamicOptions from "../components/DynamicOptions";
 const CheckoutPage = () => {
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
-
+  const billingAdresses = useSelector(
+    (state) => state.address.billingAddresses
+  );
+  const shippingAdresses = useSelector(
+    (state) => state.address.shippingAddresses
+  );
   const { language } = useParams();
   const { user } = useClerk();
 
   const customerId = user?.id;
   useEffect(() => {
-    dispatch(fetchCart(customerId));
+    if (customerId) {
+      dispatch(fetchCart(customerId));
+      dispatch(fetchBillingAddress(customerId));
+      dispatch(fetchShippingAddress(customerId));
+    }
   }, [dispatch, customerId]);
 
   const { t } = useTranslation();
-  const { control, handleSubmit, watch, formState } = useForm({
+  const { control, handleSubmit, watch, formState, setValue } = useForm({
     resolver: yupResolver(schema),
   });
   const { currencyId, symbol } = getCurrencyDetails(language);
@@ -57,15 +71,53 @@ const CheckoutPage = () => {
       currencyId,
       total: subtotal,
     };
+    try {
+      const resp = await dispatch(sendOrder(payload)).unwrap();
 
-    console.log("Payload to be sent:", payload);
-
-    const resp = await dispatch(sendOrder(payload));
-    console.log(resp);
-    const orderId = resp.payload.id;
-    dispatch(clearCart(customerId));
-    navigate(`order-summary/${orderId}`);
+      const orderId = resp.id;
+      dispatch(clearCart(customerId));
+      navigate(`order-summary/${orderId}`);
+    } catch (error) {
+      console.error("Failed to send order:", error);
+    }
   };
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState(null);
+  useEffect(() => {
+    if (selectedAddress !== null) {
+      const address = billingAdresses[selectedAddress];
+      if (address) {
+        setValue("billingDetails.address.street", address?.street || "");
+        setValue("billingDetails.address.number", address?.num || "");
+        setValue("billingDetails.address.apt", address?.apt || "");
+        setValue("billingDetails.address.city", address?.city || "");
+        setValue("billingDetails.address.state", address?.state || "");
+        setValue("billingDetails.address.country", address?.country || "");
+        setValue("billingDetails.address.zip", address?.zip || "");
+      }
+    }
+  }, [selectedAddress, setValue]);
+
+  const handleAddressChange = (e) => {
+    setSelectedAddress(e.target.value);
+  };
+  const handleDeliveryAddressChange = (e) => {
+    setSelectedDeliveryAddress(e.target.value);
+  };
+  useEffect(() => {
+    if (selectedDeliveryAddress !== null) {
+      const address = billingAdresses[selectedDeliveryAddress];
+      if (address) {
+        setValue("deliveryDetails.address.street", address?.street || "");
+        setValue("deliveryDetails.address.number", address?.num || "");
+        setValue("deliveryDetails.address.apt", address?.apt || "");
+        setValue("deliveryDetails.address.city", address?.city || "");
+        setValue("deliveryDetails.address.state", address?.state || "");
+        setValue("deliveryDetails.address.country", address?.country || "");
+        setValue("deliveryDetails.address.zip", address?.zip || "");
+      }
+    }
+  }, [selectedDeliveryAddress, setValue]);
   //const navigate = useNavigate();
   //const orderStatus = useSelector((state) => state.orders.orderStatus);
   //const orderDetails = useSelector((state) => state.orders.orderDetails);
@@ -78,7 +130,6 @@ const CheckoutPage = () => {
       });
     }
   }, [orderStatus, orderDetails, navigate]);*/
-
   return (
     <Container>
       <Row>
@@ -151,6 +202,15 @@ const CheckoutPage = () => {
               </Col>
             </FormRow>
             <h4>Billing Address</h4>
+            <Col xs={8} md={6}>
+              <FormRow>
+                {/* Add DynamicOptions component here */}
+                <DynamicOptions
+                  options={billingAdresses}
+                  onChange={handleAddressChange}
+                />
+              </FormRow>
+            </Col>
             <FormRow>
               <Col xs={8} md={6}>
                 <TextInput
@@ -248,6 +308,14 @@ const CheckoutPage = () => {
             {!isDeliveryAddressSame && (
               <>
                 <h4>Delivery Details</h4>
+                <Col xs={8} md={6}>
+                  <FormRow>
+                    <DynamicOptions
+                      options={shippingAdresses}
+                      onChange={handleDeliveryAddressChange}
+                    />
+                  </FormRow>
+                </Col>
                 <FormRow>
                   <Col xs={8} md={6}>
                     <TextInput

@@ -16,3 +16,14 @@ export const FormControl = styled(Form.Control)`
 export const FormLabel = styled(Form.Label)`
   font-size: small;
 `;
+
+export const StyledSelect = styled(Form.Select)`
+  width: 100%;
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+`;
+
+export const StyledOption = styled.option`
+  padding: 0.5rem 1rem;
+`;

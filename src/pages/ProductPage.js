@@ -26,6 +26,7 @@ import {
   ProductPageContainer,
   DescriptionTechnicalInfoContainer,
 } from "../styles/ProductPageStyles";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const ProductPage = () => {
   const { productId: id } = useParams();
@@ -37,7 +38,9 @@ const ProductPage = () => {
 
   const dispatch = useDispatch();
   const { language } = useParams();
-
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const displayPrice = getDisplayPrice(product, currencyId);
+  const formattedPrice = formatPrice(displayPrice, symbol);
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
@@ -60,11 +63,9 @@ const ProductPage = () => {
 
   if (!product) {
     console.log("No product");
-    return <div>Loading...</div>;
+    return <LoadingIndicator />;
   }
-  const { currencyId, symbol } = getCurrencyDetails(language);
-  const displayPrice = getDisplayPrice(product, currencyId);
-  const formattedPrice = formatPrice(displayPrice, symbol);
+
   return (
     <animated.div style={fade}>
       <ProductPageContainer>
