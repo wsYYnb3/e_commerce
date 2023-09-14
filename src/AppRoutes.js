@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   ClerkProvider,
   SignedIn,
@@ -6,21 +6,12 @@ import {
   RedirectToSignIn,
   SignIn,
   SignUp,
-  useUser,
   UserProfile,
+  useClerk,
 } from "@clerk/clerk-react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "./components/Header";
-import Layout from "./components/Layout";
-import Footer from "./components/Footer";
-import UserPage from "./pages/UserPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import StorePage from "./pages/StorePage";
 import MostSoldPage from "./pages/MostSoldPage";
@@ -29,24 +20,52 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage.js";
 import ProductPage from "./pages/ProductPage";
 import SupportPage from "./pages/SupportPage.js";
-import LoginPage from "./pages/LoginPage";
 import OrdersPage from "./pages/OrdersPage";
 import NewestPage from "./pages/NewestPage";
 import HomePage from "./pages/HomePage";
-import SignUpPage from "./pages/SignUpPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { verifyAdmin } from "./utils/utils.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
-
+import LoadingIndicator from "./components/LoadingIndicator";
+import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
+import AdminProductsPage from "./pages/admin/AdminProductsPage";
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
 const ALLOWED_LANGUAGES = ["en", "es", "he", "fr", "de", "hu"];
 
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
+export const AdminProtectedRoute = ({ children }) => {
+  const { user } = useClerk();
+  const [isAdmin, setIsAdmin] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      setIsAdmin(verifyAdmin(user.id));
+      if (!verifyAdmin(user.id)) {
+        console.log("not admin");
+      }
+    } else {
+      // navigate("/en/sign-in");
+    }
+  }, [user]);
+
+  if (isAdmin === null) {
+    return <LoadingIndicator />;
+  }
+
+  if (isAdmin) {
+    return children;
+  }
+
+  return <Navigate to='/en' />;
+};
 
 export function ClerkProviderWithRoutes() {
   const navigate = useNavigate();
@@ -74,6 +93,19 @@ const WithLanguageRoutes = () => {
       <Container fluid>
         <ToastContainer autoClose={1500} />
         <Routes>
+          <Route
+            path='admin/*'
+            element={
+              <AdminProtectedRoute>
+                <Routes>
+                  <Route path='dashboard' element={<AdminDashboardPage />} />
+                  <Route path='settings' element={<AdminSettingsPage />} />
+                  <Route path='orders' element={<AdminOrdersPage />} />
+                  <Route path='products' element={<AdminProductsPage />} />
+                </Routes>
+              </AdminProtectedRoute>
+            }
+          />
           <Route index element={<HomePage />} />
           <Route path='store' element={<StorePage />} />
           <Route path='mostsold' element={<MostSoldPage />} />
@@ -90,8 +122,8 @@ const WithLanguageRoutes = () => {
           />
           <Route path='support' element={<SupportPage />} />
           <Route path='newest' element={<NewestPage />} />
-          <Route path='sign-in/*' element={<CenteredSignIn />} />
-          <Route path='sign-up/*' element={<CenteredSignUp />} />
+          <Route path='sign-in' element={<CenteredSignIn />} />
+          <Route path='sign-up' element={<CenteredSignUp />} />
           <Route
             path='favorites'
             element={
@@ -142,7 +174,7 @@ const CenteredSignIn = () => {
   return (
     <Row className='justify-content-center align-items-center min-vh-100'>
       <Col xs={12} sm={6} md={4}>
-        <SignIn routing='path' path={`/${language}/sign-in`} />
+        <SignIn routing='sign-in' path={`/${language}/sign-in`} />
       </Col>
     </Row>
   );
@@ -153,7 +185,7 @@ const CenteredSignUp = () => {
   return (
     <Row className='justify-content-center align-items-center min-vh-100'>
       <Col xs={12} sm={6} md={4}>
-        <SignUp routing='path' path={`/${language}/sign-up`} />
+        <SignUp routing='sign-up' path={`/${language}/sign-up`} />
       </Col>
     </Row>
   );

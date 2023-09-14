@@ -1,6 +1,7 @@
 import { Badge } from "react-bootstrap";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 export const KeywordContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

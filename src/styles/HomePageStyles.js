@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import "react-multi-carousel/lib/styles.css";
+
 export const ProductItem = styled.div`
   min-height: 350px; // Adjust this to your liking
   width: 300px;

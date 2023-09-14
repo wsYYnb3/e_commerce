@@ -1,6 +1,7 @@
 import { ListGroup, Card } from "react-bootstrap";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
+
 export const StyledWrapper = styled.div`
   background-color: #f4f4f4;
   min-height: 100vh;

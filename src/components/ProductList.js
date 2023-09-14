@@ -4,14 +4,15 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { useUser } from "@clerk/clerk-react";
+import { useTranslation } from "react-i18next";
 import { addToCart } from "../services/cartSlice";
 import {
   addToFavorites,
   removeFromFavorites,
   fetchFavorites,
 } from "../services/favoritesSlice";
-import { useUser } from "@clerk/clerk-react";
-import { useTranslation } from "react-i18next";
+
 import {
   getCurrencyDetails,
   getDisplayPrice,
@@ -79,7 +80,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
       : products;
   useEffect(() => {
     dispatch(fetchFavorites(customer_id));
-  }, [dispatch, user]);
+  }, [dispatch, user, customer_id]);
   if (filteredProducts.length === 0) {
     return <p>No products found for the selected categories.</p>;
   }

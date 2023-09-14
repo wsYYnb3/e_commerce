@@ -1,16 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  ListGroup,
-  Image,
-  Card,
-  Form,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, ListGroup, Image } from "react-bootstrap";
 import { FaTrash, FaShoppingCart } from "react-icons/fa";
-import styled from "styled-components";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +8,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, adjustQuantity } from "../services/cartSlice";
 import { useTranslation } from "react-i18next";
+import { useClerk } from "@clerk/clerk-react";
+
+import { fetchCart } from "../services/cartSlice";
 import {
   getDisplayPrice,
   getCurrencyDetails,
@@ -29,8 +22,6 @@ import {
   StyledCard,
   StyledListGroupItem,
 } from "../styles/CartPageStyles";
-import { useClerk } from "@clerk/clerk-react";
-import { fetchCart } from "../services/cartSlice";
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart.cartItems);

@@ -2,6 +2,7 @@ import { Card } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 export const CardContainer = styled.div`
   position: relative;
   margin-bottom: 4px;

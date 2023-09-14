@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Carousel } from "react-bootstrap";
+
 export const StyledCarousel = styled(Carousel)`
   @media (min-width: 1125px) {
     height: 255px;

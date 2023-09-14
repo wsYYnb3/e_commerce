@@ -1,9 +1,6 @@
 import { Col, Container } from "react-bootstrap";
 import styled from "styled-components";
-//import ProductSpecification from '../components/ProductSpecification';
-//import FarmerProfile from '../components/FarmerProfile';
-//import FarmInformation from '../components/FarmInformation';
-//import TechnicalInformation from '../components/TechnicalInformation';
+
 export const StyledCol = styled(Col)`
   margin-bottom: 30px;
 

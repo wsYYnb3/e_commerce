@@ -8,7 +8,7 @@ import { animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { fetchProducts, getFiveNewestProducts } from "../services/itemsSlice";
+import { useSession, useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import {
   getCurrencyDetails,
@@ -23,7 +23,8 @@ import {
   StyledLink,
   StyledBanner,
 } from "../styles/HomePageStyles";
-import { useSession, useUser } from "@clerk/clerk-react";
+import { fetchProducts, getFiveNewestProducts } from "../services/itemsSlice";
+
 const backendServer = "http://localhost:5000";
 const HomePage = () => {
   const { t } = useTranslation();

@@ -40,9 +40,7 @@ const CheckoutPage = () => {
   });
   const { currencyId, symbol } = getCurrencyDetails(language);
   const subtotal = calculateSubtotal(cart, currencyId, symbol);
-  /*const { control, handleSubmit, watch, formState } = useForm({
-    resolver: yupResolver(schema),
-  });*/
+
   const { errors } = formState;
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
 import { FaStar } from "react-icons/fa";
+
 export const StyledStar = styled(FaStar)`
   position: absolute;
   top: 10px;
