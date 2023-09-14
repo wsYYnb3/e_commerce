@@ -4,18 +4,20 @@ import { Row, Col, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import {
-  removeFromFavorites,
-  fetchFavorites,
-} from "../services/favoritesSlice";
 import { useTranslation } from "react-i18next";
+import { useUser } from "@clerk/clerk-react";
+
 import {
   CardContainer,
   StyledStar,
   StyledCard,
   StyledLink,
 } from "../styles/FavoritesPageStyles";
-import { useUser } from "@clerk/clerk-react";
+import {
+  removeFromFavorites,
+  fetchFavorites,
+} from "../services/favoritesSlice";
+
 const FavoritesPage = () => {
   const favorites = useSelector((state) => state.favorites.favoritesItems);
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     dispatch(fetchFavorites(customer_id));
-  }, [dispatch, language]);
+  }, [dispatch, language, customer_id]);
   if (!favorites || favorites.length === 0) {
     return <p>No products found in favorites.</p>;
   }

@@ -33,21 +33,38 @@ export const getDisplayPrice = (product, currencyId) => {
 
   return productPriceInCurrency ? parseFloat(productPriceInCurrency.price) : 0;
 };
-
+export const formatAddress = (address) => {
+  if (!address) return "N/A";
+  return [
+    address.street,
+    address.num,
+    address.apt,
+    address.city,
+    address.state,
+    address.zip,
+    address.country,
+  ]
+    .filter(Boolean) // This removes falsy values to avoid displaying 'undefined' or 'null'
+    .join(", ");
+};
 export const formatPrice = (price, symbol) => {
   return `${price} ${symbol}`;
 };
 export async function verifyAdmin(id) {
-  try {
-    const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
-    if (resp.data.id) {
-      return true;
-    } else {
-      return false;
+  if (id) {
+    try {
+      const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
+      if (resp.data.id) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-  } catch (error) {
-    console.log("error in admin verificiation");
-    throw error;
+  } else {
+    return false;
   }
 }
 export const calculateSubtotal = (cart, currencyId, symbol) => {

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
+import { verifyAdmin } from "../utils/utils";
 
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
@@ -14,6 +15,26 @@ export const fetchOrders = createAsyncThunk(
       return response.data;
     } catch (error) {
       throw error;
+    }
+  }
+);
+
+export const fetchAllOrders = createAsyncThunk(
+  "orders/fetchOrders",
+  async (customerId) => {
+    if (verifyAdmin(customerId)) {
+      try {
+        console.log("orders fetching");
+        const response = await axios.get(
+          `http://localhost:5000/orders/get/${customerId}`
+        );
+        console.log(response);
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw { error: "unathorized" };
     }
   }
 );
@@ -49,6 +70,9 @@ const ordersSlice = createSlice({
 
     builder.addCase(sendOrder.fulfilled, (state, action) => {
       state.ordersItems = action.payload;
+      if (!Array.isArray(state.ordersItems)) {
+        state.ordersItems = [state.ordersItems];
+      }
     });
   },
 });

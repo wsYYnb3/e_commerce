@@ -4,31 +4,27 @@ import {
   FaBox,
   FaCalendarAlt,
   FaShoppingCart,
-  FaDollarSign,
   FaTruck,
   FaCreditCard,
   FaMoneyBill,
 } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useUser } from "@clerk/clerk-react";
+import { getCurrencySymbol } from "../utils/utils";
+import { BiLoaderCircle } from "react-icons/bi";
+import { BsSignpost } from "react-icons/bs";
+import { ImCancelCircle } from "react-icons/im";
 import {
   HeaderContainer,
   OrderCard,
   IconText,
 } from "../styles/OrdersPageStyles";
 import { fetchOrders } from "../services/ordersSlice";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import {
-  removeFromFavorites,
-  fetchFavorites,
-} from "../services/favoritesSlice";
-import { useTranslation } from "react-i18next";
-import { useUser } from "@clerk/clerk-react";
-import { getCurrencySymbol } from "../utils/utils";
-import { BiLoaderCircle } from "react-icons/bi";
-import { BsSignpost } from "react-icons/bs";
+
 const OrdersPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const orders = useSelector((state) => state.orders.ordersItems);
@@ -40,17 +36,17 @@ const OrdersPage = () => {
 
   useEffect(() => {
     dispatch(fetchOrders(customerId));
-    console.log(orders);
-  }, [dispatch, language]);
+  }, [dispatch, language, customerId]);
   if (!orders || orders.length === 0) {
     return <p>No previous orders.</p>;
   }
-  console.log(orders);
+
   console.log(orders);
   const getStatusIcon = (status) => {
-    if (status === "delivered") return <FaTruck />;
-    if (status === "paid") return <FaCreditCard />;
-    if (status === "sent") return <BsSignpost />;
+    if (status === "Delivered") return <FaTruck />;
+    if (status === "Paid") return <FaCreditCard />;
+    if (status === "Sent") return <BsSignpost />;
+    if (status === "Canceled") return <ImCancelCircle />;
     if (status === "processing") return <BiLoaderCircle />;
     return null;
   };

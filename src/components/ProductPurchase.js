@@ -4,20 +4,22 @@ import { FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../services/cartSlice";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useUser } from "@clerk/clerk-react";
+
 import {
   StyledContainer,
   QuantityWrapper,
   StyledButton,
 } from "../styles/ProductPurchaseStyles";
-import { useUser } from "@clerk/clerk-react";
+import {
+  getCurrencyDetails,
+  getDisplayPrice,
+  formatPrice,
+} from "../utils/utils";
+import { addToCart } from "../services/cartSlice";
+
 const ProductPurchase = ({ product }) => {
   const { language } = useParams();
   const { t } = useTranslation();

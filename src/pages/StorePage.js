@@ -25,6 +25,7 @@ import {
   StyledResetButton,
 } from "../styles/StorePageStyles";
 import LoadingIndicator from "../components/LoadingIndicator";
+
 const StorePage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);

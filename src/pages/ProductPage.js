@@ -48,7 +48,7 @@ const ProductPage = () => {
     if (product) {
       setTotalPrice(quantity * displayPrice);
     }
-  }, [quantity, product]);
+  }, [quantity, product, displayPrice]);
 
   const increaseQuantity = useCallback(() => {
     setQuantity((prevQuantity) => prevQuantity + 1);

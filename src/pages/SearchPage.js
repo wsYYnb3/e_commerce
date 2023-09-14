@@ -1,59 +1,22 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { fetchSearchResults, sortSearch } from "../services/itemsSlice";
+
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Dropdown, Form } from "react-bootstrap";
-import { FaSortAmountDownAlt, FaBars } from "react-icons/fa";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { useSpring, animated } from "react-spring";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
-import {
-  SideBar,
-  SearchBox,
-  SearchIcon,
-  ProductRow,
-} from "../styles/StoreStyles";
-import Sidebar from "../components/Sidebar";
+
+import { ProductRow } from "../styles/StoreStyles";
 import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
-import { sortItems } from "../services/itemsSlice";
-import {
-  fetchProducts,
-  fetchNewestProducts,
-  getFiveNewestProducts,
-} from "../services/itemsSlice";
-import {
-  getDisplayPrice,
-  getCurrencyDetails,
-  calculateSubtotal,
-  formatPrice,
-  getComparisonFunction,
-} from "../utils/utils";
+import { getCurrencyDetails, getComparisonFunction } from "../utils/utils";
 import { fetchCategories, selectCategories } from "../services/categoriesSlice";
 import { HeaderContainer, Actions } from "../styles/StorePageStyles";
 import LoadingIndicator from "../components/LoadingIndicator";
-
-const StyledSearchIcon = styled(FontAwesomeIcon)`
-  margin-right: 10px;
-  color: #555;
-`;
-
-const SearchBar = styled.div`
-  position: relative;
-  width: 100%;
-
-  .react-autosuggest__input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid #555;
-    border-radius: 4px;
-  }
-`;
+import { fetchSearchResults, sortSearch } from "../services/itemsSlice";
+import { StyledSearchIcon, SearchBar } from "../styles/SearchPageStyles";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");

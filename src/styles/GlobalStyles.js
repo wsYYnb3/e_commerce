@@ -9,7 +9,6 @@ body {
   padding: 0;
 }
 
-/* Reset Bootstrap Navbar's inherent padding */
 .navbar {
   background-color: #1d3931;
   padding-left: 0; 
