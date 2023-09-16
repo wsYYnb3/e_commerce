@@ -44,6 +44,19 @@ const ProductPurchase = ({ product }) => {
       setQuantity(quantity - 1);
     }
   };
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 400);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 400);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId);
@@ -61,8 +74,16 @@ const ProductPurchase = ({ product }) => {
           style={{ width: "60px" }}
         />
         <FaPlus onClick={handleIncreaseQuantity} />
-        <StyledButton variant='primary' size='sm' onClick={handleAddToCart}>
-          {totalPrice} {symbol} <FaShoppingCart />
+        <StyledButton
+          variant='primary'
+          size='sm'
+          onClick={handleAddToCart}
+          isMobile={isMobile}
+        >
+          <span className='button-text'>
+            {totalPrice} {symbol}
+          </span>{" "}
+          <FaShoppingCart />
         </StyledButton>
       </QuantityWrapper>
     </StyledContainer>

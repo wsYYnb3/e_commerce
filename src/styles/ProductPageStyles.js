@@ -2,11 +2,9 @@ import { Col, Container } from "react-bootstrap";
 import styled from "styled-components";
 
 export const StyledCol = styled(Col)`
-  margin-bottom: 30px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StyledImageCol = styled(Col)`
@@ -22,7 +20,21 @@ export const ProductPageContainer = styled(Container)`
 `;
 
 export const DescriptionTechnicalInfoContainer = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  margin-left: 40px;
+  align-items: center;
   @media (min-width: 768px) {
-    margin-left: 30px;
+  }
+`;
+
+export const DetailPurchaseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    align-items: flex-start;
   }
 `;

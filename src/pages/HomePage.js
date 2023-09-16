@@ -14,6 +14,7 @@ import {
   getCurrencyDetails,
   getDisplayPrice,
   formatPrice,
+  getImageById,
 } from "../utils/utils";
 import {
   ProductItem,
@@ -48,6 +49,7 @@ const HomePage = () => {
 
     dispatch(fetchProducts());
   }, [dispatch]);
+  console.log(products);
   const renderProducts = (items) =>
     items.map((product, index) => {
       const { currencyId, symbol } = getCurrencyDetails(language);
@@ -60,7 +62,7 @@ const HomePage = () => {
         >
           <ProductItem>
             <img
-              src={product.productcardimages[0]?.image?.file_path ?? ""}
+              src={getImageById(product.productcardimages[0]?.image?.id) ?? ""}
               alt={t(product.name_key)}
             />
             <StyledProductName>{t(product.name_key)}</StyledProductName>
@@ -72,19 +74,19 @@ const HomePage = () => {
   const fiveNewestProducts = useSelector(getFiveNewestProducts);
   const responsive = {
     superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
+      breakpoint: { max: 3000, min: 1400 },
+      items: 4,
     },
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 1400, min: 1000 },
       items: 3,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
+      breakpoint: { max: 1000, min: 768 },
       items: 2,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
+      breakpoint: { max: 768, min: 0 },
       items: 1,
     },
   };

@@ -91,81 +91,80 @@ const WithLanguageRoutes = () => {
   return (
     <>
       <Header />
-      <Container fluid>
-        <ToastContainer autoClose={1500} />
-        <Routes>
-          <Route
-            path='admin/*'
-            element={
-              <AdminProtectedRoute>
-                <Routes>
-                  <Route path='dashboard' element={<AdminDashboardPage />} />
-                  <Route path='settings' element={<AdminSettingsPage />} />
-                  <Route path='orders' element={<AdminOrdersPage />} />
-                  <Route path='products' element={<AdminProductsPage />} />
-                </Routes>
-              </AdminProtectedRoute>
-            }
-          />
-          <Route index element={<HomePage />} />
-          <Route path='store' element={<StorePage />} />
-          <Route path='mostsold' element={<MostSoldPage />} />
-          <Route path='search' element={<SearchPage />} />
-          <Route path='cart' element={<CartPage />} />
-          <Route path='checkout' element={<CheckoutPage />} />
-          <Route
-            path='checkout/order-summary/:orderId'
-            element={<OrderSuccessPage />}
-          />
-          <Route
-            path='product/:productId/:productSlug'
-            element={<ProductPage />}
-          />
-          <Route path='support' element={<SupportPage />} />
-          <Route path='newest' element={<NewestPage />} />
-          <Route path='sign-in' element={<CenteredSignIn />} />
-          <Route path='sign-up' element={<CenteredSignUp />} />
-          <Route
-            path='favorites'
-            element={
-              <>
-                <SignedIn>
-                  <FavoritesPage />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-          <Route
-            path='orders'
-            element={
-              <>
-                <SignedIn>
-                  <OrdersPage />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-          <Route
-            path='user-profile/*'
-            element={
-              <>
-                <SignedIn>
-                  <UserProfile routing='path' path='user-profile' />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-        </Routes>
-      </Container>
+
+      <ToastContainer autoClose={1500} />
+      <Routes>
+        <Route
+          path='admin/*'
+          element={
+            <AdminProtectedRoute>
+              <Routes>
+                <Route path='dashboard' element={<AdminDashboardPage />} />
+                <Route path='settings' element={<AdminSettingsPage />} />
+                <Route path='orders' element={<AdminOrdersPage />} />
+                <Route path='products' element={<AdminProductsPage />} />
+              </Routes>
+            </AdminProtectedRoute>
+          }
+        />
+        <Route index element={<HomePage />} />
+        <Route path='store' element={<StorePage />} />
+        <Route path='mostsold' element={<MostSoldPage />} />
+        <Route path='search' element={<SearchPage />} />
+        <Route path='cart' element={<CartPage />} />
+        <Route path='checkout' element={<CheckoutPage />} />
+        <Route
+          path='checkout/order-summary/:orderId'
+          element={<OrderSuccessPage />}
+        />
+        <Route
+          path='product/:productId/:productSlug'
+          element={<ProductPage />}
+        />
+        <Route path='support' element={<SupportPage />} />
+        <Route path='newest' element={<NewestPage />} />
+        <Route path='sign-in' element={<CenteredSignIn />} />
+        <Route path='sign-up' element={<CenteredSignUp />} />
+        <Route
+          path='favorites'
+          element={
+            <>
+              <SignedIn>
+                <FavoritesPage />
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path='orders'
+          element={
+            <>
+              <SignedIn>
+                <OrdersPage />
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path='user-profile/*'
+          element={
+            <>
+              <SignedIn>
+                <UserProfile routing='path' path='user-profile' />
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </>
+          }
+        />
+      </Routes>
     </>
   );
 };

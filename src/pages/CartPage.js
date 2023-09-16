@@ -22,7 +22,8 @@ import {
   StyledCard,
   StyledListGroupItem,
 } from "../styles/CartPageStyles";
-
+import { getImageById } from "./../utils/utils";
+import { StyledLink } from "./../styles/ProductListStyles";
 const CartPage = () => {
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const CartPage = () => {
                   const displayPrice = getDisplayPrice(product, currencyId);
                   const formattedPrice = formatPrice(displayPrice, symbol);
                   const imagePath =
-                    product?.productcartimages?.[0]?.image?.file_path ||
+                    getImageById(product?.productcartimages?.[0]?.image?.id) ||
                     "https://via.placeholder/150";
                   const imageName =
                     product?.productcartimages?.[0]?.image?.file_name ||
@@ -96,40 +97,46 @@ const CartPage = () => {
 
                   return (
                     <StyledListGroupItem key={currentProductId}>
-                      <Row className='align-items-center'>
-                        <Col md={2}>
-                          <Image
-                            src={imageUrl || "path/to/placeholder/image.jpg"}
-                            alt={t(product.name_key)}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col md={4}>
-                          <b>{t(product.name_key)}</b>
-                          <br />
-                          {t(product.unit_of_measure.name)}
-                        </Col>
-                        <Col md={2}>
-                          {formattedPrice} * {cartItem.quantity}
-                        </Col>
-                        <Col md={2}></Col>
-                        <Col md={2}>
-                          <Button
-                            variant='danger'
-                            size='sm'
-                            onClick={(e) => {
-                              handleRemoveFromCart(
-                                e,
-                                currentProductId,
-                                customerId
-                              );
-                            }}
-                          >
-                            <FaTrash />
-                          </Button>
-                        </Col>
-                      </Row>
+                      <StyledLink
+                        to={`/${language}/product/${currentProductId}/${t(
+                          product.slug_key
+                        )}`}
+                      >
+                        <Row className='align-items-center'>
+                          <Col md={2}>
+                            <Image
+                              src={imageUrl || "path/to/placeholder/image.jpg"}
+                              alt={t(product.name_key)}
+                              fluid
+                              rounded
+                            />
+                          </Col>
+                          <Col md={4}>
+                            <b>{t(product.name_key)}</b>
+                            <br />
+                            {t(product.unit_of_measure.name)}
+                          </Col>
+                          <Col md={2}>
+                            {formattedPrice} * {cartItem.quantity}
+                          </Col>
+                          <Col md={2}></Col>
+                          <Col md={2}>
+                            <Button
+                              variant='danger'
+                              size='sm'
+                              onClick={(e) => {
+                                handleRemoveFromCart(
+                                  e,
+                                  currentProductId,
+                                  customerId
+                                );
+                              }}
+                            >
+                              <FaTrash />
+                            </Button>
+                          </Col>
+                        </Row>
+                      </StyledLink>
                     </StyledListGroupItem>
                   );
                 })}

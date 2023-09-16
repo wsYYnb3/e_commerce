@@ -6,6 +6,7 @@ import {
   Button,
   Form,
   InputGroup,
+  Container,
 } from "react-bootstrap";
 import {
   Link,
@@ -67,7 +68,7 @@ const Header = () => {
   }, [user, dispatch]);
   if (isAdmin) {
     return (
-      <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2'>
+      <Navbar bg='dark' variant='dark' expand='lg' className='mb-3 p-2 navbar'>
         <LanguageSelector />
         <Navbar.Brand
           as={Link}

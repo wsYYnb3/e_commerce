@@ -68,6 +68,9 @@ export async function verifyAdmin(id) {
     return false;
   }
 }
+export const getImageById = (id) => {
+  return `http://localhost:5000/images/${id}`;
+};
 export const calculateSubtotal = (cart, currencyId, symbol) => {
   return cart.reduce((acc, item) => {
     const displayPrice = parseFloat(

@@ -18,9 +18,29 @@ export const StyledStar = styled(FaStar)`
 `;
 
 export const StyledCard = styled(Card)`
-  margin-top: 20px;
-  padding: 20px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+
+  &:hover {
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+  }
+  @media (min-width: 1400px) {
+    max-width: 80%;
+    align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  @media (max-width: 1400px) {
+    width: 70%;
+    align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  @media (max-width: 768px) {
+    width: 70%;
+    align: center;
+  }
 `;
 
 export const PriceContainer = styled.div`

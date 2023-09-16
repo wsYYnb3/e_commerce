@@ -26,7 +26,7 @@ import {
   StyledLink,
   StyledButton,
 } from "../styles/ProductListStyles";
-
+import { getImageById } from "./../utils/utils";
 const ProductList = ({ selectedCategories, items: products }) => {
   const favorites = useSelector((state) => state.favorites.favoritesItems);
   const cart = useSelector((state) => state.cart.cartItems);
@@ -102,8 +102,9 @@ const ProductList = ({ selectedCategories, items: products }) => {
           >
             <Card.Img
               variant='top'
-              src={product.productcardimages[0]?.image?.file_path ?? ""}
+              src={getImageById(product.productcardimages[0]?.image?.id) ?? ""}
               alt={t(product.name_key)}
+              style={{ height: "200px", objectFit: "contain" }}
             />
             <Card.Body>
               <Card.Title>

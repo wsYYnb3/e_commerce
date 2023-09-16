@@ -8,6 +8,7 @@ import {
   CarouselButtonPrev,
   CarouselButtonNext,
 } from "../styles/ImageGalleryStyles";
+import { getImageById } from "../utils/utils";
 
 const ImageGallery = ({ images }) => {
   const carouselRef = useRef(null);
@@ -25,7 +26,7 @@ const ImageGallery = ({ images }) => {
         <Carousel.Item key={image.image_id}>
           <img
             className='d-block w-100'
-            src={image.image.file_path}
+            src={getImageById(image.image.id)}
             alt={image.image.file_name}
           />
           <CarouselButtonPrev
