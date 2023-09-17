@@ -49,7 +49,6 @@ const HomePage = () => {
 
     dispatch(fetchProducts());
   }, [dispatch]);
-  console.log(products);
   const renderProducts = (items) =>
     items.map((product, index) => {
       const { currencyId, symbol } = getCurrencyDetails(language);

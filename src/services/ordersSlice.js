@@ -8,7 +8,8 @@ export const fetchOrders = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/orders/get/${customerId}`
+        `http://localhost:5000/orders/get/${customerId}`,
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
@@ -23,7 +24,8 @@ export const fetchAllOrders = createAsyncThunk(
     if (verifyAdmin(customerId)) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/orders/get/${customerId}`
+          `http://localhost:5000/orders/get/${customerId}`,
+          { withCredentials: true }
         );
         return response.data;
       } catch (error) {
@@ -41,7 +43,8 @@ export const sendOrder = createAsyncThunk(
     try {
       const response = await axios.post(
         `http://localhost:5000/orders/add/${data.customerId}`,
-        data
+        data,
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {

@@ -39,6 +39,7 @@ const CartPage = () => {
 
   const handleRemoveFromCart = (e, product_id, customer_id) => {
     e.stopPropagation();
+    e.preventDefault();
     dispatch(removeFromCart({ product_id, customer_id }));
     toast.error("Product removed from cart", {
       position: toast.POSITION.TOP_CENTER,
@@ -62,6 +63,7 @@ const CartPage = () => {
   if (cart === "failed") {
     return <div>Error: </div>;
   }
+
   return (
     <StyledWrapper>
       <Container>
@@ -82,11 +84,13 @@ const CartPage = () => {
               </motion.div>
             ) : (
               <ListGroup variant='flush'>
-                {cart.map((cartItem, index) => {
+                {cart.map((cartItem) => {
                   const { product } = cartItem;
                   const currentProductId = cartItem.product.id;
                   const displayPrice = getDisplayPrice(product, currencyId);
+
                   const formattedPrice = formatPrice(displayPrice, symbol);
+
                   const imagePath =
                     getImageById(product?.productcartimages?.[0]?.image?.id) ||
                     "https://via.placeholder/150";

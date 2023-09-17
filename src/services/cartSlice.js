@@ -5,9 +5,10 @@ export const fetchCart = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/cart/get/${customerId}`
+        `http://localhost:5000/cart/get/${customerId}`,
+        { withCredentials: true }
       );
-
+      console.log(response);
       return response.data;
     } catch (error) {
       throw error;
@@ -20,7 +21,6 @@ export const addToCart = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const productId = data.id;
-
       const postData = {
         ...data,
         productId,
@@ -29,10 +29,11 @@ export const addToCart = createAsyncThunk(
 
       const response = await axios.post(
         `http://localhost:5000/cart/add/${data.customerId}`,
-        postData
+        postData,
+        { withCredentials: true }
       );
       await thunkAPI.dispatch(fetchCart(data.customerId));
-
+      console.log(response);
       return response.data;
     } catch (error) {
       throw error;
@@ -46,6 +47,7 @@ export const removeFromCart = createAsyncThunk(
     try {
       const response = await axios.delete(`http://localhost:5000/cart/update`, {
         data: { customer_id: data.customer_id, product_id: data.product_id },
+        withCredentials: true,
       });
 
       return response.data;
@@ -60,6 +62,7 @@ export const clearCart = createAsyncThunk(
     try {
       const response = await axios.delete(`http://localhost:5000/cart/clear`, {
         data: { customerId: data },
+        withCredentials: true,
       });
       await thunkAPI.dispatch(fetchCart(data));
       return response.data;
@@ -72,10 +75,14 @@ export const adjustQuantity = createAsyncThunk(
   "cart/adjustQuantity",
   async (data) => {
     try {
-      const response = await axios.put(`http://localhost:5000/cart/update`, {
-        customer_id: data.customerId,
-        quantity: data.quantity,
-      });
+      const response = await axios.put(
+        `http://localhost:5000/cart/update`,
+        {
+          customer_id: data.customerId,
+          quantity: data.quantity,
+        },
+        { withCredentials: true }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -95,15 +102,33 @@ const cartSlice = createSlice({
 
     builder
       .addCase(addToCart.fulfilled, (state, action) => {
+        console.log(action.payload);
         const { product_id, quantity } = action.payload;
+
+        if (product_id === undefined || product_id === null) {
+          console.error("Invalid product_id", product_id);
+          return;
+        }
+
         const itemIndex = state.cartItems.findIndex(
-          (item) => item.product_id === product_id
+          (item) => item && item.product_id === product_id
         );
+
+        console.log("Item index:", itemIndex);
+
         if (itemIndex >= 0) {
+          console.log(
+            "upgrading quantity",
+            state.cartItems[itemIndex].quantity,
+            "by",
+            quantity
+          );
           state.cartItems[itemIndex].quantity += quantity;
+          console.log("upgraded quantity", state.cartItems[itemIndex].quantity);
         } else {
           state.cartItems.push(action.payload);
         }
+        console.log(state.cartItems);
         state.cartCount = state.cartItems.length;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {

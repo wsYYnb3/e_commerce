@@ -204,11 +204,12 @@ const CheckoutPage = () => {
             <h4>Billing Address</h4>
             <Col xs={8} md={6}>
               <FormRow>
-                {/* Add DynamicOptions component here */}
-                <DynamicOptions
-                  options={billingAdresses}
-                  onChange={handleAddressChange}
-                />
+                {billingAdresses.length > 0 && (
+                  <DynamicOptions
+                    options={billingAdresses}
+                    onChange={handleAddressChange}
+                  />
+                )}
               </FormRow>
             </Col>
             <FormRow>
@@ -310,10 +311,12 @@ const CheckoutPage = () => {
                 <h4>Delivery Details</h4>
                 <Col xs={8} md={6}>
                   <FormRow>
-                    <DynamicOptions
-                      options={shippingAdresses}
-                      onChange={handleDeliveryAddressChange}
-                    />
+                    {shippingAdresses.length > 0 && (
+                      <DynamicOptions
+                        options={shippingAdresses}
+                        onChange={handleDeliveryAddressChange}
+                      />
+                    )}
                   </FormRow>
                 </Col>
                 <FormRow>

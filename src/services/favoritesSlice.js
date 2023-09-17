@@ -4,14 +4,16 @@ import axios from "axios";
 export const fetchFavorites = createAsyncThunk(
   "wishlist/fetchFavorites",
   async (customerId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/wishlist/get/${customerId}`
-      );
+    if (customerId) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/wishlist/get/${customerId}`
+        );
 
-      return response.data;
-    } catch (error) {
-      throw error;
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 );
@@ -19,16 +21,18 @@ export const fetchFavorites = createAsyncThunk(
 export const addToFavorites = createAsyncThunk(
   "/wishlist/addToFavorites",
   async (data, thunkAPI) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5000/wishlist/add/${data.customer_id}`,
-        data
-      );
-      await thunkAPI.dispatch(fetchFavorites(data.customer_id));
+    if (data.customerId) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/wishlist/add/${data.customer_id}`,
+          data
+        );
+        await thunkAPI.dispatch(fetchFavorites(data.customer_id));
 
-      return response.data;
-    } catch (error) {
-      throw error;
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 );
@@ -36,16 +40,21 @@ export const addToFavorites = createAsyncThunk(
 export const removeFromFavorites = createAsyncThunk(
   "wishlist/removeFromFavorites",
   async (data) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:5000/wishlist/update`,
-        {
-          data: { customer_id: data.customer_id, product_id: data.product_id },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
+    if (data.customerId) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:5000/wishlist/update`,
+          {
+            data: {
+              customer_id: data.customer_id,
+              product_id: data.product_id,
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 );
@@ -56,7 +65,7 @@ const favoritesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchFavorites.fulfilled, (state, action) => {
-      state.favoritesItems = action.payload;
+      state.favoritesItems = action.payload || [];
       state.favoritesCount = state.favoritesItems.length;
     });
 

@@ -40,8 +40,10 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const { language } = useParams();
   const { currencyId, symbol } = getCurrencyDetails(language);
-  const displayPrice = getDisplayPrice(product, currencyId);
-  const formattedPrice = formatPrice(displayPrice, symbol);
+  const displayPrice = product ? getDisplayPrice(product, currencyId) : null;
+  const formattedPrice = displayPrice
+    ? formatPrice(displayPrice, symbol)
+    : null;
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
@@ -63,7 +65,6 @@ const ProductPage = () => {
   }, []);
 
   if (!product) {
-    console.log("No product");
     return <LoadingIndicator />;
   }
 

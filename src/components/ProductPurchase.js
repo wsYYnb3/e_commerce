@@ -78,7 +78,7 @@ const ProductPurchase = ({ product }) => {
           variant='primary'
           size='sm'
           onClick={handleAddToCart}
-          isMobile={isMobile}
+          $isMobile={isMobile}
         >
           <span className='button-text'>
             {totalPrice} {symbol}
