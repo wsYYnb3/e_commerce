@@ -35,6 +35,9 @@ import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
+import { Provider } from "react-redux";
+import store from "./services/store";
+import { CartContext, CartProvider } from "./contexts/CartContext";
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
@@ -72,11 +75,15 @@ export function ClerkProviderWithRoutes() {
   const navigate = useNavigate();
   return (
     <ClerkProvider publishableKey={clerkPubKey}>
-      <Routes>
-        <Route path='/' element={<Navigate to='/en/' />} />
-        <Route path='/:language/*' element={<WithLanguageRoutes />} />
-        <Route path='*' element={"404 Page not found"} />
-      </Routes>
+      <Provider store={store}>
+        <CartProvider>
+          <Routes>
+            <Route path='/' element={<Navigate to='/en/' />} />
+            <Route path='/:language/*' element={<WithLanguageRoutes />} />
+            <Route path='*' element={"404 Page not found"} />
+          </Routes>
+        </CartProvider>
+      </Provider>
     </ClerkProvider>
   );
 }

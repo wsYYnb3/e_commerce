@@ -9,7 +9,8 @@ export const fetchAllOrders = createAsyncThunk(
     if (verifyAdmin(adminId)) {
       try {
         const response = await axios.get(`http://localhost:5000/orders/admin`, {
-          data: { adminId: adminId },
+          params: { adminId: adminId },
+          withCredentials: true,
         });
         return response.data;
       } catch (error) {
@@ -27,7 +28,8 @@ export const updateOrderStatus = createAsyncThunk(
     try {
       const response = await axios.put(
         `http://localhost:5000/orders/update`,
-        data
+        data,
+        { withCredentials: true }
       );
       await thunkAPI.dispatch(fetchAllOrders());
 

@@ -34,14 +34,20 @@ export const StyledButton = styled(Button)`
   margin-top: 0;
   margin-left: auto;
   display: block;
+
   @media (max-width: 768px) {
     max-height: 40px;
-    margin:left:10px;
+    margin-left: 10px;
   }
-  @media (max-width: 400px) {
-    .button-text {
-      display: none;
+
+  ${(props) =>
+    props.$isMobile &&
+    `
+    @media (max-width: 400px) {
+      .button-text {
+        display: none;
+      }
+      width: 30%;
     }
-    width:30%;
-  }
+  `}
 `;
