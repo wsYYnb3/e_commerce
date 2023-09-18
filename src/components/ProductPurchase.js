@@ -28,10 +28,9 @@ const ProductPurchase = ({ product }) => {
   const { user } = useUser();
   const customerId = user?.id;
   const handleAddToCart = () => {
-    if (customerId) {
-      const newProduct = { ...product, quantity, customerId };
-      dispatch(addToCart(newProduct));
-    }
+    const newProduct = { ...product, quantity, customerId };
+    dispatch(addToCart(newProduct));
+
     toast.success("Product added to cart!", { position: "bottom-center" });
   };
 

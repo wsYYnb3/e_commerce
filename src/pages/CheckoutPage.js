@@ -56,10 +56,6 @@ const CheckoutPage = () => {
   const subtotal = calculateSubtotal(cart, currencyId, symbol);
 
   const { errors } = formState;
-
-  useEffect(() => {
-    console.log("Form errors:", errors);
-  }, [errors]);
   const navigate = useNavigate();
   const isDeliveryAddressSame = watch("isDeliveryAddressSame", true);
   const entityType = watch("entityType", "privatePerson");

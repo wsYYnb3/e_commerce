@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Card, Row, Col, Container } from "react-bootstrap";
@@ -8,8 +8,7 @@ import { animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useSession, useUser } from "@clerk/clerk-react";
-import axios from "axios";
+
 import {
   getCurrencyDetails,
   getDisplayPrice,
@@ -26,27 +25,13 @@ import {
 } from "../styles/HomePageStyles";
 import { fetchProducts, getFiveNewestProducts } from "../services/itemsSlice";
 
-const backendServer = "http://localhost:5000";
 const HomePage = () => {
   const { t } = useTranslation();
-  const { user } = useUser();
-  const { session } = useSession();
-  const [bannerImage, setBannerImage] = useState("");
+
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const { language } = useParams();
   useEffect(() => {
-    axios
-      .get(backendServer)
-      .then((response) => {
-        if (response.data && response.data.imageUrl) {
-          setBannerImage(`${backendServer}${response.data.imageUrl}`);
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the banner data:", error);
-      });
-
     dispatch(fetchProducts());
   }, [dispatch]);
   const renderProducts = (items) =>
@@ -97,7 +82,7 @@ const HomePage = () => {
           <h1>{t("welcome")}</h1>
           <p>{t()}</p>
           <StyledBanner to={`/${language}/store`}>
-            <img src={bannerImage} alt='Start your YieldDeal journey' />
+            <img src={getImageById(33)} alt='Start your YieldDeal journey' />
           </StyledBanner>
         </section>
         <section className='category-section py-5'>

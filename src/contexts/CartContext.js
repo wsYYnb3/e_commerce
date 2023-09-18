@@ -4,11 +4,11 @@ import { fetchCart } from "../services/cartSlice";
 import { useUser } from "@clerk/clerk-react";
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
   const dispatch = useDispatch();
   const { user } = useUser();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCount = useSelector((state) => state.cart.cartCount);
+  const [cart, setCart] = useState([cartItems]);
   const customerId = user?.id;
   useEffect(() => {
     dispatch(fetchCart(customerId));
