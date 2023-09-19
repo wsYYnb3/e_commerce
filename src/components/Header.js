@@ -34,7 +34,7 @@ import { IoSettings } from "react-icons/io5";
 import LanguageSelector from "./LanguageSelector";
 import { fetchCart } from "../services/cartSlice";
 import { verifyAdmin } from "../utils/utils";
-
+import { BiSupport } from "react-icons/bi";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,6 +90,13 @@ const Header = () => {
             to={`/${language}/admin/settings`}
           >
             <FontAwesomeIcon icon={faInfoCircle} /> Settings
+          </Nav.Link>
+          <Nav.Link
+            className='mx-1'
+            as={Link}
+            to={`/${language}/admin/support`}
+          >
+            <BiSupport /> Support
           </Nav.Link>
           <UserButton />
         </Nav>

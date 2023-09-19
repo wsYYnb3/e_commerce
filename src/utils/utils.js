@@ -44,7 +44,7 @@ export const formatAddress = (address) => {
     address.zip,
     address.country,
   ]
-    .filter(Boolean) // This removes falsy values to avoid displaying 'undefined' or 'null'
+    .filter(Boolean)
     .join(", ");
 };
 export const formatPrice = (price, symbol) => {
@@ -53,19 +53,53 @@ export const formatPrice = (price, symbol) => {
 export async function verifyAdmin(id) {
   if (id) {
     try {
+      if (typeof id === "object") {
+        const id = id.id;
+      }
       const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
-
       if (resp.data.id) {
         return true;
       } else {
         return false;
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       return false;
     }
   } else {
     return false;
+  }
+}
+export async function sendTicket(data) {
+  try {
+    const resp = await axios.post(
+      `http://localhost:5000/ticket/add/${data.customerId}`,
+      data,
+      { withCredentials: true }
+    );
+
+    return resp;
+  } catch (error) {
+    console.error("Failed to send ticket:", error);
+    throw error;
+  }
+}
+export async function getAllTicketsID() {
+  try {
+    const resp = await axios.get(`http://localhost:5000/ticket/get/all/id`);
+    return resp;
+  } catch (error) {
+    console.error("Failed to send ticket:", error);
+    throw error;
+  }
+}
+export async function getAllOrdersID() {
+  try {
+    const resp = await axios.get(`http://localhost:5000/orders/get/all/id`);
+    return resp;
+  } catch (error) {
+    console.error("Failed to send ticket:", error);
+    throw error;
   }
 }
 export const getImageById = (id) => {

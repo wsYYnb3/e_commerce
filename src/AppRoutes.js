@@ -12,6 +12,8 @@ import {
 } from "@clerk/clerk-react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import { Provider } from "react-redux";
+import store from "./services/store";
 import Header from "./components/Header";
 import FavoritesPage from "./pages/FavoritesPage";
 import StorePage from "./pages/StorePage";
@@ -35,9 +37,10 @@ import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
-import { Provider } from "react-redux";
-import store from "./services/store";
+import TicketSuccessPage from "./pages/TicketSuccessPage";
+import AdminSupportPage from "./pages/admin/AdminSupportPage";
 import { CartContext, CartProvider } from "./contexts/CartContext";
+
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
@@ -51,15 +54,16 @@ export const AdminProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      setIsAdmin(verifyAdmin(user));
-      if (!isAdmin) {
+      const adminStatus = verifyAdmin(user);
+      setIsAdmin(adminStatus);
+
+      if (!adminStatus) {
         console.log("not admin");
       }
     } else {
       navigate("/en/sign-in");
     }
   }, [user]);
-
   if (isAdmin === null) {
     return <LoadingIndicator />;
   }
@@ -110,6 +114,7 @@ const WithLanguageRoutes = () => {
                 <Route path='settings' element={<AdminSettingsPage />} />
                 <Route path='orders' element={<AdminOrdersPage />} />
                 <Route path='products' element={<AdminProductsPage />} />
+                <Route path='support' element={<AdminSupportPage />} />
               </Routes>
             </AdminProtectedRoute>
           }
@@ -123,6 +128,10 @@ const WithLanguageRoutes = () => {
         <Route
           path='checkout/order-summary/:orderId'
           element={<OrderSuccessPage />}
+        />
+        <Route
+          path='support/ticket-submitted/:ticketId'
+          element={<TicketSuccessPage />}
         />
         <Route
           path='product/:productId/:productSlug'
