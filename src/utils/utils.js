@@ -54,6 +54,7 @@ export async function verifyAdmin(id) {
   if (id) {
     try {
       if (typeof id === "object") {
+        //ticket
         const id = id.id;
       }
       const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
