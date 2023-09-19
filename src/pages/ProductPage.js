@@ -65,7 +65,7 @@ const ProductPage = () => {
   }, []);
 
   if (!product) {
-    return <LoadingIndicator />;
+    return <p>Product not found</p>;
   }
 
   return (
