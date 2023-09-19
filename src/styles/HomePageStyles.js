@@ -24,15 +24,46 @@ export const StyledCard = styled(Card)`
   text-align: center;
   color: inherit;
   text-decoration: none;
-  height: 150px;
+
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    transform: scale(1.02);
-    transition: transform 0.2s;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .icon-container {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #f8f9fa;
+    overflow: hidden;
+    margin-left: 1.1rem;
+  }
+
+  .icon-container img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    margin: auto;
+  }
+
+  .title {
+    font-size: 1.1em;
+    margin: 0;
+    font-weight: 500;
+    color: #333;
   }
 `;
 export const StyledProductName = styled.div`

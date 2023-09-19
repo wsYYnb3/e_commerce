@@ -121,6 +121,7 @@ const WithLanguageRoutes = () => {
         />
         <Route index element={<HomePage />} />
         <Route path='store' element={<StorePage />} />
+        <Route path='store/:categoryId/:categorySlug' element={<StorePage />} />
         <Route path='mostsold' element={<MostSoldPage />} />
         <Route path='search' element={<SearchPage />} />
         <Route path='cart' element={<CartPage />} />

@@ -23,19 +23,21 @@ import {
   StyledLink,
   StyledBanner,
 } from "../styles/HomePageStyles";
-import { fetchProducts, getFiveNewestProducts } from "../services/itemsSlice";
+import { fetchProducts, getNewestProducts } from "../services/itemsSlice";
+import { fetchCategories } from "../services/categoriesSlice";
 
 const HomePage = () => {
   const { t } = useTranslation();
-
+  const categories = useSelector((state) => state.categories.categories);
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const { language } = useParams();
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchCategories());
   }, [dispatch]);
   const renderProducts = (items) =>
-    items.map((product, index) => {
+    items.map((product) => {
       const { currencyId, symbol } = getCurrencyDetails(language);
       const displayPrice = getDisplayPrice(product, currencyId);
       const formattedPrice = formatPrice(displayPrice, symbol);
@@ -55,7 +57,8 @@ const HomePage = () => {
         </StyledLink>
       );
     });
-  const fiveNewestProducts = useSelector(getFiveNewestProducts);
+
+  const newestProducts = useSelector(getNewestProducts);
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 3000, min: 1400 },
@@ -88,29 +91,31 @@ const HomePage = () => {
         <section className='category-section py-5'>
           <h2 className='text-center'>Browse Categories</h2>
           <Row className='justify-content-center mt-4'>
-            {" "}
-            <Col sm={6} md={4} lg={3}>
-              <StyledCard>
-                <StyledLink to={`/${language}/vegetables`}>
-                  <div>
-                    <FontAwesomeIcon
-                      icon={faSeedling}
-                      size='3x'
-                      color='green'
-                    />
-                    <Card.Body>
-                      <Card.Title>Vegetables</Card.Title>
-                    </Card.Body>
-                  </div>
-                </StyledLink>
-              </StyledCard>
-            </Col>
+            {categories.map((category) => (
+              <Col sm={6} md={4} lg={3} key={category.id}>
+                <StyledCard>
+                  <StyledLink
+                    to={`/${language}/store/${category.id}/${t(
+                      category.slug_key
+                    )}`}
+                  >
+                    <div className='icon-container'>
+                      <img
+                        src={getImageById(category.icon)}
+                        alt={`${t(category.name_key)} icon`}
+                      />
+                    </div>
+                    <h2 className='title'>{t(category.name_key)}</h2>
+                  </StyledLink>
+                </StyledCard>
+              </Col>
+            ))}
           </Row>
         </section>
         <section className='new-products-section text-center'>
           <h2 className='text-center'>New Arrivals</h2>
           <Carousel responsive={responsive} swipeable>
-            {renderProducts(fiveNewestProducts)}
+            {renderProducts(newestProducts)}
           </Carousel>
         </section>
         <section className='new-products-section text-center mt-4'>

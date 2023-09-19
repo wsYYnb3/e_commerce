@@ -20,7 +20,7 @@ const Sidebar = ({ categories, selectedCategories, setSelectedCategories }) => {
   return (
     <div>
       <h5>Categories</h5>
-      {categories.map((category, index) => {
+      {categories.map((category) => {
         if (category.parent_id) {
           return (
             <div key={category.id}>

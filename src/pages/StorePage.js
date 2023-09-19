@@ -32,7 +32,7 @@ const StorePage = () => {
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
-  const { language } = useParams();
+  const { language, categoryId } = useParams();
   const { t } = useTranslation();
   const categories = useSelector(selectCategories);
   const [query, setQuery] = useState("");
@@ -52,6 +52,17 @@ const StorePage = () => {
       });
   }, [dispatch, language]);
 
+  useEffect(() => {
+    if (categories && categoryId) {
+      const selectedCategory = categories.find(
+        (category) => category.id === parseInt(categoryId, 10)
+      );
+
+      if (selectedCategory) {
+        setSelectedCategories([selectedCategory]);
+      }
+    }
+  }, [categories, categoryId]);
   const handleSortSelect = (sortKey) => {
     const { currencyId } = getCurrencyDetails(language);
     const comparisonFunction = getComparisonFunction(sortKey, currencyId, t);
