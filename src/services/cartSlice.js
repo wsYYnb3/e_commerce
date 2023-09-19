@@ -8,7 +8,7 @@ export const fetchCart = createAsyncThunk(
         `http://localhost:5000/cart/get/${customerId}`,
         { withCredentials: true }
       );
-      console.log(response);
+
       return response.data;
     } catch (error) {
       throw error;
@@ -33,7 +33,7 @@ export const addToCart = createAsyncThunk(
         { withCredentials: true }
       );
       await thunkAPI.dispatch(fetchCart(data.customerId));
-      console.log(response);
+
       return response.data;
     } catch (error) {
       throw error;
@@ -102,7 +102,6 @@ const cartSlice = createSlice({
 
     builder
       .addCase(addToCart.fulfilled, (state, action) => {
-        console.log(action.payload);
         const { product_id, quantity } = action.payload;
 
         if (product_id === undefined || product_id === null) {
@@ -114,21 +113,12 @@ const cartSlice = createSlice({
           (item) => item && item.product_id === product_id
         );
 
-        console.log("Item index:", itemIndex);
-
         if (itemIndex >= 0) {
-          console.log(
-            "upgrading quantity",
-            state.cartItems[itemIndex].quantity,
-            "by",
-            quantity
-          );
           state.cartItems[itemIndex].quantity += quantity;
-          console.log("upgraded quantity", state.cartItems[itemIndex].quantity);
         } else {
           state.cartItems.push(action.payload);
         }
-        console.log(state.cartItems);
+
         state.cartCount = state.cartItems.length;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {

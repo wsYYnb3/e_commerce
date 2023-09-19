@@ -40,10 +40,44 @@ export const updateOrderStatus = createAsyncThunk(
     }
   }
 );
+export const fetchAllTickets = createAsyncThunk(
+  "admin/fetchTickets",
+  async (adminId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/ticket/get/all/${adminId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
+export const updateTicket = createAsyncThunk(
+  "/admin/updateTicket",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/ticket/update/${data.ticketId}`,
+        data,
+        { withCredentials: true }
+      );
+      await thunkAPI.dispatch(fetchAllTickets());
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+);
 const adminSlice = createSlice({
   name: "admin",
-  initialState: { ordersItems: [] },
+  initialState: { ordersItems: [], ticketsItems: [] },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchAllOrders.fulfilled, (state, action) => {
@@ -54,6 +88,16 @@ const adminSlice = createSlice({
     });
 
     builder.addCase(updateOrderStatus.fulfilled, (state, action) => {
+      //state.ordersItems = action.payload;
+    });
+    builder.addCase(fetchAllTickets.fulfilled, (state, action) => {
+      state.ticketsItems = action.payload;
+      if (!Array.isArray(state.ordersItems)) {
+        state.ticketsItems = [state.ticketsItems];
+      }
+    });
+
+    builder.addCase(updateTicket.fulfilled, (state, action) => {
       //state.ordersItems = action.payload;
     });
   },

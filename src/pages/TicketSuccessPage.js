@@ -9,46 +9,45 @@ import {
   OrderID,
   CTAButton,
 } from "../styles/OrderSuccess";
-import { getAllOrdersID } from "../utils/utils";
 import LoadingIndicator from "../components/LoadingIndicator";
-function OrderSuccessPage() {
-  const { orderId } = useParams();
-  const [order, setOrder] = useState(null);
+import { getAllTicketsID } from "../utils/utils";
+function TicketSuccessPage() {
+  const { ticketId } = useParams();
+  const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchOrderDetails = async () => {
+  const fetchTicketsDetails = async () => {
     try {
-      const resp = await getAllOrdersID();
-      const foundOrder = resp.data.find((o) => o.id === orderId);
-      setOrder(foundOrder);
+      const resp = await getAllTicketsID();
+      const foundTicket = resp.data.find((o) => o.id === ticketId);
+      setTicket(foundTicket);
     } catch (error) {
-      console.error("Failed to fetch order details:", error);
+      console.error("Failed to fetch ticket details:", error);
     } finally {
       setLoading(false);
     }
   };
   const navigate = useNavigate();
   useEffect(() => {
-    fetchOrderDetails();
-  }, [orderId]);
+    fetchTicketsDetails();
+  }, [ticketId]);
 
   if (loading) {
     return <LoadingIndicator />;
   }
 
-  if (!order) {
+  if (!ticket) {
     return <p>This page doesn't exist</p>;
   }
-
   return (
     <Container>
       <Row className='justify-content-md-center'>
         <Col md='6'>
           <SuccessMessage>
-            <FiCheckCircle size={50} /> Order Submitted Successfully
+            <FiCheckCircle size={50} /> Ticket Submitted Successfully
           </SuccessMessage>
           <OrderDetails>
-            <OrderID>Order ID: {orderId} </OrderID>
+            <OrderID>Ticket ID: {ticketId} </OrderID>
           </OrderDetails>
           <div className='text-center'>
             <CTAButton
@@ -66,4 +65,4 @@ function OrderSuccessPage() {
   );
 }
 
-export default OrderSuccessPage;
+export default TicketSuccessPage;
