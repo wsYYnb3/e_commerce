@@ -27,12 +27,13 @@ import {
 import LoadingIndicator from "../components/LoadingIndicator";
 
 const StorePage = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+
   const products = useSelector((state) => state.items);
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const { language, categoryId } = useParams();
+  const [isSidebarOpen, setSidebarOpen] = useState(categoryId ? true : false);
   const { t } = useTranslation();
   const categories = useSelector(selectCategories);
   const [query, setQuery] = useState("");
