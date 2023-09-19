@@ -70,6 +70,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
   const isFavorite = (product) => {
     return favorites.some((item) => item.product_id === product.id);
   };
+
   const filteredProducts =
     selectedCategories.length > 0
       ? products.filter((product) =>
@@ -84,7 +85,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
     }
   }, [dispatch, user, customerId]);
   if (filteredProducts.length === 0) {
-    return <p>No products found for the selected categories.</p>;
+    return <p>No products found.</p>;
   }
   return filteredProducts.map((product) => {
     const { currencyId, symbol } = getCurrencyDetails(language);

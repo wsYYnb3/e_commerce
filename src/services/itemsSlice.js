@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createSelector } from "reselect";
 
-export const getFiveNewestProducts = createSelector(
+export const getNewestProducts = createSelector(
   (state) => state.items.items,
   (items) => {
     if (!items) return [];
