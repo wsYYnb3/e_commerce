@@ -105,7 +105,6 @@ const cartSlice = createSlice({
         const { product_id, quantity } = action.payload;
 
         if (product_id === undefined || product_id === null) {
-          console.error("Invalid product_id", product_id);
           return;
         }
 

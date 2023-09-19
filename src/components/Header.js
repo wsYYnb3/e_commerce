@@ -35,11 +35,13 @@ import LanguageSelector from "./LanguageSelector";
 import { fetchCart } from "../services/cartSlice";
 import { verifyAdmin } from "../utils/utils";
 import { BiSupport } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useClerk();
+  const { t } = useTranslation();
   const queryParam = searchParams.get("q");
   const cart = useSelector((state) => state.cart.cartItems);
   const cartCount = useSelector((state) => state.cart.cartItems.length);
@@ -108,11 +110,11 @@ const Header = () => {
         <LanguageSelector />
 
         <Navbar.Brand as={Link} to={`/${language}`} className='ms-4'>
-          <FontAwesomeIcon icon={faLeaf} /> YieldDeal
+          <FontAwesomeIcon icon={faLeaf} /> {t("store_name")}
         </Navbar.Brand>
         <Nav className='me-auto'>
           <Nav.Link as={Link} to={`/${language}/store`}>
-            <FontAwesomeIcon icon={faStore} /> Store
+            <FontAwesomeIcon icon={faStore} /> {t("store")}
           </Nav.Link>
         </Nav>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -148,14 +150,15 @@ const Header = () => {
                     as={Link}
                     to={`/${language}/sign-in`}
                   >
-                    <FontAwesomeIcon icon={faSignInAlt} /> Sign in
+                    <FontAwesomeIcon icon={faSignInAlt} />
+                    {t("sign_in")}
                   </Nav.Link>
                   <Nav.Link
                     className='mx-1'
                     as={Link}
                     to={`/${language}/sign-up`}
                   >
-                    <FontAwesomeIcon icon={faUser} /> Sign up
+                    <FontAwesomeIcon icon={faUser} /> {t("sign_up")}
                   </Nav.Link>
                 </>
               ) : (
@@ -166,14 +169,14 @@ const Header = () => {
                     as={Link}
                     to={`/${language}/favorites`}
                   >
-                    <FontAwesomeIcon icon={faHeart} /> Favorites
+                    <FontAwesomeIcon icon={faHeart} /> {t("favorites")}
                   </Nav.Link>
                   <Nav.Link
                     className='mx-1'
                     as={Link}
                     to={`/${language}/orders`}
                   >
-                    <FontAwesomeIcon icon={faClipboardList} /> Orders
+                    <FontAwesomeIcon icon={faClipboardList} /> {t("orders")}
                   </Nav.Link>
                 </>
               )}
