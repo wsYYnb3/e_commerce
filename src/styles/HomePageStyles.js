@@ -4,7 +4,7 @@ import styled from "styled-components";
 import "react-multi-carousel/lib/styles.css";
 
 export const ProductItem = styled.div`
-  min-height: 350px; // Adjust this to your liking
+  height: 27rem;
   width: 300px;
   text-align: center;
   background-color: #f8f9fa;
@@ -15,7 +15,7 @@ export const ProductItem = styled.div`
 
   img {
     width: 100%;
-    height: auto;
+    height: 80%;
     object-fit: cover;
   }
 `;
@@ -101,7 +101,7 @@ export const StyledBanner = styled(Link)`
 
   img {
     width: 100%;
-    height: auto;
+    height: 15rem;
     object-fit: cover;
     border-radius: 10px;
   }
