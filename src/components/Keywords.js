@@ -12,7 +12,7 @@ const Keywords = ({ keywords }) => {
   const { t } = useTranslation();
   return (
     <KeywordContainer>
-      {keywords.map((keyword, index) => (
+      {keywords.map((keyword) => (
         <StyledLink
           key={keyword.id}
           to={`/${language}/search?q=${t(keyword.keyword_key)}`}
