@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isNumber } from "lodash";
 export const getCurrencyDetails = (language) => {
   switch (language) {
     case "he":
@@ -104,7 +105,9 @@ export async function getAllOrdersID() {
   }
 }
 export const getImageById = (id) => {
-  return `http://localhost:5000/images/${id}`;
+  if (id) {
+    return `http://localhost:5000/images/${id}`;
+  }
 };
 export const calculateSubtotal = (cart, currencyId, symbol) => {
   return cart.reduce((acc, item) => {

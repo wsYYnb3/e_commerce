@@ -17,7 +17,7 @@ import {
   removeFromFavorites,
   fetchFavorites,
 } from "../services/favoritesSlice";
-
+import { getImageById } from "../utils/utils";
 const FavoritesPage = () => {
   const favorites = useSelector((state) => state.favorites.favoritesItems);
   const dispatch = useDispatch();
@@ -70,7 +70,9 @@ const FavoritesPage = () => {
                 <Card.Img
                   variant='top'
                   src={
-                    data.product.productcardimages[0]?.image?.file_path ?? ""
+                    getImageById(
+                      data.product.productcardimages[0]?.image?.id
+                    ) ?? ""
                   }
                   alt={t(data.product.name_key)}
                 />

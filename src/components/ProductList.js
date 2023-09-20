@@ -51,13 +51,14 @@ const ProductList = ({ selectedCategories, items: products }) => {
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (user) {
-      const data = { product_id: product.id, customerId: customerId };
       if (isFavorite(product)) {
+        const data = { productId: product.id, customerId: customerId };
         dispatch(removeFromFavorites(data));
         toast.info("Product removed from favorites!", {
           position: "bottom-center",
         });
       } else {
+        const data = { productId: product.id, customerId: customerId };
         dispatch(addToFavorites(data));
         toast.success("Product added to favorites!", {
           position: "bottom-center",

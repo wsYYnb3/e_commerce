@@ -21,13 +21,14 @@ export const fetchFavorites = createAsyncThunk(
 export const addToFavorites = createAsyncThunk(
   "/wishlist/addToFavorites",
   async (data, thunkAPI) => {
+    console.log(data);
     if (data.customerId) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/wishlist/add/${data.customer_id}`,
+          `http://localhost:5000/wishlist/add/${data.customerId}`,
           data
         );
-        await thunkAPI.dispatch(fetchFavorites(data.customer_id));
+        await thunkAPI.dispatch(fetchFavorites(data.customerId));
 
         return response.data;
       } catch (error) {
@@ -40,16 +41,13 @@ export const addToFavorites = createAsyncThunk(
 export const removeFromFavorites = createAsyncThunk(
   "wishlist/removeFromFavorites",
   async (data) => {
+    console.log(data);
     if (data.customerId) {
       try {
+        console.log(data);
         const response = await axios.delete(
           `http://localhost:5000/wishlist/update`,
-          {
-            data: {
-              customer_id: data.customer_id,
-              product_id: data.product_id,
-            },
-          }
+          { data }
         );
         return response.data;
       } catch (error) {
@@ -71,9 +69,9 @@ const favoritesSlice = createSlice({
 
     builder
       .addCase(addToFavorites.fulfilled, (state, action) => {
-        const { product_id } = action.meta.arg;
+        const { productId } = action.meta.arg;
         const itemIndex = state.favoritesItems.findIndex(
-          (item) => item.product_id === product_id
+          (item) => item.product_id === productId
         );
 
         if (itemIndex === -1) {
@@ -82,9 +80,9 @@ const favoritesSlice = createSlice({
         state.favoritesCount = state.favoritesItems.length;
       })
       .addCase(removeFromFavorites.fulfilled, (state, action) => {
-        const { product_id } = action.meta.arg;
+        const { productId } = action.meta.arg;
         const index = state.favoritesItems.findIndex(
-          (item) => item.product.id === product_id
+          (item) => item.product.id === productId
         );
 
         if (index >= 0) {
