@@ -21,7 +21,6 @@ export const fetchFavorites = createAsyncThunk(
 export const addToFavorites = createAsyncThunk(
   "/wishlist/addToFavorites",
   async (data, thunkAPI) => {
-    console.log(data);
     if (data.customerId) {
       try {
         const response = await axios.post(
@@ -41,10 +40,8 @@ export const addToFavorites = createAsyncThunk(
 export const removeFromFavorites = createAsyncThunk(
   "wishlist/removeFromFavorites",
   async (data) => {
-    console.log(data);
     if (data.customerId) {
       try {
-        console.log(data);
         const response = await axios.delete(
           `http://localhost:5000/wishlist/update`,
           { data }

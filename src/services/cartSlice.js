@@ -6,7 +6,10 @@ export const fetchCart = createAsyncThunk(
     try {
       const response = await axios.get(
         `http://localhost:5000/cart/get/${customerId}`,
-        { withCredentials: true }
+        {
+          params: { customerId },
+          withCredentials: true,
+        }
       );
 
       return response.data;
