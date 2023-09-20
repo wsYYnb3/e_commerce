@@ -85,7 +85,7 @@ const HomePage = () => {
           <h1>{t("welcome")}</h1>
           <p>{t()}</p>
           <StyledBanner to={`/${language}/store`}>
-            <img src={getImageById(33)} alt='Start your YieldDeal journey' />
+            <img src={getImageById(33)} alt='Start your journey' />
           </StyledBanner>
         </section>
         <section className='category-section py-5'>
