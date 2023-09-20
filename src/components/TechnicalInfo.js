@@ -3,13 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-
-const InfoContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-`;
+import { StyledCard } from "../styles/DescriptionStyles";
 
 const TechnicalInfo = ({ data }) => {
   const { t } = useTranslation();
@@ -19,16 +13,18 @@ const TechnicalInfo = ({ data }) => {
   }
   return (
     <div>
-      <Row className='mt-2'>
-        <h4>Technical Information</h4>
-        {data.map((item) => (
-          <Col md={6} key={item.id}>
-            <ul>
-              <li>{t(item.info_key)}</li>
-            </ul>
-          </Col>
-        ))}
-      </Row>
+      <StyledCard>
+        <Row className='m-2'>
+          <h4>Technical Information</h4>
+          {data.map((item) => (
+            <Col md={6} key={item.id}>
+              <ul>
+                <li>{t(item.info_key)}</li>
+              </ul>
+            </Col>
+          ))}
+        </Row>
+      </StyledCard>
     </div>
   );
 };

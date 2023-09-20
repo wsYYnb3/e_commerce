@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-react";
-
+import { GrFavorite } from "react-icons/gr";
 import {
   CardContainer,
   StyledStar,
@@ -40,7 +40,14 @@ const FavoritesPage = () => {
     }
   }, [dispatch, language, customerId]);
   if (!favorites || favorites.length === 0) {
-    return <p>No products found in favorites.</p>;
+    return (
+      <Col className='p-5'>
+        <h2>
+          <GrFavorite /> {t("Favorites")}
+        </h2>
+        <p>No products found in favorites.</p>
+      </Col>
+    );
   }
 
   return (
@@ -54,6 +61,9 @@ const FavoritesPage = () => {
           key={data.product.id}
           className='mb-4'
         >
+          <h2>
+            <GrFavorite /> {t("Favorites")}
+          </h2>
           <CardContainer>
             <StyledStar
               onClick={(e) =>

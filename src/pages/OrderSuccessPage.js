@@ -19,7 +19,7 @@ function OrderSuccessPage() {
   const fetchOrderDetails = async () => {
     try {
       const resp = await getAllOrdersID();
-      const foundOrder = resp.data.find((o) => o.id === orderId);
+      const foundOrder = resp.data.find((o) => o.id == orderId);
       setOrder(foundOrder);
     } catch (error) {
       console.error("Failed to fetch order details:", error);

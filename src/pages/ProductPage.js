@@ -26,6 +26,7 @@ import {
   ProductPageContainer,
   DescriptionTechnicalInfoContainer,
   DetailPurchaseContainer,
+  PageTitle,
 } from "../styles/ProductPageStyles";
 import LoadingIndicator from "../components/LoadingIndicator";
 
@@ -65,50 +66,53 @@ const ProductPage = () => {
   }, []);
 
   if (!product) {
-    return <p>Product not found</p>;
+    return <PageTitle>{t("Product not found")}</PageTitle>;
   }
 
   return (
-    <animated.div style={fade}>
-      <Row>
-        <Col
-          xs={12}
-          sm={12}
-          md={12}
-          lg={4}
-          className=' mr-auto ml-auto'
-          style={{ marginLeft: "6rem", marginRight: "5rem" }}
-        >
-          <ImageGallery images={product.productimages} />
-          <Keywords keywords={product.keyword_id_keywords} />
-        </Col>
-        <Col
-          xs={12}
-          sm={12}
-          md={12}
-          lg={6}
-          className='ml-auto mr-auto mt-3'
-          style={{ marginLeft: "3rem" }}
-        >
-          <ProductDetail item={product} />
-          {
-            <ProductPurchase
-              product={product}
-              quantity={quantity}
-              decreaseQuantity={decreaseQuantity}
-              increaseQuantity={increaseQuantity}
-              totalPrice={totalPrice}
-            />
-          }
-        </Col>
-      </Row>
-      <DescriptionTechnicalInfoContainer className='mt-3'>
-        <Col md={12}>
-          <Description description={t(product.description_key)} />
-          <TechnicalInfo data={product.technicalinformations} />;
-        </Col>
-      </DescriptionTechnicalInfoContainer>
-    </animated.div>
+    <>
+      <PageTitle>{t(product.name_key)}</PageTitle>
+      <animated.div style={fade}>
+        <Row>
+          <Col
+            xs={12}
+            sm={12}
+            md={12}
+            lg={4}
+            className=' mr-auto ml-auto'
+            style={{ marginLeft: "6rem", marginRight: "5rem" }}
+          >
+            <ImageGallery images={product.productimages} />
+            <Keywords keywords={product.keyword_id_keywords} />
+          </Col>
+          <Col
+            xs={12}
+            sm={12}
+            md={12}
+            lg={6}
+            className='ml-auto mr-auto mt-3'
+            style={{ marginLeft: "3rem" }}
+          >
+            <ProductDetail item={product} />
+            {
+              <ProductPurchase
+                product={product}
+                quantity={quantity}
+                decreaseQuantity={decreaseQuantity}
+                increaseQuantity={increaseQuantity}
+                totalPrice={totalPrice}
+              />
+            }
+          </Col>
+        </Row>
+        <DescriptionTechnicalInfoContainer className='mt-3'>
+          <Col md={12}>
+            <Description description={t(product.description_key)} />
+            <TechnicalInfo data={product.technicalinformations} />;
+          </Col>
+        </DescriptionTechnicalInfoContainer>
+      </animated.div>
+    </>
   );
 };
 

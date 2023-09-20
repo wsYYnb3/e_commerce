@@ -1,5 +1,4 @@
 import axios from "axios";
-import { isNumber } from "lodash";
 export const getCurrencyDetails = (language) => {
   switch (language) {
     case "he":
@@ -86,9 +85,22 @@ export async function sendTicket(data) {
     throw error;
   }
 }
+export async function getClerkUserDetails(customerId) {
+  try {
+    const resp = await axios.get(
+      `http://localhost:5000/api/customer/get_clerk/${customerId}`,
+      { params: { customerId }, withCredentials: true }
+    );
+    console.log(resp);
+    return resp.data;
+  } catch (error) {
+    console.error("Failed to get user details:", error);
+    throw error;
+  }
+}
 export async function getAllTicketsID() {
   try {
-    const resp = await axios.get(`http://localhost:5000/ticket/get/all/id`);
+    const resp = await axios.get(`http://localhost:5000/ticket/get/all_ids`);
     return resp;
   } catch (error) {
     console.error("Failed to send ticket:", error);

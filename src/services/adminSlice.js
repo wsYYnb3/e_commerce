@@ -43,16 +43,17 @@ export const updateOrderStatus = createAsyncThunk(
 export const fetchAllTickets = createAsyncThunk(
   "admin/fetchTickets",
   async (adminId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/ticket/get/all/${adminId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
+    if (adminId) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/ticket/get/all/`,
+          { params: { adminId: adminId }, withCredentials: true }
+        );
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 );

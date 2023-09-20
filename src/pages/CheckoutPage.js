@@ -27,6 +27,7 @@ import {
   fetchShippingAddress,
 } from "../services/addressSlice";
 import DynamicOptions from "../components/DynamicOptions";
+import { getImageById, getClerkUserDetails } from "../utils/utils";
 const CheckoutPage = () => {
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -36,9 +37,11 @@ const CheckoutPage = () => {
   const shippingAdresses = useSelector(
     (state) => state.address.shippingAddresses
   );
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   const { language } = useParams();
   const { user } = useClerk();
-
+  const [imageSrc, setImageSrc] = useState(null);
   const customerId = user?.id;
   useEffect(() => {
     if (customerId) {
@@ -47,7 +50,80 @@ const CheckoutPage = () => {
       dispatch(fetchShippingAddress(customerId));
     }
   }, [dispatch, customerId]);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      if (customerId) {
+        try {
+          const resp = await getClerkUserDetails(customerId);
 
+          setValue("billingDetails.name", resp.name || "");
+          setValue("billingDetails.email", resp.email || "");
+
+          if (resp.phone) {
+            const x = resp.phone.length - 9;
+
+            const countryCodeAndCarrier =
+              x > 0 ? resp.phone.substring(0, x) : "";
+
+            const lastNineDigits = resp.phone.substring(x);
+            setValue(
+              "billingDetails.phone.countryCode",
+              countryCodeAndCarrier || ""
+            );
+            setValue("billingDetails.phone.number", lastNineDigits || "");
+          }
+        } catch (error) {
+          console.error("Failed to fetch user details:", error);
+        }
+      }
+    };
+
+    fetchUserDetails();
+  }, [dispatch, customerId]);
+
+  /* <Col xs={2} md={2}>
+  <TextInput
+    label='Area'
+    name='billingDetails.phone.countryCode'
+    control={control}
+    rules={{ required: true }}
+    defaultValue='+'
+    formState={formState}
+  />
+</Col>
+<Col xs={6} md={4}>
+  <TextInput
+    label='Phone Number'
+    name='billingDetails.phone.number'
+    control={control}
+    rules={{ required: true }}
+    defaultValue=''
+    formState={formState}
+  />
+</Col>*/
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const image = getImageById(37);
+        setImageSrc(image);
+      } catch (error) {
+        console.error("Failed to fetch image:", error);
+      }
+    };
+
+    fetchImage();
+  }, []);
   const { t } = useTranslation();
   const { control, handleSubmit, watch, formState, setValue } = useForm({
     resolver: yupResolver(schema),
@@ -114,18 +190,7 @@ const CheckoutPage = () => {
       }
     }
   }, [selectedDeliveryAddress, setValue]);
-  //const navigate = useNavigate();
-  //const orderStatus = useSelector((state) => state.orders.orderStatus);
-  //const orderDetails = useSelector((state) => state.orders.orderDetails);
 
-  /* useEffect(() => {
-    if (orderStatus === "succeeded") {
-      toast.success("Order was sent successfully", {
-        position: toast.POSITION.TOP_CENTER,
-        onClose: () => navigate(`/order/${orderDetails.id}`),
-      });
-    }
-  }, [orderStatus, orderDetails, navigate]);*/
   return (
     <Container>
       <Row>
@@ -405,6 +470,16 @@ const CheckoutPage = () => {
             <Button type='submit'>Submit Order</Button>
           </Form>
         </Col>
+        {windowWidth > 768 && imageSrc && (
+          <Col xs={12} md={4} className='image-column'>
+            <img
+              src={imageSrc}
+              width='300rem'
+              alt='Descriptive alt text'
+              className='checkout-image'
+            />
+          </Col>
+        )}
       </Row>
     </Container>
   );

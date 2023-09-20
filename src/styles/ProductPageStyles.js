@@ -29,6 +29,13 @@ export const DescriptionTechnicalInfoContainer = styled.div`
   }
 `;
 
+export const PageTitle = styled.h1`
+  font-size: 2em;
+  text-align: center;
+  color: #333;
+  margin: 20px 0;
+  font-weight: bold;
+`;
 export const DetailPurchaseContainer = styled.div`
   display: flex;
   flex-direction: column;
