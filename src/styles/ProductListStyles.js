@@ -47,6 +47,7 @@ export const StyledCard = styled(Card)`
   &:hover {
     transform: scale(1.02);
   }
+  height: 28rem;
 `;
 export const StyledLink = styled(Link)`
   color: inherit;
