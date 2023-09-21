@@ -51,7 +51,7 @@ const CartPage = () => {
     dispatch(adjustQuantity({ id, quantity: qty }));
   };
   const { currencyId, symbol } = getCurrencyDetails(language);
-  const subtotal = calculateSubtotal(cart, currencyId, symbol);
+  const subtotal = calculateSubtotal(cart, currencyId, symbol).toFixed(2);
   const formattedSubtotal = formatPrice(subtotal, symbol);
   if (!cart) {
     return <div>Loading...</div>;
@@ -63,7 +63,7 @@ const CartPage = () => {
   if (cart === "failed") {
     return <div>Error: </div>;
   }
-
+  console.log(cart);
   return (
     <StyledWrapper>
       <Container>
@@ -91,14 +91,6 @@ const CartPage = () => {
 
                   const formattedPrice = formatPrice(displayPrice, symbol);
 
-                  const imagePath =
-                    getImageById(product?.productcartimages?.[0]?.image?.id) ||
-                    "https://via.placeholder/150";
-                  const imageName =
-                    product?.productcartimages?.[0]?.image?.file_name ||
-                    "https://via.placeholder/150";
-                  const imageUrl = `${imagePath}${imageName}`;
-
                   return (
                     <StyledListGroupItem key={currentProductId}>
                       <StyledLink
@@ -109,7 +101,11 @@ const CartPage = () => {
                         <Row className='align-items-center'>
                           <Col md={2}>
                             <Image
-                              src={imageUrl || "path/to/placeholder/image.jpg"}
+                              src={
+                                getImageById(
+                                  product?.productcartimages?.[0]?.image_id
+                                ) || "path/to/placeholder/image.jpg"
+                              }
                               alt={t(product.name_key)}
                               fluid
                               rounded
