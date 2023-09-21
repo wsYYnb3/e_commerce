@@ -63,7 +63,7 @@ const CartPage = () => {
   if (cart === "failed") {
     return <div>Error: </div>;
   }
-  console.log(cart);
+
   return (
     <StyledWrapper>
       <Container>
