@@ -21,8 +21,10 @@ export const fetchFavorites = createAsyncThunk(
 export const addToFavorites = createAsyncThunk(
   "/wishlist/addToFavorites",
   async (data, thunkAPI) => {
+    console.log("data in fetch", data);
     if (data.customerId) {
       try {
+        console.log(data);
         const response = await axios.post(
           `http://localhost:5000/wishlist/add/${data.customerId}`,
           data
@@ -67,6 +69,7 @@ const favoritesSlice = createSlice({
     builder
       .addCase(addToFavorites.fulfilled, (state, action) => {
         const { productId } = action.meta.arg;
+        if (!productId) return;
         const itemIndex = state.favoritesItems.findIndex(
           (item) => item.product_id === productId
         );

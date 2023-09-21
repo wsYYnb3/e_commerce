@@ -29,11 +29,11 @@ const ProductDetail = ({ item: product }) => {
   const navigate = useNavigate();
   const { language } = useParams();
   const { t } = useTranslation();
-  const customer_id = user?.id;
+  const customerId = user?.id;
   const toggleFavorite = (e, product) => {
     e.stopPropagation();
     if (user) {
-      const data = { product_id: product.id, customer_id: customer_id };
+      const data = { productId: product.id, customerId: customerId };
       if (isFavorite(product)) {
         dispatch(removeFromFavorites(data));
         toast.info("Product removed from favorites!", {
@@ -50,10 +50,14 @@ const ProductDetail = ({ item: product }) => {
     }
   };
   const isFavorite = (product) => {
-    return favorites.some((item) => item.product_id === product.id);
+    console.log(product);
+    console.log(favorites);
+    return favorites.some((item) => item && item.product_id === product.id);
   };
   useEffect(() => {
-    dispatch(fetchFavorites(customer_id));
+    if (customerId) {
+      dispatch(fetchFavorites(customerId));
+    }
   }, [dispatch, user]);
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId);

@@ -52,6 +52,9 @@ const FavoritesPage = () => {
 
   return (
     <Row className='p-5'>
+      <h2>
+        <GrFavorite /> {t("Favorites")}
+      </h2>
       {favorites.map((data) => (
         <Col
           xs={12}
@@ -61,9 +64,6 @@ const FavoritesPage = () => {
           key={data.product.id}
           className='mb-4'
         >
-          <h2>
-            <GrFavorite /> {t("Favorites")}
-          </h2>
           <CardContainer>
             <StyledStar
               onClick={(e) =>
