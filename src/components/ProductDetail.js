@@ -50,8 +50,6 @@ const ProductDetail = ({ item: product }) => {
     }
   };
   const isFavorite = (product) => {
-    console.log(product);
-    console.log(favorites);
     return favorites.some((item) => item && item.product_id === product.id);
   };
   useEffect(() => {
