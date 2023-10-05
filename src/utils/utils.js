@@ -91,7 +91,7 @@ export async function getClerkUserDetails(customerId) {
       `http://localhost:5000/api/customer/get_clerk/${customerId}`,
       { params: { customerId }, withCredentials: true }
     );
-    console.log(resp);
+
     return resp.data;
   } catch (error) {
     console.error("Failed to get user details:", error);

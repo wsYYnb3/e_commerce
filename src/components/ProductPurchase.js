@@ -58,7 +58,7 @@ const ProductPurchase = ({ product }) => {
   }, []);
 
   const { currencyId, symbol } = getCurrencyDetails(language);
-  const displayPrice = getDisplayPrice(product, currencyId);
+  const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
   const formattedPrice = formatPrice(displayPrice, symbol);
   const totalPrice = displayPrice * quantity;
   return (
@@ -80,7 +80,7 @@ const ProductPurchase = ({ product }) => {
           $isMobile={isMobile}
         >
           <span className='button-text'>
-            {totalPrice} {symbol}
+            {totalPrice.toFixed(2)} {symbol}
           </span>{" "}
           <FaShoppingCart />
         </StyledButton>

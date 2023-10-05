@@ -87,7 +87,10 @@ const CartPage = () => {
                 {cart.map((cartItem) => {
                   const { product } = cartItem;
                   const currentProductId = cartItem.product.id;
-                  const displayPrice = getDisplayPrice(product, currencyId);
+                  const displayPrice = getDisplayPrice(
+                    product,
+                    currencyId
+                  ).toFixed(2);
 
                   const formattedPrice = formatPrice(displayPrice, symbol);
 

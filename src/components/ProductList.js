@@ -90,7 +90,7 @@ const ProductList = ({ selectedCategories, items: products }) => {
   }
   return filteredProducts.map((product) => {
     const { currencyId, symbol } = getCurrencyDetails(language);
-    const displayPrice = getDisplayPrice(product, currencyId);
+    const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
     const formattedPrice = formatPrice(displayPrice, symbol);
     return (
       <Col xs={12} sm={6} md={4} lg={3} key={product.id} className='mb-4'>

@@ -41,7 +41,9 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const { language } = useParams();
   const { currencyId, symbol } = getCurrencyDetails(language);
-  const displayPrice = product ? getDisplayPrice(product, currencyId) : null;
+  const displayPrice = product
+    ? getDisplayPrice(product, currencyId).toFixed(2)
+    : null;
   const formattedPrice = displayPrice
     ? formatPrice(displayPrice, symbol)
     : null;

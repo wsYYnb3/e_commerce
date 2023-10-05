@@ -22,6 +22,7 @@ import {
   StyledProductPrice,
   StyledLink,
   StyledBanner,
+  CarouselCard,
 } from "../styles/HomePageStyles";
 import { fetchProducts, getNewestProducts } from "../services/itemsSlice";
 import { fetchCategories } from "../services/categoriesSlice";
@@ -39,7 +40,7 @@ const HomePage = () => {
   const renderProducts = (items) =>
     items.map((product) => {
       const { currencyId, symbol } = getCurrencyDetails(language);
-      const displayPrice = getDisplayPrice(product, currencyId);
+      const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
       const formattedPrice = formatPrice(displayPrice, symbol);
       return (
         <StyledLink

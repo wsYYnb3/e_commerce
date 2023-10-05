@@ -37,10 +37,15 @@ export const StyledCarousel = styled(Carousel)`
     }
   }
   @media (max-width: 768px) {
-    height: 350px;
-    width: 350px;
+    height: 240px;
+    width: 230px;
     .carousel-item {
-      height: 350px;
+      width: 230px;
+      height: 230px;
+    }
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 

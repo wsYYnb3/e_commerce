@@ -58,7 +58,7 @@ const ProductDetail = ({ item: product }) => {
     }
   }, [dispatch, user]);
   const { currencyId, symbol } = getCurrencyDetails(language);
-  const displayPrice = getDisplayPrice(product, currencyId);
+  const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
   const formattedPrice = formatPrice(displayPrice, symbol);
   return (
     <StyledCard>

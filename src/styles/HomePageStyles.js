@@ -3,19 +3,27 @@ import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import "react-multi-carousel/lib/styles.css";
 
+export const CarouselCard = styled.div`
+  height: 30rem;
+  img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+  }
+`;
 export const ProductItem = styled.div`
-  height: 27rem;
+  height: 25rem;
   width: 300px;
   text-align: center;
   background-color: #f8f9fa;
   border-radius: 10px;
-  margin: 10px 5px; // Provide equal vertical and horizontal margins
+  margin: 10px 5px;
   padding: 10px;
   box-shadow: 0px 0px 10px #ccc;
 
   img {
     width: 100%;
-    height: 80%;
+    height: 70%;
     object-fit: cover;
   }
 `;
