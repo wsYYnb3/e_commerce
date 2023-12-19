@@ -145,6 +145,7 @@ const StorePage = () => {
                 <SortDropdown onSelect={handleSortSelect} />
                 {hasSearched && (
                   <StyledResetButton onClick={() => setHasSearched(false)}>
+                    {" "}
                     Reset Search
                   </StyledResetButton>
                 )}

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, adjustQuantity } from "../services/cartSlice";
+import { removeFromCart } from "../services/cartSlice";
 import { useTranslation } from "react-i18next";
 import { useClerk } from "@clerk/clerk-react";
 
@@ -47,9 +47,6 @@ const CartPage = () => {
   };
   const { t } = useTranslation();
 
-  const handleAdjustQuantity = (id, qty, customerId) => {
-    dispatch(adjustQuantity({ id, quantity: qty }));
-  };
   const { currencyId, symbol } = getCurrencyDetails(language);
   const subtotal = calculateSubtotal(cart, currencyId, symbol).toFixed(2);
   const formattedSubtotal = formatPrice(subtotal, symbol);

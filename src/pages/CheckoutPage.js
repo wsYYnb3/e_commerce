@@ -1,24 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CartContext } from "../contexts/CartContext";
 import TextInput from "../components/TextInput";
 import { schema } from "../services/validation";
 import { FormRow } from "../styles/CheckoutPageStyles";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, adjustQuantity } from "../services/cartSlice";
 import { sendOrder } from "../services/ordersSlice";
-import { useTranslation } from "react-i18next";
-import {
-  getDisplayPrice,
-  getCurrencyDetails,
-  calculateSubtotal,
-  formatPrice,
-} from "../utils/utils";
+import { getCurrencyDetails, calculateSubtotal } from "../utils/utils";
 import { clearCart } from "../services/cartSlice";
 import { useClerk } from "@clerk/clerk-react";
 import { fetchCart } from "../services/cartSlice";
@@ -29,6 +20,7 @@ import {
 import DynamicOptions from "../components/DynamicOptions";
 import { getImageById, getClerkUserDetails } from "../utils/utils";
 const CheckoutPage = () => {
+  const { language } = useParams();
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const billingAdresses = useSelector(
@@ -39,7 +31,14 @@ const CheckoutPage = () => {
   );
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const { language } = useParams();
+  const { control, handleSubmit, watch, formState, setValue } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const { currencyId, symbol } = getCurrencyDetails(language);
+  const subtotal = calculateSubtotal(cart, currencyId, symbol);
+
+  const navigate = useNavigate();
+
   const { user } = useClerk();
   const [imageSrc, setImageSrc] = useState(null);
   const customerId = user?.id;
@@ -79,7 +78,7 @@ const CheckoutPage = () => {
     };
 
     fetchUserDetails();
-  }, [dispatch, customerId]);
+  }, [dispatch, customerId, setValue]);
 
   /* <Col xs={2} md={2}>
   <TextInput
@@ -124,15 +123,7 @@ const CheckoutPage = () => {
 
     fetchImage();
   }, []);
-  const { t } = useTranslation();
-  const { control, handleSubmit, watch, formState, setValue } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const { currencyId, symbol } = getCurrencyDetails(language);
-  const subtotal = calculateSubtotal(cart, currencyId, symbol);
 
-  const { errors } = formState;
-  const navigate = useNavigate();
   const isDeliveryAddressSame = watch("isDeliveryAddressSame", true);
   const entityType = watch("entityType", "privatePerson");
   const onSubmit = async (data) => {
@@ -168,7 +159,7 @@ const CheckoutPage = () => {
         setValue("billingDetails.address.zip", address?.zip || "");
       }
     }
-  }, [selectedAddress, setValue]);
+  }, [selectedAddress, setValue, billingAdresses]);
 
   const handleAddressChange = (e) => {
     setSelectedAddress(e.target.value);
@@ -189,7 +180,7 @@ const CheckoutPage = () => {
         setValue("deliveryDetails.address.zip", address?.zip || "");
       }
     }
-  }, [selectedDeliveryAddress, setValue]);
+  }, [selectedDeliveryAddress, setValue, billingAdresses]);
 
   return (
     <Container>

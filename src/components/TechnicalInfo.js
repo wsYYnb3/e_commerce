@@ -1,13 +1,11 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 import { StyledCard } from "../styles/DescriptionStyles";
 
 const TechnicalInfo = ({ data }) => {
   const { t } = useTranslation();
-  const { language } = useParams();
+
   if (!data) {
     return null;
   }

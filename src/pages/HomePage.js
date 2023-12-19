@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Card, Row, Col, Container } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSeedling } from "@fortawesome/free-solid-svg-icons";
+import { Row, Col, Container } from "react-bootstrap";
 import { animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
@@ -22,7 +20,6 @@ import {
   StyledProductPrice,
   StyledLink,
   StyledBanner,
-  CarouselCard,
 } from "../styles/HomePageStyles";
 import { fetchProducts, getNewestProducts } from "../services/itemsSlice";
 import { fetchCategories } from "../services/categoriesSlice";

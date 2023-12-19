@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import { verifyAdmin } from "../utils/utils";
 
 export const fetchOrders = createAsyncThunk(
@@ -32,7 +31,7 @@ export const fetchAllOrders = createAsyncThunk(
         throw error;
       }
     } else {
-      throw { error: "unathorized" };
+      throw new Error("unauthorized");
     }
   }
 );

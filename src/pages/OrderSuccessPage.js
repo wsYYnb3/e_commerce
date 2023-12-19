@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import styled from "styled-components";
+import React, { useEffect, useState, useCallback } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import { FiCheckCircle } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,21 +15,21 @@ function OrderSuccessPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       const resp = await getAllOrdersID();
-      const foundOrder = resp.data.find((o) => o.id == orderId);
+      const foundOrder = resp.data.find((o) => o.id === orderId);
       setOrder(foundOrder);
     } catch (error) {
       console.error("Failed to fetch order details:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId]);
   const navigate = useNavigate();
   useEffect(() => {
     fetchOrderDetails();
-  }, [orderId]);
+  }, [fetchOrderDetails]);
 
   if (loading) {
     return <LoadingIndicator />;

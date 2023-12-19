@@ -12,7 +12,7 @@ import { ProductRow } from "../styles/StoreStyles";
 import ProductList from "../components/ProductList";
 import SortDropdown from "../components/SortDropdown";
 import { getCurrencyDetails, getComparisonFunction } from "../utils/utils";
-import { fetchCategories, selectCategories } from "../services/categoriesSlice";
+import { fetchCategories } from "../services/categoriesSlice";
 import { HeaderContainer, Actions } from "../styles/StorePageStyles";
 import LoadingIndicator from "../components/LoadingIndicator";
 import { fetchSearchResults, sortSearch } from "../services/itemsSlice";
@@ -25,13 +25,12 @@ const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const queryParam = searchParams.get("q");
   const params = { query: query, language: language };
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const products = useSelector((state) => state.items);
+
+  const [selectedCategories] = useState([]);
+
   const dispatch = useDispatch();
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const { t } = useTranslation();
-  const categories = useSelector(selectCategories);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
