@@ -51,13 +51,16 @@ export const formatPrice = (price, symbol) => {
   return `${price} ${symbol}`;
 };
 export async function verifyAdmin(id) {
-  if (id) {
+  let actualId = id;
+  if (actualId) {
     try {
-      if (typeof id === "object") {
+      if (typeof actualId === "object") {
         //ticket
-        const id = id.id;
+        actualId = actualId.id;
       }
-      const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
+      const resp = await axios.get(
+        `http://localhost:5000/admin/verify/${actualId}`
+      );
       if (resp.data.id) {
         return true;
       } else {

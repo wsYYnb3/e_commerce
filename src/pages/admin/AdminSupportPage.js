@@ -1,26 +1,13 @@
 import React, { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  FaBox,
-  FaCalendarAlt,
-  FaShoppingCart,
-  FaTruck,
-  FaCreditCard,
-  FaMoneyBill,
-} from "react-icons/fa";
+import { FaBox, FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-react";
-import { BiLoaderCircle } from "react-icons/bi";
-import { BsSignpost } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
-import { BsHouseDoorFill } from "react-icons/bs";
-import { FaShippingFast } from "react-icons/fa";
-import { Dropdown, Button } from "react-bootstrap";
-import { ImCancelCircle } from "react-icons/im";
+import { Dropdown } from "react-bootstrap";
 import {
   HeaderContainer,
   OrderCard,
@@ -31,22 +18,20 @@ import {
   StyledButton,
 } from "../../styles/AdminOrdersPageStyles";
 import { fetchAllTickets, updateTicket } from "../../services/adminSlice";
-import { verifyAdmin, getCurrencySymbol } from "../../utils/utils";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import Description from "./../../components/Description";
 const AdminSupportPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const tickets = useSelector((state) => state.admin.ticketsItems);
   const dispatch = useDispatch();
-  const { language } = useParams();
+
   const { t } = useTranslation();
   const { user } = useUser();
   const [isUpdating, setIsUpdating] = React.useState({});
   const adminId = user?.id;
-  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(fetchAllTickets(adminId));
-  }, [dispatch, user]);
+  }, [dispatch, adminId]);
 
   const [selectedStatus, setSelectedStatus] = React.useState({});
   const [selectedTicketType, setSelectedTicketType] = React.useState({});

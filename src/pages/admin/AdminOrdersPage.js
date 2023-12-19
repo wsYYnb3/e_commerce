@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-react";
@@ -19,7 +19,7 @@ import { BsSignpost } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { BsHouseDoorFill } from "react-icons/bs";
 import { FaShippingFast } from "react-icons/fa";
-import { Dropdown, Button } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { ImCancelCircle } from "react-icons/im";
 import {
   HeaderContainer,
@@ -37,7 +37,7 @@ const AdminOrdersPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const orders = useSelector((state) => state.admin.ordersItems);
   const dispatch = useDispatch();
-  const { language } = useParams();
+
   const { t } = useTranslation();
   const { user } = useUser();
   const [isUpdating, setIsUpdating] = React.useState({});
@@ -48,7 +48,7 @@ const AdminOrdersPage = () => {
       navigate(`/en/sign-in`);
     }
     dispatch(fetchAllOrders(adminId));
-  }, [dispatch, user]);
+  }, [dispatch, adminId, navigate]);
 
   const [selectedStatus, setSelectedStatus] = React.useState({});
 
