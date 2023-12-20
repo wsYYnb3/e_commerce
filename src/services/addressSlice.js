@@ -5,7 +5,7 @@ export const fetchBillingAddress = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/address/get/billing/${customerId}`
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/address/get/billing/${customerId}`
       );
       return response.data;
     } catch (error) {
@@ -19,7 +19,7 @@ export const fetchShippingAddress = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/address/get/shipping/${customerId}`
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/address/get/shipping/${customerId}`
       );
 
       return response.data;

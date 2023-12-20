@@ -5,7 +5,7 @@ export const fetchCart = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/cart/get/${customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/get/${customerId}`,
         {
           params: { customerId },
           withCredentials: true,
@@ -31,7 +31,7 @@ export const addToCart = createAsyncThunk(
       delete postData.id;
 
       const response = await axios.post(
-        `http://localhost:5000/cart/add/${data.customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/add/${data.customerId}`,
         postData,
         { withCredentials: true }
       );
@@ -48,10 +48,13 @@ export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async (data) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/cart/update`, {
-        data: { customer_id: data.customer_id, product_id: data.product_id },
-        withCredentials: true,
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/update`,
+        {
+          data: { customer_id: data.customer_id, product_id: data.product_id },
+          withCredentials: true,
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -63,10 +66,13 @@ export const clearCart = createAsyncThunk(
   "cart/clearCart",
   async (data, thunkAPI) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/cart/clear`, {
-        data: { customerId: data },
-        withCredentials: true,
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/clear`,
+        {
+          data: { customerId: data },
+          withCredentials: true,
+        }
+      );
       await thunkAPI.dispatch(fetchCart(data));
       return response.data;
     } catch (error) {
@@ -79,7 +85,7 @@ export const adjustQuantity = createAsyncThunk(
   async (data) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/cart/update`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/update`,
         {
           customer_id: data.customerId,
           quantity: data.quantity,
