@@ -6,7 +6,6 @@ import {
   Button,
   Form,
   InputGroup,
-  Container,
 } from "react-bootstrap";
 import {
   Link,
@@ -30,7 +29,6 @@ import { useDispatch } from "react-redux";
 import { useClerk, UserButton } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { IoSettings } from "react-icons/io5";
 import LanguageSelector from "./LanguageSelector";
 import { fetchCart } from "../services/cartSlice";
 import { verifyAdmin } from "../utils/utils";
@@ -38,12 +36,12 @@ import { BiSupport } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 const Header = () => {
   const [query, setQuery] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useClerk();
   const { t } = useTranslation();
   const queryParam = searchParams.get("q");
-  const cart = useSelector((state) => state.cart.cartItems);
+
   const cartCount = useSelector((state) => state.cart.cartItems.length);
   const { language } = useParams();
   const dispatch = useDispatch();
@@ -57,7 +55,7 @@ const Header = () => {
   };
   useEffect(() => {
     setQuery(queryParam || "");
-  }, [searchParams]);
+  }, [queryParam]);
   const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {

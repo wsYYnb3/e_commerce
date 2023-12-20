@@ -7,7 +7,7 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: "http://localhost:5000/api/translations/{{lng}}",
+      loadPath: `${process.env.REACT_APP_BACKEND_ADDRESS}/api/translations/{{lng}}`,
     },
     lng: "en",
     fallbackLng: "en",

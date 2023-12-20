@@ -7,11 +7,10 @@ import {
   SignIn,
   SignUp,
   UserProfile,
-  useClerk,
   useUser,
 } from "@clerk/clerk-react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { Provider } from "react-redux";
 import store from "./services/store";
 import Header from "./components/Header";
@@ -39,7 +38,7 @@ import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
 import TicketSuccessPage from "./pages/TicketSuccessPage";
 import AdminSupportPage from "./pages/admin/AdminSupportPage";
-import { CartContext, CartProvider } from "./contexts/CartContext";
+import { CartProvider } from "./contexts/CartContext";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -63,7 +62,7 @@ export const AdminProtectedRoute = ({ children }) => {
     } else {
       navigate("/en/sign-in");
     }
-  }, [user]);
+  }, [user, navigate]);
   if (isAdmin === null) {
     return <LoadingIndicator />;
   }
@@ -76,7 +75,6 @@ export const AdminProtectedRoute = ({ children }) => {
 };
 
 export function ClerkProviderWithRoutes() {
-  const navigate = useNavigate();
   return (
     <ClerkProvider publishableKey={clerkPubKey}>
       <Provider store={store}>

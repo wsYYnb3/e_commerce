@@ -7,7 +7,7 @@ export const fetchFavorites = createAsyncThunk(
     if (customerId) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/wishlist/get/${customerId}`
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/wishlist/get/${customerId}`
         );
 
         return response.data;
@@ -26,7 +26,7 @@ export const addToFavorites = createAsyncThunk(
       try {
         console.log(data);
         const response = await axios.post(
-          `http://localhost:5000/wishlist/add/${data.customerId}`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/wishlist/add/${data.customerId}`,
           data
         );
         await thunkAPI.dispatch(fetchFavorites(data.customerId));
@@ -45,7 +45,7 @@ export const removeFromFavorites = createAsyncThunk(
     if (data.customerId) {
       try {
         const response = await axios.delete(
-          `http://localhost:5000/wishlist/update`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/wishlist/update`,
           { data }
         );
         return response.data;

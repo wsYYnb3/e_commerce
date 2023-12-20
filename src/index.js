@@ -3,9 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { CartProvider } from "./contexts/CartContext";
-import { Provider } from "react-redux";
-import store from "./services/store";
 import "./services/i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

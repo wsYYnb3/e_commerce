@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import { verifyAdmin } from "../utils/utils";
 
 export const fetchAllOrders = createAsyncThunk(
@@ -8,16 +7,19 @@ export const fetchAllOrders = createAsyncThunk(
   async (adminId) => {
     if (verifyAdmin(adminId)) {
       try {
-        const response = await axios.get(`http://localhost:5000/orders/admin`, {
-          params: { adminId: adminId },
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/admin`,
+          {
+            params: { adminId: adminId },
+            withCredentials: true,
+          }
+        );
         return response.data;
       } catch (error) {
         throw error;
       }
     } else {
-      throw { error: "unathorized" };
+      throw new Error("unauthorized");
     }
   }
 );
@@ -27,7 +29,7 @@ export const updateOrderStatus = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/orders/update`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/update`,
         data,
         { withCredentials: true }
       );
@@ -46,7 +48,7 @@ export const fetchAllTickets = createAsyncThunk(
     if (adminId) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/ticket/get/all/`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/get/all/`,
           { params: { adminId: adminId }, withCredentials: true }
         );
 
@@ -63,7 +65,7 @@ export const updateTicket = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/ticket/update/${data.ticketId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/update/${data.ticketId}`,
         data,
         { withCredentials: true }
       );

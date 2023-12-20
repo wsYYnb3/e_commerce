@@ -4,7 +4,9 @@ import axios from "axios";
 export const fetchProducts = createAsyncThunk(
   "items/fetchProducts",
   async (languageCode) => {
-    const response = await axios.get(`http://localhost:5000/${languageCode}`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${languageCode}`
+    );
     return response.data.products;
   }
 );

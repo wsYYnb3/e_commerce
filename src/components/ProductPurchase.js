@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-react";
 
 import {
@@ -13,16 +12,12 @@ import {
   QuantityWrapper,
   StyledButton,
 } from "../styles/ProductPurchaseStyles";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
+import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import { addToCart } from "../services/cartSlice";
 
 const ProductPurchase = ({ product }) => {
   const { language } = useParams();
-  const { t } = useTranslation();
+
   const [quantity, setQuantity] = React.useState(1);
   const dispatch = useDispatch();
   const { user } = useUser();
@@ -59,7 +54,7 @@ const ProductPurchase = ({ product }) => {
 
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
-  const formattedPrice = formatPrice(displayPrice, symbol);
+
   const totalPrice = displayPrice * quantity;
   return (
     <StyledContainer>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik, Field, Form } from "formik";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 import { useClerk } from "@clerk/clerk-react";
 import { useSpring, animated } from "react-spring";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { sendTicket } from "../utils/utils";
 
 const ContactCard = styled(Card)`
@@ -21,8 +20,6 @@ const SupportPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const { user } = useClerk();
   const customerId = user?.id;
-
-  const { control, handleSubmit, watch, formState, setValue } = useForm({});
 
   const navigate = useNavigate();
   const onSubmit = async (data) => {

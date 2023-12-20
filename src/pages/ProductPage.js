@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import ProductDetail from "../components/ProductDetail";
@@ -15,20 +15,11 @@ import ProductPurchase from "../components/ProductPurchase";
 import ImageGallery from "../components/ImageGallery";
 import Keywords from "../components/Keywords";
 import { useTranslation } from "react-i18next";
+import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
-import {
-  StyledCol,
-  StyledImageCol,
-  ProductPageContainer,
   DescriptionTechnicalInfoContainer,
-  DetailPurchaseContainer,
   PageTitle,
 } from "../styles/ProductPageStyles";
-import LoadingIndicator from "../components/LoadingIndicator";
 
 const ProductPage = () => {
   const { productId: id } = useParams();
@@ -40,13 +31,11 @@ const ProductPage = () => {
 
   const dispatch = useDispatch();
   const { language } = useParams();
-  const { currencyId, symbol } = getCurrencyDetails(language);
+  const { currencyId } = getCurrencyDetails(language);
   const displayPrice = product
     ? getDisplayPrice(product, currencyId).toFixed(2)
     : null;
-  const formattedPrice = displayPrice
-    ? formatPrice(displayPrice, symbol)
-    : null;
+
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));

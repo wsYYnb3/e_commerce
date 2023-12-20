@@ -51,13 +51,16 @@ export const formatPrice = (price, symbol) => {
   return `${price} ${symbol}`;
 };
 export async function verifyAdmin(id) {
-  if (id) {
+  let actualId = id;
+  if (actualId) {
     try {
-      if (typeof id === "object") {
+      if (typeof actualId === "object") {
         //ticket
-        const id = id.id;
+        actualId = actualId.id;
       }
-      const resp = await axios.get(`http://localhost:5000/admin/verify/${id}`);
+      const resp = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/verify/${actualId}`
+      );
       if (resp.data.id) {
         return true;
       } else {
@@ -74,7 +77,7 @@ export async function verifyAdmin(id) {
 export async function sendTicket(data) {
   try {
     const resp = await axios.post(
-      `http://localhost:5000/ticket/add/${data.customerId}`,
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/add/${data.customerId}`,
       data,
       { withCredentials: true }
     );
@@ -88,7 +91,7 @@ export async function sendTicket(data) {
 export async function getClerkUserDetails(customerId) {
   try {
     const resp = await axios.get(
-      `http://localhost:5000/api/customer/get_clerk/${customerId}`,
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/api/customer/get_clerk/${customerId}`,
       { params: { customerId }, withCredentials: true }
     );
 
@@ -100,7 +103,9 @@ export async function getClerkUserDetails(customerId) {
 }
 export async function getAllTicketsID() {
   try {
-    const resp = await axios.get(`http://localhost:5000/ticket/get/all_ids`);
+    const resp = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/get/all_ids`
+    );
     return resp;
   } catch (error) {
     console.error("Failed to send ticket:", error);
@@ -109,7 +114,9 @@ export async function getAllTicketsID() {
 }
 export async function getAllOrdersID() {
   try {
-    const resp = await axios.get(`http://localhost:5000/orders/get/all/id`);
+    const resp = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/get/all/id`
+    );
     return resp;
   } catch (error) {
     console.error("Failed to send ticket:", error);
@@ -118,7 +125,7 @@ export async function getAllOrdersID() {
 }
 export const getImageById = (id) => {
   if (id) {
-    return `http://localhost:5000/images/${id}`;
+    return `${process.env.REACT_APP_BACKEND_ADDRESS}/images/${id}`;
   }
 };
 export const calculateSubtotal = (cart, currencyId, symbol) => {

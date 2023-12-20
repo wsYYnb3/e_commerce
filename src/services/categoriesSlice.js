@@ -4,7 +4,9 @@ import axios from "axios";
 export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async () => {
-    const response = await axios.get("http://localhost:5000/categories");
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/categories`
+    );
     return response.data;
   }
 );

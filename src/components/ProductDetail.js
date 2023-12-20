@@ -11,11 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
-import {
-  getCurrencyDetails,
-  getDisplayPrice,
-  formatPrice,
-} from "../utils/utils";
+import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import {
   StyledStar,
   StyledCard,
@@ -56,10 +52,10 @@ const ProductDetail = ({ item: product }) => {
     if (customerId) {
       dispatch(fetchFavorites(customerId));
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, customerId]);
   const { currencyId, symbol } = getCurrencyDetails(language);
   const displayPrice = getDisplayPrice(product, currencyId).toFixed(2);
-  const formattedPrice = formatPrice(displayPrice, symbol);
+
   return (
     <StyledCard>
       <Card.Body>

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import { verifyAdmin } from "../utils/utils";
 
 export const fetchOrders = createAsyncThunk(
@@ -8,7 +7,7 @@ export const fetchOrders = createAsyncThunk(
   async (customerId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/orders/get/${customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/get/${customerId}`,
         { withCredentials: true }
       );
       return response.data;
@@ -24,7 +23,7 @@ export const fetchAllOrders = createAsyncThunk(
     if (verifyAdmin(customerId)) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/orders/get/${customerId}`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/get/${customerId}`,
           { withCredentials: true }
         );
         return response.data;
@@ -32,7 +31,7 @@ export const fetchAllOrders = createAsyncThunk(
         throw error;
       }
     } else {
-      throw { error: "unathorized" };
+      throw new Error("unauthorized");
     }
   }
 );
@@ -42,7 +41,7 @@ export const sendOrder = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/orders/add/${data.customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/orders/add/${data.customerId}`,
         data,
         { withCredentials: true }
       );

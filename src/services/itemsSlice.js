@@ -16,7 +16,9 @@ export const getNewestProducts = createSelector(
 export const fetchProducts = createAsyncThunk(
   "items/fetchProducts",
   async (languageCode) => {
-    const response = await axios.get(`http://localhost:5000/products`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/products`
+    );
     return response.data;
   }
 );
@@ -24,7 +26,9 @@ export const fetchProducts = createAsyncThunk(
 export const fetchNewestProducts = createAsyncThunk(
   "items/fetchNewestProducts",
   async (languageCode) => {
-    const response = await axios.get(`http://localhost:5000/${languageCode}`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${languageCode}`
+    );
     return response.data.newestProducts;
   }
 );
@@ -32,7 +36,7 @@ export const fetchProductById = createAsyncThunk(
   "items/fetchProductById",
   async (productId) => {
     const response = await axios
-      .get(`http://localhost:5000/products/${productId}`)
+      .get(`${process.env.REACT_APP_BACKEND_ADDRESS}/products/${productId}`)
       .catch((e) => console.error("Error fetching product by ID:", e));
     return response.data;
   }
@@ -45,7 +49,7 @@ export const fetchSearchResults = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/search?q=${query}&lang=${language}`
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/search?q=${query}&lang=${language}`
       );
       if (!response.data || response.data.length === 0) {
         return rejectWithValue("No results found.");

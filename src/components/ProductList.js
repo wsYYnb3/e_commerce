@@ -29,7 +29,7 @@ import {
 import { getImageById } from "./../utils/utils";
 const ProductList = ({ selectedCategories, items: products }) => {
   const favorites = useSelector((state) => state.favorites.favoritesItems);
-  const cart = useSelector((state) => state.cart.cartItems);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useParams();

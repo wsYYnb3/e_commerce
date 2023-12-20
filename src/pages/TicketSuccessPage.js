@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import styled from "styled-components";
+import React, { useEffect, useState, useCallback } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import { FiCheckCircle } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -15,23 +14,21 @@ function TicketSuccessPage() {
   const { ticketId } = useParams();
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const fetchTicketsDetails = async () => {
+  const fetchTicketsDetails = useCallback(async () => {
     try {
       const resp = await getAllTicketsID();
-      console.log(resp);
-      const foundTicket = resp.data.find((o) => o.id == ticketId);
+      const foundTicket = resp.data.find((o) => o.id === ticketId);
       setTicket(foundTicket);
     } catch (error) {
       console.error("Failed to fetch ticket details:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [ticketId]);
   const navigate = useNavigate();
   useEffect(() => {
     fetchTicketsDetails();
-  }, [ticketId]);
+  }, [ticketId, fetchTicketsDetails]);
 
   if (loading) {
     return <LoadingIndicator />;
