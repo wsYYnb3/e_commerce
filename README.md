@@ -2,6 +2,11 @@ This is my ongoing E Commerce project
 
 Built with React, Styled-Components, Redux, Bootstrap
 
+Test it on: 
+
+https://incomparable-cendol-6eb2ac.netlify.app/
+
+
 HomePage:
 ![HomePage1](public/homepage.png)
 ![HomePage2](public/homepage2.png)
