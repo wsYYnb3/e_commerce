@@ -50,7 +50,6 @@ export const formatAddress = (address) => {
 export const formatPrice = (price, symbol) => {
   return `${price} ${symbol}`;
 };
-function test() {}
 export async function verifyAdmin(id) {
   let actualId = id;
   if (actualId) {
