@@ -1,4 +1,6 @@
-This is my ongoing E Commerce project
+This is my ongoing E Commerce project can be found tested on:
+
+https://incomparable-cendol-6eb2ac.netlify.app/
 
 Built with React, Styled-Components, Redux, Bootstrap
 
