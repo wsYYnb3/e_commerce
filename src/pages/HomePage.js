@@ -5,13 +5,14 @@ import { Row, Col, Container } from "react-bootstrap";
 import { animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import Carousel from "react-multi-carousel";
+
 import "react-multi-carousel/lib/styles.css";
 
+import CustomImage from "../components/CustomImage";
 import {
   getCurrencyDetails,
   getDisplayPrice,
   formatPrice,
-  getImageById,
 } from "../utils/utils";
 import {
   ProductItem,
@@ -34,6 +35,7 @@ const HomePage = () => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
   }, [dispatch]);
+
   const renderProducts = (items) =>
     items.map((product) => {
       const { currencyId, symbol } = getCurrencyDetails(language);
@@ -45,9 +47,9 @@ const HomePage = () => {
           to={`/${language}/product/${product.id}/${t(product.slug_key)}`}
         >
           <ProductItem>
-            <img
-              src={getImageById(product.productcardimages[0]?.image?.id) ?? ""}
-              alt={t(product.name_key)}
+            <CustomImage
+              imageId={product.productcardimages[0]?.image?.id ?? ""}
+              altText={t(product.name_key)}
             />
             <StyledProductName>{t(product.name_key)}</StyledProductName>
             <StyledProductPrice>{formattedPrice}</StyledProductPrice>
@@ -82,8 +84,9 @@ const HomePage = () => {
         <section className='welcome-section text-center'>
           <h1>{t("welcome")}</h1>
           <p>{t()}</p>
+
           <StyledBanner to={`/${language}/store`}>
-            <img src={getImageById(60)} alt='Start your journey' />
+            <CustomImage imageId={60} altText='New and modern ECommerce site' />
           </StyledBanner>
         </section>
         <section className='category-section py-5'>
@@ -98,9 +101,9 @@ const HomePage = () => {
                     )}`}
                   >
                     <div className='icon-container'>
-                      <img
-                        src={getImageById(category.icon)}
-                        alt={`${t(category.name_key)} icon`}
+                      <CustomImage
+                        imageId={category.icon}
+                        altText={`${t(category.name_key)} icon`}
                       />
                     </div>
                     <h2 className='title'>{t(category.name_key)}</h2>
