@@ -23,4 +23,3 @@ Backend can be found under:
 
 https://github.com/wsYYnb3/my_project_api
 
-It was written in Node.js, utilizing Express, Sequilize.
