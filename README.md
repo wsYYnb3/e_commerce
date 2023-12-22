@@ -1,12 +1,10 @@
-This is my ongoing E Commerce project can be found tested on:
+This is my ongoing E Commerce project
 
+Can be found and tested:
 https://rad-marzipan-90aff3.netlify.app/
 
 Built with React, Styled-Components, Redux, Bootstrap
 
-Test it on: 
-
-https://incomparable-cendol-6eb2ac.netlify.app/
 
 
 HomePage:
