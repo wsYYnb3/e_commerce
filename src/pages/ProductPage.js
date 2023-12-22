@@ -14,6 +14,7 @@ import Description from "../components/Description";
 import ProductPurchase from "../components/ProductPurchase";
 import ImageGallery from "../components/ImageGallery";
 import Keywords from "../components/Keywords";
+import LoadingIndicator from "../components/LoadingIndicator";
 import { useTranslation } from "react-i18next";
 import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import {
@@ -28,7 +29,7 @@ const ProductPage = () => {
   const fade = useSpring({ from: { opacity: 0 }, opacity: 1 });
   const { t } = useTranslation();
   const product = useSelector((state) => state.items.selectedProduct);
-
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const { language } = useParams();
   const { currencyId } = getCurrencyDetails(language);
@@ -38,7 +39,14 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchProductById(id));
+      setIsLoading(true);
+      dispatch(fetchProductById(id))
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
     }
   }, [dispatch, id]);
 
@@ -55,7 +63,9 @@ const ProductPage = () => {
   const decreaseQuantity = useCallback(() => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   }, []);
-
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
   if (!product) {
     return <PageTitle>{t("Product not found")}</PageTitle>;
   }
