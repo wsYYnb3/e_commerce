@@ -23,6 +23,12 @@ import {
   OrderCard,
   IconText,
 } from "../styles/OrdersPageStyles";
+import {
+  NoOrdersContainer,
+  NoOrdersIcon,
+  NoOrdersText,
+  NoOrdersSubText,
+} from "../styles/OrdersPageStyles";
 import { fetchOrders } from "../services/ordersSlice";
 import LoadingIndicator from "../components/LoadingIndicator";
 
@@ -53,7 +59,19 @@ const OrdersPage = () => {
     return null;
   };
   if (!orders || orders.length === 0) {
-    return <p>No previous orders.</p>;
+    return (
+      <animated.div style={fade}>
+        <Container fluid>
+          <NoOrdersContainer>
+            <NoOrdersIcon />
+            <NoOrdersText>No Previous Orders</NoOrdersText>
+            <NoOrdersSubText>
+              It looks like you haven't placed any orders yet.
+            </NoOrdersSubText>
+          </NoOrdersContainer>
+        </Container>
+      </animated.div>
+    );
   }
   if (!Array.isArray(orders)) {
     return <LoadingIndicator />;
