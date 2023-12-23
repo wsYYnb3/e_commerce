@@ -53,7 +53,9 @@ const Header = () => {
   } = useForm({
     resolver: yupResolver(searchSchema),
   });
-
+  //has to be refactored
+  if (query) {
+  }
   const cartCount = useSelector((state) => state.cart.cartItems.length);
   const { language } = useParams();
   const dispatch = useDispatch();
