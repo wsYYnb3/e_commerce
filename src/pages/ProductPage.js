@@ -20,7 +20,6 @@ import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import {
   DescriptionTechnicalInfoContainer,
   PageTitle,
-  CenteredDiv,
 } from "../styles/ProductPageStyles";
 
 const ProductPage = () => {
