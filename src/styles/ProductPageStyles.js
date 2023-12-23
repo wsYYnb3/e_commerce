@@ -6,7 +6,14 @@ export const StyledCol = styled(Col)`
   justify-content: center;
   align-items: center;
 `;
-
+export const CenteredDiv = styled.div`
+  @media (max-width: 1320px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+`;
 export const StyledImageCol = styled(Col)`
   margin-bottom: 30px;
   display: flex;

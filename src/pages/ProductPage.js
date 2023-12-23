@@ -20,6 +20,7 @@ import { getCurrencyDetails, getDisplayPrice } from "../utils/utils";
 import {
   DescriptionTechnicalInfoContainer,
   PageTitle,
+  CenteredDiv,
 } from "../styles/ProductPageStyles";
 
 const ProductPage = () => {
@@ -36,7 +37,7 @@ const ProductPage = () => {
   const displayPrice = product
     ? getDisplayPrice(product, currencyId).toFixed(2)
     : null;
-
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1319);
   useEffect(() => {
     if (id) {
       setIsLoading(true);
@@ -55,7 +56,15 @@ const ProductPage = () => {
       setTotalPrice(quantity * displayPrice);
     }
   }, [quantity, product, displayPrice]);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 1319 && window.innerWidth >= 900);
+    };
 
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const increaseQuantity = useCallback(() => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   }, []);
@@ -81,7 +90,11 @@ const ProductPage = () => {
             md={12}
             lg={4}
             className=' mr-auto ml-auto'
-            style={{ marginLeft: "6rem", marginRight: "5rem" }}
+            style={
+              isMobileView
+                ? { marginLeft: "15rem", marginRight: "5rem" }
+                : { marginLeft: "6rem", marginRight: "5rem" }
+            }
           >
             <ImageGallery images={product.productimages} />
             <Keywords keywords={product.keyword_id_keywords} />
