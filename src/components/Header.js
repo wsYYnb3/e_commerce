@@ -34,6 +34,10 @@ import { fetchCart } from "../services/cartSlice";
 import { verifyAdmin } from "../utils/utils";
 import { BiSupport } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
+import { searchSchema } from "../services/validation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 const Header = () => {
   const [query, setQuery] = useState("");
   const [searchParams] = useSearchParams();
@@ -41,23 +45,40 @@ const Header = () => {
   const { user } = useClerk();
   const { t } = useTranslation();
   const queryParam = searchParams.get("q");
+  const [submitted, setSubmitted] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(searchSchema),
+  });
 
   const cartCount = useSelector((state) => state.cart.cartItems.length);
   const { language } = useParams();
   const dispatch = useDispatch();
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = (data) => {
+    setSubmitted(true);
+    const searchQuery = data.query.trim();
+    if (searchQuery.length >= 3) {
+      setQuery("");
+      navigate(`/${language}/search?q=${searchQuery}`);
+    }
+    /* e.preventDefault();
+    await searchSchema.validate({ query });
     const searchQuery = query.trim();
     if (searchQuery !== "") {
       setQuery("");
       navigate(`/${language}/search?q=${searchQuery}`);
-    }
+    }*/
   };
   useEffect(() => {
     setQuery(queryParam || "");
   }, [queryParam]);
   const [isAdmin, setIsAdmin] = useState(null);
-
+  useEffect(() => {
+    setQuery("");
+  }, [language]);
   useEffect(() => {
     if (user) {
       verifyAdmin(user.id).then((isAdmin) => {
@@ -118,24 +139,27 @@ const Header = () => {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='search-navbar'>
           <div className='mx-auto'>
-            <Form action='#' onSubmit={handleSearch}>
+            <Form onSubmit={handleSubmit(handleSearch)}>
               <InputGroup>
                 <FormControl
                   type='text'
                   placeholder='Search'
-                  className='mr-sm-2'
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch(e);
-                      e.preventDefault();
-                    }
-                  }}
+                  {...register("query")}
+                  className={errors.query ? "is-invalid" : "mr-sm-2"}
+                  onBlur={() => setSubmitted(false)}
                 />
                 <Button variant='light' type='submit'>
                   <FontAwesomeIcon icon={faSearch} />
                 </Button>
+                {submitted && errors.query && (
+                  <div
+                    className={`search-error ${
+                      errors.query ? "visible" : "invisible"
+                    }`}
+                  >
+                    {errors.query?.message}
+                  </div>
+                )}
               </InputGroup>
             </Form>
           </div>

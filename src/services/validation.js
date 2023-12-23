@@ -90,3 +90,10 @@ export const schema = yup.object().shape({
   }),
 });
 //paymentMethod: yup.string().required("Payment method is required"),
+export const searchSchema = yup.object().shape({
+  query: yup
+    .string()
+    .trim()
+    .min(3, "Search query must be at least 3 characters long")
+    .required("Search query is required"),
+});
