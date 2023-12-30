@@ -21,10 +21,8 @@ export const fetchFavorites = createAsyncThunk(
 export const addToFavorites = createAsyncThunk(
   "/wishlist/addToFavorites",
   async (data, thunkAPI) => {
-    console.log("data in fetch", data);
     if (data.customerId) {
       try {
-        console.log(data);
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/wishlist/add/${data.customerId}`,
           data

@@ -57,7 +57,6 @@ export const AdminProtectedRoute = ({ children }) => {
       setIsAdmin(adminStatus);
 
       if (!adminStatus) {
-        console.log("not admin");
       }
     } else {
       navigate("/en/sign-in");

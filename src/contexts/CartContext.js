@@ -11,9 +11,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([cartItems]);
   const customerId = user?.id;
   useEffect(() => {
-    if (customerId) {
-      dispatch(fetchCart(customerId));
-    }
+    dispatch(fetchCart(customerId));
   }, [dispatch, customerId]);
   return (
     <CartContext.Provider value={[cart, setCart]}>

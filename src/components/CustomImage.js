@@ -13,7 +13,6 @@ const CustomImage = ({ imageId, altText }) => {
         src={imageUrl}
         alt={altText}
         onLoad={() => {
-          console.log("Image Loaded:", imageId);
           setIsImageLoading(false);
         }}
         style={{ display: isImageLoading ? "none" : "block" }}
