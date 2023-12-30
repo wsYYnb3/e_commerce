@@ -3,18 +3,21 @@ import axios from "axios";
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async (customerId) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/get/${customerId}`,
-        {
-          params: { customerId },
-          withCredentials: true,
-        }
-      );
+    if (customerId) {
+      console.log(customerId);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/get/${customerId}`,
+          {
+            params: { customerId },
+            withCredentials: true,
+          }
+        );
 
-      return response.data;
-    } catch (error) {
-      throw error;
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 );
