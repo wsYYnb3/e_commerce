@@ -6,7 +6,7 @@ export const fetchCart = createAsyncThunk(
     console.log(customerId);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/get/${customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/get/${customerId}`,
         {
           params: { customerId },
           withCredentials: true,
@@ -32,7 +32,7 @@ export const addToCart = createAsyncThunk(
       delete postData.id;
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/add/${data.customerId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/add/${data.customerId}`,
         postData,
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ export const removeFromCart = createAsyncThunk(
   async (data) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/update`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/update`,
         {
           data: { customer_id: data.customer_id, product_id: data.product_id },
           withCredentials: true,
@@ -68,7 +68,7 @@ export const clearCart = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/clear`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/clear`,
         {
           data: { customerId: data },
           withCredentials: true,
@@ -86,7 +86,7 @@ export const adjustQuantity = createAsyncThunk(
   async (data) => {
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/cart/update`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/update`,
         {
           customer_id: data.customerId,
           quantity: data.quantity,
