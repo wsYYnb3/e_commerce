@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-
-const getOrCreateCustomerId = () => {
-  let customerId = localStorage.getItem("guestCustomerId") || uuidv4();
-  localStorage.setItem("guestCustomerId", customerId);
-  return customerId;
-};
+import { getOrCreateCustomerId } from "../utils/utils.js";
 
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
@@ -16,7 +10,7 @@ export const fetchCart = createAsyncThunk(
       const response = await axios.get(`/api/cart/get/${customerId}`, {
         withCredentials: true,
       });
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       throw error;
