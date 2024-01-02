@@ -1,22 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-
-const getOrCreateCustomerId = () => {
-  let customerId = localStorage.getItem("guestCustomerId") || uuidv4();
-  localStorage.setItem("guestCustomerId", customerId);
-  return customerId;
-};
-
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async (customerId, thunkAPI) => {
+  async (customerId) => {
+    console.log(customerId);
     try {
-      customerId = customerId || getOrCreateCustomerId();
       const response = await axios.get(`/api/cart/get/${customerId}`, {
+        params: { customerId },
         withCredentials: true,
       });
-      console.log(response.data);
+      console.log(response);
       return response.data;
     } catch (error) {
       throw error;
@@ -28,7 +21,6 @@ export const addToCart = createAsyncThunk(
   "/cart/addToCart",
   async (data, thunkAPI) => {
     try {
-      data.customerId = data.customerId || getOrCreateCustomerId();
       const productId = data.id;
       const postData = {
         ...data,
@@ -42,6 +34,7 @@ export const addToCart = createAsyncThunk(
         { withCredentials: true }
       );
       await thunkAPI.dispatch(fetchCart(data.customerId));
+
       return response.data;
     } catch (error) {
       throw error;
@@ -51,53 +44,46 @@ export const addToCart = createAsyncThunk(
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async (data, thunkAPI) => {
+  async (data) => {
     try {
-      data.customer_id = data.customer_id || getOrCreateCustomerId();
       const response = await axios.delete(`/api/cart/update`, {
         data: { customer_id: data.customer_id, product_id: data.product_id },
         withCredentials: true,
       });
-      await thunkAPI.dispatch(fetchCart(data.customer_id));
+
       return response.data;
     } catch (error) {
       throw error;
     }
   }
 );
-
 export const clearCart = createAsyncThunk(
   "cart/clearCart",
-  async (customerId, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      customerId = customerId || getOrCreateCustomerId();
       const response = await axios.delete(`/api/cart/clear`, {
-        data: { customerId },
+        data: { customerId: data },
         withCredentials: true,
       });
-      await thunkAPI.dispatch(fetchCart(customerId));
+      await thunkAPI.dispatch(fetchCart(data));
       return response.data;
     } catch (error) {
       throw error;
     }
   }
 );
-
 export const adjustQuantity = createAsyncThunk(
   "cart/adjustQuantity",
-  async (data, thunkAPI) => {
+  async (data) => {
     try {
-      data.customerId = data.customerId || getOrCreateCustomerId();
       const response = await axios.put(
         `/api/cart/update`,
         {
           customer_id: data.customerId,
-          product_id: data.productId,
           quantity: data.quantity,
         },
         { withCredentials: true }
       );
-      await thunkAPI.dispatch(fetchCart(data.customerId));
       return response.data;
     } catch (error) {
       throw error;
