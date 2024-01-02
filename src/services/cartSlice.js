@@ -1,18 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+
+const getOrCreateCustomerId = () => {
+  let customerId = localStorage.getItem("guestCustomerId") || uuidv4();
+  localStorage.setItem("guestCustomerId", customerId);
+  return customerId;
+};
+
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async (customerId) => {
-    console.log(customerId);
+  async (customerId, thunkAPI) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/get/${customerId}`,
-        {
-          params: { customerId },
-          withCredentials: true,
-        }
-      );
-
+      customerId = customerId || getOrCreateCustomerId();
+      const response = await axios.get(`/api/cart/get/${customerId}`, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -24,6 +27,7 @@ export const addToCart = createAsyncThunk(
   "/cart/addToCart",
   async (data, thunkAPI) => {
     try {
+      data.customerId = data.customerId || getOrCreateCustomerId();
       const productId = data.id;
       const postData = {
         ...data,
@@ -32,12 +36,11 @@ export const addToCart = createAsyncThunk(
       delete postData.id;
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/add/${data.customerId}`,
+        `/api/cart/add/${data.customerId}`,
         postData,
         { withCredentials: true }
       );
       await thunkAPI.dispatch(fetchCart(data.customerId));
-
       return response.data;
     } catch (error) {
       throw error;
@@ -47,52 +50,53 @@ export const addToCart = createAsyncThunk(
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async (data) => {
-    try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/update`,
-        {
-          data: { customer_id: data.customer_id, product_id: data.product_id },
-          withCredentials: true,
-        }
-      );
-
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
-export const clearCart = createAsyncThunk(
-  "cart/clearCart",
   async (data, thunkAPI) => {
     try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/clear`,
-        {
-          data: { customerId: data },
-          withCredentials: true,
-        }
-      );
-      await thunkAPI.dispatch(fetchCart(data));
+      data.customer_id = data.customer_id || getOrCreateCustomerId();
+      const response = await axios.delete(`/api/cart/update`, {
+        data: { customer_id: data.customer_id, product_id: data.product_id },
+        withCredentials: true,
+      });
+      await thunkAPI.dispatch(fetchCart(data.customer_id));
       return response.data;
     } catch (error) {
       throw error;
     }
   }
 );
+
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (customerId, thunkAPI) => {
+    try {
+      customerId = customerId || getOrCreateCustomerId();
+      const response = await axios.delete(`/api/cart/clear`, {
+        data: { customerId },
+        withCredentials: true,
+      });
+      await thunkAPI.dispatch(fetchCart(customerId));
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const adjustQuantity = createAsyncThunk(
   "cart/adjustQuantity",
-  async (data) => {
+  async (data, thunkAPI) => {
     try {
+      data.customerId = data.customerId || getOrCreateCustomerId();
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/cart/update`,
+        `/api/cart/update`,
         {
           customer_id: data.customerId,
+          product_id: data.productId,
           quantity: data.quantity,
         },
         { withCredentials: true }
       );
+      await thunkAPI.dispatch(fetchCart(data.customerId));
       return response.data;
     } catch (error) {
       throw error;
