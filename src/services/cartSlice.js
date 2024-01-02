@@ -16,6 +16,7 @@ export const fetchCart = createAsyncThunk(
       const response = await axios.get(`/api/cart/get/${customerId}`, {
         withCredentials: true,
       });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       throw error;
