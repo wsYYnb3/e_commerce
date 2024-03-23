@@ -48,7 +48,7 @@ export const fetchAllTickets = createAsyncThunk(
     if (adminId) {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/get/all/`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/api/ticket/get/all/`,
           { params: { adminId: adminId }, withCredentials: true }
         );
 
@@ -65,7 +65,7 @@ export const updateTicket = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/ticket/update/${data.ticketId}`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/ticket/update/${data.ticketId}`,
         data,
         { withCredentials: true }
       );

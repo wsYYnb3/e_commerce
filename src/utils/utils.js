@@ -57,8 +57,10 @@ export async function verifyAdmin(id) {
     try {
       if (typeof actualId === "object") {
         //ticket
+
         actualId = actualId.id;
       }
+
       const resp = await axios.get(
         `${process.env.REACT_APP_BACKEND_ADDRESS}/verify/${actualId}`
       );
