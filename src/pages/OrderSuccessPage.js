@@ -18,7 +18,6 @@ function OrderSuccessPage() {
   const fetchOrderDetails = useCallback(async () => {
     try {
       const resp = await getAllOrdersID();
-      console.log("resp:", resp);
       const foundOrder = resp.data.find((o) => o.id == orderId);
       setOrder(foundOrder);
     } catch (error) {
