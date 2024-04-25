@@ -17,7 +17,7 @@ function TicketSuccessPage() {
   const fetchTicketsDetails = useCallback(async () => {
     try {
       const resp = await getAllTicketsID();
-      const foundTicket = resp.data.find((o) => o.id === ticketId);
+      const foundTicket = resp.data.find((o) => o.id === Number(ticketId));
       setTicket(foundTicket);
     } catch (error) {
       console.error("Failed to fetch ticket details:", error);
