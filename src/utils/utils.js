@@ -80,9 +80,13 @@ export async function verifyAdmin(id) {
 export async function sendTicket(data) {
   try {
     data.customerId = data.customerId || getOrCreateCustomerId();
-    const resp = await axios.post(`api/ticket/add/${data.customerId}`, data, {
-      withCredentials: true,
-    });
+    const resp = await axios.post(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/api/ticket/add/${data.customerId}`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
 
     return resp;
   } catch (error) {
@@ -105,7 +109,9 @@ export async function getClerkUserDetails(customerId) {
 }
 export async function getAllTicketsID() {
   try {
-    const resp = await axios.get(`api/ticket/get/all_ids`);
+    const resp = await axios.get(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/api/ticket/get/all_ids`
+    );
     return resp;
   } catch (error) {
     console.error("Failed to send ticket:", error);
